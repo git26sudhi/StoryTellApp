@@ -16,7 +16,7 @@
             --admin-hover: #1d3557;
             --dev-color: #7b2cbf;
             --danger: #c93b3b;
-            --violet-brand: #7b2cbf;
+            --purple-banner: #4a154b;
         }
 
         body {
@@ -24,78 +24,89 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding: 20px;
+            padding: 0 0 20px 0;
             margin: 0;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
-        header {
-            margin-bottom: 0;
+        .brand-purple-banner {
+            background-color: var(--purple-banner);
+            color: #ffffff;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            padding-bottom: 12px;
+            align-items: center;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
         }
 
-        .header-left {
-            text-align: left;
+        /* Standardized inside max-width constraints block framework */
+        .banner-content-lock {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px; /* Modified to align the text elements flush with downstream column layouts */
+            box-sizing: border-box;
         }
 
-        .header-right {
-            text-align: right;
-            padding-bottom: 2px;
-        }
-
-        h1 { 
-            margin: 0 0 4px 0; 
-            color: var(--violet-brand); 
+        .banner-content-lock h1 { 
+            margin: 0; 
+            color: #ffffff; 
             font-size: 30px; 
             font-weight: 800; 
             letter-spacing: -0.5px;
             line-height: 1;
         }
+
+        /* Shifted leftward precisely matching requirement parameters */
+        .banner-content-lock .month-sub {
+            font-size: 15px; 
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 1mm 0 0; 
+            letter-spacing: -0.1px;
+            line-height: 1;
+        }
         
+        .metadata-opposite-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 35px;
+            padding: 0 4px;
+        }
+
+        /* Transformed font layout profile precisely to deep charcoal pitch black */
+        .mod-tag {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #222222;
+            margin: 0;
+            text-align: left;
+        }
+
         .topic-header {
             font-size: 22px;
             font-weight: 600;
             color: #222;
             margin: 0;
-        }
-
-        .month-sub {
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
-            margin: 0;
-        }
-
-        .mod-tag {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: #888;
-            margin: 0;
-        }
-
-        .blue-separator {
-            border: none;
-            height: 1mm;
-            background-color: #0056b3;
-            margin: 0 0 10px 0;
-            padding: 0;
-        }
-
-        .sub-header-details {
-            display: flex;
-            justify-content: flex-end;
-            font-size: 14px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 30px;
+            text-align: right;
         }
 
         .plain-section {
@@ -201,6 +212,20 @@
         .btn-preview:hover { background-color: #1d3557; }
         .btn-download { background-color: #217346; flex: 1; font-size: 15px; }
         .btn-download:hover { background-color: #1a5c38; }
+
+        .preview-output-box {
+            background-color: #f8f9fa;
+            border: 1px dashed var(--admin-color);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #333;
+            max-height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
 
         .hidden { display: none !important; }
         
@@ -316,21 +341,17 @@
 </head>
 <body>
 
+<div class="brand-purple-banner">
+    <div class="banner-content-lock">
+        <h1>കഥാസാഗരം</h1>
+        <div id="monthDisplay" class="month-sub">*****</div>
+    </div>
+</div>
+
 <div class="container">
-    <header>
-        <div class="header-left">
-            <h1>കഥാസാഗരം</h1>
-        </div>
-        <div class="header-right">
-            <div id="topicDisplay" class="topic-header">*****</div>
-            <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
-        </div>
-    </header>
-
-    <hr class="blue-separator">
-
-    <div class="sub-header-details">
-        <div id="monthDisplay" class="month-sub">Month: *****</div>
+    <div class="metadata-opposite-row">
+        <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
+        <div id="topicDisplay" class="topic-header">*****</div>
     </div>
 
     <div id="pausedBanner" class="status-alert hidden">
@@ -342,7 +363,7 @@
     <!-- =================================== -->
     <div id="userInterface">
         <div class="plain-section">
-            <h2>Select Active Story</h2>
+            <h2>Select Story</h2>
             <div class="form-group">
                 <label for="storyDropdown">Choose a story from the list (Most recent on top):</label>
                 <select id="storyDropdown"></select>
@@ -350,7 +371,7 @@
         </div>
 
         <div class="plain-section">
-            <h2>Rating</h2>
+            <h2>Review</h2>
             <form id="ratingForm">
                 <div class="form-group">
                     <label for="friendName">Your Name *</label>
@@ -368,7 +389,7 @@
                     <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: #777;">(Optional)</span></label>
                     <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
                 </div>
-                <button type="submit" id="submitRatingBtn">Submit Rating</button>
+                <button type="submit" id="submitRatingBtn">Submit Review</button>
             </form>
         </div>
     </div>
@@ -393,16 +414,17 @@
     <!-- =================================== -->
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
-            <h2>🛠️ Moderator Control Panel (Mod)</h2>
+            <h2>🛠️ Moderator Control Panel</h2>
             
-            <div class="form-group" style="margin-top: 15px;">
+            <div class="form-group" style="margin-top: 20px;">
                 <label for="newStoryInput">Add New Story</label>
                 <input type="text" id="newStoryInput" placeholder="Enter new story name">
-                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add & Set Active</button>
+                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add</button>
             </div>
 
+            <!-- Relabeled to clear "Remove story from database" exactly as specified -->
             <div class="form-group" style="margin-top: 15px;">
-                <label for="deleteStorySelect">Delete a Story From Database</label>
+                <label for="deleteStorySelect">Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <select id="deleteStorySelect" style="flex: 1; margin: 0;"></select>
                     <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
@@ -412,31 +434,50 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Contextually linked tool elements tied directly into mod select story dropdown indexes -->
+            <div class="form-group" style="margin-top: 15px; background: #f0f4f8; padding: 15px; border-radius: 6px; border: 1px solid #d0daf0;">
+                <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 140px;">Select Story to populate recommendations buffer...</div>
+                <button type="button" id="copySuggestionsBtn" class="btn-mod-action" style="margin-top: 10px; width: 100%; font-size: 13px; padding: 8px 12px;">Copy Title suggestions list</button>
+            </div>
             
             <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
 
+            <!-- Relabeled metadata config block layout items -->
             <div class="form-group">
-                <label for="inputMonth">Change Competition Month</label>
+                <label for="inputMonth">Competition Month</label>
                 <input type="text" id="inputMonth" placeholder="e.g., May 2026">
             </div>
             <div class="form-group">
-                <label for="inputTopic">Change Competition Topic</label>
+                <label for="inputTopic">Competition Subject</label>
                 <input type="text" id="inputTopic" placeholder="e.g., Science Fiction Noir">
             </div>
-            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action">Save Month & Topic Configurations</button>
+
+            <!-- Slipped below the Competition Subject configurations component parameter bounds as requested -->
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="inputModName">Change moderator name</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="inputModName" placeholder="Enter new moderator custom handle" style="flex: 1; margin: 0;">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action">Save Profile Name</button>
+                </div>
+            </div>
+
+            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-top: 5px; width: 100%;">change configuration</button>
 
             <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
 
+            <!-- Reconfigured to dynamic drop-down choice elements parsed from reviews metadata arrays -->
             <div class="form-group">
                 <label for="readerSuggestions">Author's Favorite Heading</label>
-                <textarea id="readerSuggestions" rows="3" placeholder="Favorite Heading Title..."></textarea>
+                <select id="readerSuggestions"></select>
             </div>
             <div class="form-group">
                 <label for="headingSuggesterInput">Suggested Person</label>
-                <input type="text" id="headingSuggesterInput" placeholder="Enter full name of suggester...">
+                <select id="headingSuggesterInput"></select>
             </div>
+            
             <div class="form-group">
-                <label for="correctGuesses">Guess the Author</label>
+                <label for="correctGuesses">Guess the author winners</label>
                 <textarea id="correctGuesses" rows="3" placeholder="Name, Name, Name..."></textarea>
             </div>
             <button type="button" id="saveNotesBtn" class="btn-mod-action">Save End of Day Notes</button>
@@ -531,12 +572,19 @@
     const headerModNameDisplay = document.getElementById('headerModNameDisplay');
     const storyDropdown = document.getElementById('storyDropdown');
     const deleteStorySelect = document.getElementById('deleteStorySelect');
+    
+    const titleSuggestionClipboardOutput = document.getElementById('titleSuggestionClipboardOutput');
+    const copySuggestionsBtn = document.getElementById('copySuggestionsBtn');
 
     const localPassInput = document.getElementById('localPassInput');
     const submitLoginBtn = document.getElementById('submitLoginBtn');
     const newStoryInput = document.getElementById('newStoryInput');
     const updateStoryBtn = document.getElementById('updateStoryBtn');
     const deleteStoryBtn = document.getElementById('deleteStoryBtn');
+    
+    const inputModName = document.getElementById('inputModName');
+    const saveModNameBtn = document.getElementById('saveModNameBtn');
+    
     const inputMonth = document.getElementById('inputMonth');
     const inputTopic = document.getElementById('inputTopic');
     const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
@@ -546,6 +594,7 @@
     const ratingValueInput = document.getElementById('ratingValue');
     const authorGuessInput = document.getElementById('authorGuess');
     const titleSuggestionInput = document.getElementById('titleSuggestion');
+    const submitRatingBtn = document.getElementById('submitRatingBtn');
     
     const readerSuggestions = document.getElementById('readerSuggestions');
     const headingSuggesterInput = document.getElementById('headingSuggesterInput');
@@ -564,26 +613,38 @@
 
     let currentModPassword = "Mod@2k26"; 
     let currentModName = "Mod";
+    let isNameLockedByMod = false;
     let arrayedStoriesList = [];
     let isSystemPaused = false;
+    let isDeveloperModeUnlocked = false;
 
-    topicDisplay.textContent = "*****";
-    monthDisplay.textContent = "Month: *****";
-    headerModNameDisplay.textContent = "Moderator: Mod";
-    inputMonth.value = "*****";
-    inputTopic.value = "*****";
+    // Cache to prevent repetitive reads during drop-down mapping lookups
+    let activeStorySnapshotDataCache = null;
 
     // --- CLOUD SYNC MONITOR ---
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
             topicDisplay.textContent = data.topic || "*****";
-            monthDisplay.textContent = "Month: " + (data.month || "*****");
+            monthDisplay.textContent = data.month || "*****";
             inputMonth.value = data.month || "*****";
             inputTopic.value = data.topic || "*****";
             currentModPassword = data.modPassword || "Mod@2k26";
+            
             currentModName = data.modName || "Mod";
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
+            inputModName.value = currentModName;
+            
+            isNameLockedByMod = !!data.isNameLocked;
+            if (isNameLockedByMod) {
+                inputModName.disabled = true;
+                saveModNameBtn.disabled = true;
+                saveModNameBtn.textContent = "🔒 Locked";
+            } else {
+                inputModName.disabled = isSystemPaused;
+                saveModNameBtn.disabled = isSystemPaused;
+                saveModNameBtn.textContent = "Save Profile Name";
+            }
             
             isSystemPaused = !!data.systemPaused;
             devPauseToggle.checked = isSystemPaused;
@@ -594,6 +655,7 @@
                 month: "*****",
                 modPassword: "Mod@2k26",
                 modName: "Mod",
+                isNameLocked: false,
                 systemPaused: false
             });
         }
@@ -604,17 +666,62 @@
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
             inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions,
-            headingSuggesterInput, correctGuesses, saveNotesBtn
+            headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn
         ];
         
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
-            document.getElementById('submitRatingBtn').disabled = true;
+            submitRatingBtn.disabled = true;
             elements.forEach(el => el.disabled = true);
+            inputModName.disabled = true;
+            saveModNameBtn.disabled = true;
         } else {
             pausedBanner.classList.add('hidden');
-            document.getElementById('submitRatingBtn').disabled = false;
+            submitRatingBtn.disabled = false;
             elements.forEach(el => el.disabled = false);
+            
+            if (isNameLockedByMod) {
+                inputModName.disabled = true;
+                saveModNameBtn.disabled = true;
+            } else {
+                inputModName.disabled = false;
+                saveModNameBtn.disabled = false;
+            }
+            evaluateLocalStorageRestrictions();
+        }
+    }
+
+    function evaluateLocalStorageRestrictions() {
+        if (isSystemPaused) return;
+        
+        const targetStory = storyDropdown.value;
+        if (!targetStory) return;
+
+        if (isDeveloperModeUnlocked) {
+            friendNameInput.disabled = false;
+            ratingValueInput.disabled = false;
+            authorGuessInput.disabled = false;
+            titleSuggestionInput.disabled = false;
+            submitRatingBtn.disabled = false;
+            submitRatingBtn.textContent = "Submit Review (Dev Mode Bypass)";
+            return;
+        }
+
+        const storageMarkerKey = `rated_${targetStory}`;
+        if (localStorage.getItem(storageMarkerKey) === "true") {
+            friendNameInput.disabled = true;
+            ratingValueInput.disabled = true;
+            authorGuessInput.disabled = true;
+            titleSuggestionInput.disabled = true;
+            submitRatingBtn.disabled = true;
+            submitRatingBtn.textContent = "You have already rated this story";
+        } else {
+            friendNameInput.disabled = false;
+            ratingValueInput.disabled = false;
+            authorGuessInput.disabled = false;
+            titleSuggestionInput.disabled = false;
+            submitRatingBtn.disabled = false;
+            submitRatingBtn.textContent = "Submit Review";
         }
     }
 
@@ -653,23 +760,36 @@
             deleteStorySelect.appendChild(optionMod);
         });
 
-        if(arrayedStoriesList.length > 0 && !storyDropdown.value) {
-            storyDropdown.selectedIndex = 0;
+        if(arrayedStoriesList.length > 0) {
+            if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
+            if(!deleteStorySelect.value) deleteStorySelect.selectedIndex = 0;
             loadCurrentStoryNotes();
         }
+        evaluateLocalStorageRestrictions();
     });
 
-    storyDropdown.addEventListener('change', loadCurrentStoryNotes);
+    // Unified index configuration changes tracker
+    storyDropdown.addEventListener('change', () => {
+        loadCurrentStoryNotes();
+        evaluateLocalStorageRestrictions();
+    });
+
+    // Contextually binds the visual selection elements across components
+    deleteStorySelect.addEventListener('change', () => {
+        loadCurrentStoryNotes();
+    });
 
     // --- SUBMIT AUTHENTICATION KEY ---
     submitLoginBtn.addEventListener('click', () => {
         const inputKey = localPassInput.value.trim();
 
-        if (inputKey === "Sudhi@2k26") {
+        if (inputKey === "Arthur@2k26") {
             devInterface.classList.remove('hidden');
             modInterface.classList.remove('hidden'); 
             loginInterface.classList.add('hidden');
-            alert("Developer Mode Unlocked.");
+            isDeveloperModeUnlocked = true; 
+            evaluateLocalStorageRestrictions();
+            alert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
             localPassInput.value = "";
             return;
         } 
@@ -687,7 +807,111 @@
         localPassInput.value = ""; 
     });
 
+    // --- RESTRUCTURED POPULATE DROPDOWNS & TOOL PIPELINES ---
+    async function loadCurrentStoryNotes() {
+        // Enforces actual story title references to follow deleteStorySelect options directly
+        const targetSelected = deleteStorySelect.value;
+        if (!targetSelected) return;
+        
+        // Updates user facing dropdown position selection indices symmetrically
+        if(storyDropdown.value !== targetSelected) {
+            storyDropdown.value = targetSelected;
+        }
+
+        titleSuggestionClipboardOutput.textContent = "⏳ Synchronizing clipboard stream buffer...";
+        
+        try {
+            const docSnap = await getDoc(doc(db, "competitions", targetSelected));
+            
+            // Clear drop-down menu items completely before reprocessing matrix vectors
+            readerSuggestions.innerHTML = '<option value="">-- Choose Heading --</option>';
+            headingSuggesterInput.innerHTML = '<option value="">-- Choose Person --</option>';
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                activeStorySnapshotDataCache = data; // Locks variable states locally
+
+                let clipboardLinesArray = [];
+                let rawSavedHeadingMatchValue = data._suggestions || "";
+                let rawSavedSuggesterMatchValue = data._suggesterName || "";
+
+                Object.keys(data).forEach(reviewerKey => {
+                    if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses') {
+                        if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
+                            const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
+                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
+                            
+                            // 1. Process custom headings map options list
+                            if(currentSuggestedTitle && currentSuggestedTitle !== "None") {
+                                clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
+                                
+                                const headingOpt = document.createElement('option');
+                                headingOpt.value = currentSuggestedTitle;
+                                headingOpt.textContent = currentSuggestedTitle;
+                                readerSuggestions.appendChild(headingOpt);
+                            }
+
+                            // 2. Process reviewer name drop-down option elements
+                            const personOpt = document.createElement('option');
+                            personOpt.value = reviewerKey;
+                            personOpt.textContent = reviewerKey;
+                            headingSuggesterInput.appendChild(personOpt);
+                        }
+                    }
+                });
+
+                // Apply initial index defaults configuration lookups safely
+                if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
+                if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
+                correctGuesses.value = data._guesses || "*****";
+
+                if(clipboardLinesArray.length > 0) {
+                    titleSuggestionClipboardOutput.textContent = clipboardLinesArray.join("\n");
+                } else {
+                    titleSuggestionClipboardOutput.textContent = "No title suggestions logged for this story path yet.";
+                }
+
+            } else {
+                activeStorySnapshotDataCache = null;
+                correctGuesses.value = "*****";
+                titleSuggestionClipboardOutput.textContent = "Story target index empty inside cache.";
+            }
+        } catch(err) {
+            console.error(err);
+            titleSuggestionClipboardOutput.textContent = "Error parsing cloud configurations.";
+        }
+    }
+
+    copySuggestionsBtn.addEventListener('click', () => {
+        const textToCopy = titleSuggestionClipboardOutput.textContent;
+        if(!textToCopy || textToCopy.startsWith("No ") || textToCopy.startsWith("Select ") || textToCopy.startsWith("⏳")) {
+            return alert("Nothing substantial to copy inside current selection buffer.");
+        }
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => alert("📋 Title suggestions successfully copied to your device clipboard!"))
+            .catch(() => alert("Clipboard write permission blocked by browser parameters."));
+    });
+
     // --- PANEL ENGINE CORE OPERATIONS ---
+    saveModNameBtn.addEventListener('click', async () => {
+        if(isSystemPaused || isNameLockedByMod) return;
+        const targetName = inputModName.value.trim();
+        if(!targetName || targetName === "Mod") return alert("Enter a valid custom signature identifier handle.");
+        if(!confirm(`Are you sure you want to change the moderator name to "${targetName}"? This option cannot be modified again by a moderator once applied.`)) return;
+        
+        try {
+            saveModNameBtn.disabled = true;
+            await setDoc(doc(db, "app_state", "global_config"), {
+                modName: targetName,
+                isNameLocked: true
+            }, { merge: true });
+            alert("Moderator name locked and compiled successfully.");
+        } catch(e) {
+            alert("Error processing profile modifications.");
+            saveModNameBtn.disabled = false;
+        }
+    });
+
     saveGlobalMetaBtn.addEventListener('click', async () => {
         if(isSystemPaused) return;
         try {
@@ -743,6 +967,13 @@
 
         if(!activeStorySelection) return alert("Choose a story to rate first.");
         
+        const storageMarkerKey = `rated_${activeStorySelection}`;
+        if (localStorage.getItem(storageMarkerKey) === "true" && !isDeveloperModeUnlocked) {
+            alert("🛑 Security System Error: You have already logged a submission review response signature for this story from this phone device.");
+            evaluateLocalStorageRestrictions();
+            return;
+        }
+
         if (score < 1 || score > 10 || isNaN(score)) {
             alert("🛑 Entry Error: Ratings must be an integer value between 1 and 10.");
             ratingValueInput.focus();
@@ -750,7 +981,7 @@
         }
 
         try {
-            document.getElementById('submitRatingBtn').disabled = true;
+            submitRatingBtn.disabled = true;
             
             const submissionPayload = {
                 score: score,
@@ -762,24 +993,29 @@
                 [name]: submissionPayload 
             }, { merge: true });
 
+            if (!isDeveloperModeUnlocked) {
+                localStorage.setItem(storageMarkerKey, "true");
+            }
+
             alert(`Saved submission from ${name}.`);
             ratingForm.reset();
-            document.getElementById('submitRatingBtn').disabled = false;
+            evaluateLocalStorageRestrictions();
+            if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
         } catch (err) {
             alert("Error saving rating entry.");
-            document.getElementById('submitRatingBtn').disabled = false;
+            submitRatingBtn.disabled = false;
         }
     });
 
     saveNotesBtn.addEventListener('click', async () => {
         if(isSystemPaused) return;
-        const tgt = storyDropdown.value;
+        const tgt = deleteStorySelect.value;
         if (!tgt) return alert("Select a story path first.");
         try {
             saveNotesBtn.disabled = true;
             await setDoc(doc(db, "competitions", tgt), {
-                _suggestions: readerSuggestions.value.trim() || "*****",
-                _suggesterName: headingSuggesterInput.value.trim() || "*****",
+                _suggestions: readerSuggestions.value || "*****",
+                _suggesterName: headingSuggesterInput.value || "*****",
                 _guesses: correctGuesses.value.trim() || "*****"
             }, { merge: true });
             alert("Notes saved successfully.");
@@ -788,36 +1024,6 @@
             alert("Error saving notes.");
             saveNotesBtn.disabled = false;
         }
-    });
-
-    async function loadCurrentStoryNotes() {
-        const targetSelected = storyDropdown.value;
-        if (!targetSelected) return;
-        const docSnap = await getDoc(doc(db, "competitions", targetSelected));
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            readerSuggestions.value = data._suggestions || "*****";
-            headingSuggesterInput.value = data._suggesterName || "*****";
-            correctGuesses.value = data._guesses || "*****";
-        } else {
-            readerSuggestions.value = "*****";
-            headingSuggesterInput.value = "*****";
-            correctGuesses.value = "*****";
-        }
-    }
-
-    devResetModNameBtn.addEventListener('click', async () => {
-        const newName = prompt("Enter new Moderator name:", "Mod");
-        if(newName) {
-            await setDoc(doc(db, "app_state", "global_config"), { modName: newName }, { merge: true });
-            alert("Profile updated.");
-            window.location.reload();
-        }
-    });
-
-    devResetModPassBtn.addEventListener('click', async () => {
-        await setDoc(doc(db, "app_state", "global_config"), { modPassword: "Mod@2k26" }, { merge: true });
-        alert("Cloud password force synced to: Mod@2k26");
     });
 
     // --- RESTRUCTURED MATRIX TRANSLATION & COMPILE LOGIC MODULE ---
@@ -1005,6 +1211,23 @@
         } finally {
             downloadBtn.disabled = false;
         }
+    });
+
+    // --- DEVELOPER RESET TRIGGERS PIPELINES ---
+    devResetModNameBtn.addEventListener('click', async () => {
+        const newName = prompt("Enter new Moderator name:", "Mod");
+        if(newName) {
+            await setDoc(doc(db, "app_state", "global_config"), { 
+                modName: newName,
+                isNameLocked: false 
+            }, { merge: true });
+            alert("Profile reset and unlocked successfully.");
+        }
+    });
+
+    devResetModPassBtn.addEventListener('click', async () => {
+        await setDoc(doc(db, "app_state", "global_config"), { modPassword: "Mod@2k26" }, { merge: true });
+        alert("Cloud password force synced to: Mod@2k26");
     });
 </script>
 </body>
