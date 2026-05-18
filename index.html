@@ -192,7 +192,6 @@
             fill: currentColor;
         }
         
-        /* Master panel distinct action control split adjustments */
         .export-btn-container {
             display: flex;
             gap: 12px;
@@ -351,7 +350,7 @@
         </div>
 
         <div class="plain-section">
-            <h2>Submit Your Rating</h2>
+            <h2>Rating</h2>
             <form id="ratingForm">
                 <div class="form-group">
                     <label for="friendName">Your Name *</label>
@@ -447,7 +446,6 @@
             <h2>Download System Data</h2>
             <p style="font-size: 14px; color: #555; margin-top: 0;">Compile and coordinate metrics logs into a clean grid canvas layer preview or document stream.</p>
             
-            <!-- Split action row layout interface elements -->
             <div class="export-btn-container">
                 <button id="previewBtn" class="btn-preview">Preview</button>
                 <button id="downloadBtn" class="btn-download">Download</button>
@@ -455,7 +453,6 @@
 
             <div id="webviewWrapper" class="webview-container hidden">
                 <div class="webview-header">
-                    <span>🌐 Live Spreadsheet WebView Preview</span>
                     <span id="webviewLoadingBadge" style="color: #2b4c7e; font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
                 </div>
                 <div class="webview-scroll-frame">
@@ -897,7 +894,6 @@
                 
                 let rowHtml = "<tr>";
                 
-                // Group block items mapping injection vectors
                 if (i === 0) {
                     rowHtml += `
                         <td rowspan="${rowSpanCount}">${serialNumberCounter}</td>
@@ -922,7 +918,6 @@
                 rowHtml += "</tr>";
                 spreadsheetStringTemplate += rowHtml;
 
-                // Build live UI engine row representations concurrently
                 let trHtml = "";
                 if (i === 0) {
                     trHtml = `
@@ -989,7 +984,6 @@
             
             const matrixData = await compileMasterDataMatrix();
             
-            // Sync live webview contents automatically during download actions
             webviewTableBody.innerHTML = matrixData.tableBodyRows;
             webviewWrapper.classList.remove('hidden');
 
