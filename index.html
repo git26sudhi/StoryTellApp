@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tell Tales</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --primary: #4a7c59;
+            --primary-hover: #3b6346;
+            --accent: #68b0ab;
+            --border: #dddddd;
+            --admin-color: #2b4c7e;
+            --admin-hover: #1d3557;
+            --dev-color: #7b2cbf;
+            --danger: #c93b3b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 12px;
+        }
+
+        .header-left {
+            text-align: left;
+        }
+
+        .header-right {
+            text-align: right;
+            padding-bottom: 2px;
+        }
+
+        h1 { 
+            margin: 0 0 4px 0; 
+            color: var(--primary); 
+            font-size: 30px; 
+            font-weight: 800; 
+            letter-spacing: -0.5px;
+        }
+        
+        .topic-header {
+            font-size: 22px;
+            font-weight: 600;
+            color: #222;
+            margin: 0;
+        }
+
+        .month-sub {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin: 0;
+        }
+
+        .mod-tag {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #888;
+            margin: 0;
+        }
+
+        .blue-separator {
+            border: none;
+            height: 1mm;
+            background-color: #0056b3;
+            margin: 0 0 10px 0;
+            padding: 0;
+        }
+
+        .sub-header-details {
+            display: flex;
+            justify-content: flex-end;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .plain-section {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 35px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        h2 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        h3 {
+            margin: 20px 0 10px 0;
+            color: #444;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .admin-header h2 { color: var(--admin-color); }
+        .dev-header h2 { color: var(--dev-color); }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #fafafa;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        .btn-mod-action { background-color: var(--admin-color); }
+        .btn-mod-action:hover { background-color: var(--admin-hover); }
+
+        .btn-dev-action { background-color: var(--dev-color); }
+        .btn-dev-action:hover { background-color: #5a189a; }
+        
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #a72e2e; }
+        
+        .btn-export { background-color: #217346; width: 100%; font-size: 16px; margin-top: 10px;}
+        .btn-export:hover { background-color: #1a5c38; }
+
+        .hidden { display: none !important; }
+        
+        .divider {
+            border: 0;
+            border-top: 2px dashed #e4e4e4;
+            margin: 40px 0;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f7f1fe;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e1d0f7;
+            margin-bottom: 20px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 28px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--danger);
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        .status-alert {
+            background: #ffcccc;
+            color: #b30000;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .webview-container {
+            margin-top: 25px;
+            background: #ffffff;
+            padding: 15px;
+            border: 2px solid #217346;
+            border-radius: 6px;
+        }
+        .webview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a5c38;
+            border-bottom: 2px solid #217346;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+        .webview-scroll-frame {
+            width: 100%;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .webview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .webview-table th {
+            background-color: #217346;
+            color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .webview-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        .webview-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-left">
+            <h1>Tell Tales</h1>
+            <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
+        </div>
+        <div class="header-right">
+            <div id="topicDisplay" class="topic-header">*****</div>
+        </div>
+    </header>
+
+    <hr class="blue-separator">
+
+    <div class="sub-header-details">
+        <div id="monthDisplay" class="month-sub">Month: *****</div>
+    </div>
+
+    <div id="pausedBanner" class="status-alert hidden">
+        ⚠️ System Maintenance Active: Form submissions, scoring, and mod tools are temporarily paused by administration.
+    </div>
+
+    <!-- =================================== -->
+    <!--          USER REVIEW VIEW           -->
+    <!-- =================================== -->
+    <div id="userInterface">
+        <div class="plain-section">
+            <h2>Select Active Story</h2>
+            <div class="form-group">
+                <label for="storyDropdown">Choose a story from the list (Most recent on top):</label>
+                <select id="storyDropdown"></select>
+            </div>
+        </div>
+
+        <div class="plain-section">
+            <h2>Submit Your Rating</h2>
+            <form id="ratingForm">
+                <div class="form-group">
+                    <label for="friendName">Your Name *</label>
+                    <input type="text" id="friendName" placeholder="Enter your name precisely" required>
+                </div>
+                <div class="form-group">
+                    <label for="ratingValue">Rating (1 to 10) *</label>
+                    <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9" required>
+                </div>
+                <button type="submit" id="submitRatingBtn">Submit Rating</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- =================================== -->
+    <!--    PERMANENTLY VISIBLE LOGIN CARD   -->
+    <!-- =================================== -->
+    <div id="loginInterface" class="plain-section">
+        <h2>🔒 Moderator / Developer Authentication</h2>
+        <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your passkey directly below to reveal the configuration tools.</p>
+        <div class="form-group">
+            <label for="localPassInput">Enter Password</label>
+            <input type="password" id="localPassInput" placeholder="•••••">
+        </div>
+        <button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
+    </div>
+
+    <!-- =================================== -->
+    <!--          MODERATOR PANEL            -->
+    <!-- =================================== -->
+    <div id="modInterface" class="hidden">
+        <div class="plain-section admin-header">
+            <h2 id="modWelcomeTitle">🛠️ Moderator Control Panel (Mod)</h2>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="newStoryInput">Add New Active Story Title</label>
+                <input type="text" id="newStoryInput" placeholder="Enter new story name">
+                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add & Set Active</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="deleteStorySelect">Delete a Story From Database</label>
+                <select id="deleteStorySelect"></select>
+                <button type="button" id="deleteStoryBtn" class="btn-danger" style="margin-top: 10px;">🗑️ Delete Selected Story</button>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
+
+            <div class="form-group">
+                <label for="inputMonth">Change Competition Month</label>
+                <input type="text" id="inputMonth" placeholder="e.g., May 2026">
+            </div>
+            <div class="form-group">
+                <label for="inputTopic">Change Competition Topic</label>
+                <input type="text" id="inputTopic" placeholder="e.g., Science Fiction Noir">
+            </div>
+            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action">Save Month & Topic Configurations</button>
+
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
+
+            <div class="form-group">
+                <label for="readerSuggestions">Author's Favorite Heading</label>
+                <textarea id="readerSuggestions" rows="3" placeholder="Favorite Heading Title..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="headingSuggesterInput">Person Who Suggested Heading</label>
+                <input type="text" id="headingSuggesterInput" placeholder="Enter full name of suggester...">
+            </div>
+            <div class="form-group">
+                <label for="correctGuesses">People who correctly guessed the author (Winners)</label>
+                <textarea id="correctGuesses" rows="3" placeholder="Name, Name, Name..."></textarea>
+            </div>
+            <button type="button" id="saveNotesBtn" class="btn-mod-action">Save End of Day Notes</button>
+        </div>
+
+        <div class="plain-section">
+            <h2>Download System Data</h2>
+            <p style="font-size: 14px; color: #555; margin-top: 0;">Compile cloud logs directly into a formatted Excel sheet document.</p>
+            <button id="exportBtn" class="btn-export">📊 Download Master Excel Sheet</button>
+
+            <div id="webviewWrapper" class="webview-container hidden">
+                <div class="webview-header">
+                    <span>🌐 Live Spreadsheet WebView Preview</span>
+                    <span style="color: #217346; font-size: 12px;">Active Memory Buffer</span>
+                </div>
+                <div class="webview-scroll-frame">
+                    <table class="webview-table">
+                        <thead>
+                            <tr>
+                                <th>Story Title</th>
+                                <th>Submissions / Ratings (User: Score)</th>
+                                <th>Author's Favorite Heading</th>
+                                <th>Suggested By</th>
+                                <th>Correct Author Guesses (Winners)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="webviewTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================== -->
+    <!--          DEVELOPER PANEL            -->
+    <!-- =================================== -->
+    <div id="devInterface" class="hidden">
+        <div class="plain-section dev-header">
+            <h2>💻 Developer Options</h2>
+            <p style="font-size: 14px; color: #555; margin-top: 0;">System configuration core active.</p>
+
+            <div class="switch-container">
+                <div>
+                    <strong style="color: var(--danger); display: block;">🛑 Developer Only Mode</strong>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="devPauseToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <h3>🛠️ Moderator Options</h3>
+            <div class="btn-row">
+                <button type="button" id="devResetModNameBtn" class="btn-dev-action">Reset Name</button>
+                <button type="button" id="devResetModPassBtn" class="btn-dev-action">Reset Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE SDK MODULES -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
+        authDomain: "story-writing-competition.firebaseapp.com",
+        projectId: "story-writing-competition",
+        storageBucket: "story-writing-competition.firebasestorage.app",
+        messagingSenderId: "494031666393",
+        appId: "1:494031666393:web:27b2f4a51f1f7271c792c8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const userInterface = document.getElementById('userInterface');
+    const modInterface = document.getElementById('modInterface');
+    const devInterface = document.getElementById('devInterface');
+    const loginInterface = document.getElementById('loginInterface');
+    const pausedBanner = document.getElementById('pausedBanner');
+
+    const topicDisplay = document.getElementById('topicDisplay');
+    const monthDisplay = document.getElementById('monthDisplay');
+    const headerModNameDisplay = document.getElementById('headerModNameDisplay');
+    const modWelcomeTitle = document.getElementById('modWelcomeTitle');
+    const storyDropdown = document.getElementById('storyDropdown');
+    const deleteStorySelect = document.getElementById('deleteStorySelect');
+
+    const localPassInput = document.getElementById('localPassInput');
+    const submitLoginBtn = document.getElementById('submitLoginBtn');
+    const newStoryInput = document.getElementById('newStoryInput');
+    const updateStoryBtn = document.getElementById('updateStoryBtn');
+    const deleteStoryBtn = document.getElementById('deleteStoryBtn');
+    const inputMonth = document.getElementById('inputMonth');
+    const inputTopic = document.getElementById('inputTopic');
+    const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
+    const ratingForm = document.getElementById('ratingForm');
+    const friendNameInput = document.getElementById('friendName');
+    const ratingValueInput = document.getElementById('ratingValue');
+    const readerSuggestions = document.getElementById('readerSuggestions');
+    const headingSuggesterInput = document.getElementById('headingSuggesterInput');
+    const correctGuesses = document.getElementById('correctGuesses');
+    const saveNotesBtn = document.getElementById('saveNotesBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const webviewWrapper = document.getElementById('webviewWrapper');
+    const webviewTableBody = document.getElementById('webviewTableBody');
+
+    const devResetModNameBtn = document.getElementById('devResetModNameBtn');
+    const devResetModPassBtn = document.getElementById('devResetModPassBtn');
+    const devPauseToggle = document.getElementById('devPauseToggle');
+
+    let currentModPassword = "Mod@2k26"; 
+    let currentModName = "Mod";
+    let arrayedStoriesList = [];
+    let isSystemPaused = false;
+
+    topicDisplay.textContent = "*****";
+    monthDisplay.textContent = "Month: *****";
+    headerModNameDisplay.textContent = "Moderator: Mod";
+    inputMonth.value = "*****";
+    inputTopic.value = "*****";
+
+    // --- CLOUD SYNC MONITOR ---
+    onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            topicDisplay.textContent = data.topic || "*****";
+            monthDisplay.textContent = "Month: " + (data.month || "*****");
+            inputMonth.value = data.month || "*****";
+            inputTopic.value = data.topic || "*****";
+            currentModPassword = data.modPassword || "Mod@2k26";
+            currentModName = data.modName || "Mod";
+            modWelcomeTitle.textContent = `🛠️ Moderator Control Panel (${currentModName})`;
+            headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
+            
+            isSystemPaused = !!data.systemPaused;
+            devPauseToggle.checked = isSystemPaused;
+            evaluateSystemFreezeState();
+        } else {
+            setDoc(doc(db, "app_state", "global_config"), {
+                topic: "*****",
+                month: "*****",
+                modPassword: "Mod@2k26",
+                modName: "Mod",
+                systemPaused: false
+            });
+        }
+    });
+
+    function evaluateSystemFreezeState() {
+        if (isSystemPaused) {
+            pausedBanner.classList.remove('hidden');
+            friendNameInput.disabled = true;
+            ratingValueInput.disabled = true;
+            document.getElementById('submitRatingBtn').disabled = true;
+            newStoryInput.disabled = true;
+            updateStoryBtn.disabled = true;
+            deleteStorySelect.disabled = true;
+            deleteStoryBtn.disabled = true;
+            inputMonth.disabled = true;
+            inputTopic.disabled = true;
+            saveGlobalMetaBtn.disabled = true;
+            readerSuggestions.disabled = true;
+            headingSuggesterInput.disabled = true;
+            correctGuesses.disabled = true;
+            saveNotesBtn.disabled = true;
+        } else {
+            pausedBanner.classList.add('hidden');
+            friendNameInput.disabled = false;
+            ratingValueInput.disabled = false;
+            document.getElementById('submitRatingBtn').disabled = false;
+            newStoryInput.disabled = false;
+            updateStoryBtn.disabled = false;
+            deleteStorySelect.disabled = false;
+            deleteStoryBtn.disabled = false;
+            inputMonth.disabled = false;
+            inputTopic.disabled = false;
+            saveGlobalMetaBtn.disabled = false;
+            readerSuggestions.disabled = false;
+            headingSuggesterInput.disabled = false;
+            correctGuesses.disabled = false;
+            saveNotesBtn.disabled = false;
+        }
+    }
+
+    devPauseToggle.addEventListener('change', async () => {
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                systemPaused: devPauseToggle.checked
+            }, { merge: true });
+        } catch(e) {
+            alert("Error syncing system status to cloud database.");
+        }
+    });
+
+    // --- STREAM STORIES DROPDOWNS ---
+    onSnapshot(collection(db, "competitions"), (snapshot) => {
+        arrayedStoriesList = [];
+        snapshot.forEach(doc => {
+            const d = doc.data();
+            arrayedStoriesList.push({ id: doc.id, created: d.created || 0 });
+        });
+
+        arrayedStoriesList.sort((a, b) => b.created - a.created);
+        
+        storyDropdown.innerHTML = "";
+        deleteStorySelect.innerHTML = "";
+        
+        arrayedStoriesList.forEach(storyObj => {
+            const optionUser = document.createElement('option');
+            optionUser.value = storyObj.id;
+            optionUser.textContent = storyObj.id;
+            storyDropdown.appendChild(optionUser);
+
+            const optionMod = document.createElement('option');
+            optionMod.value = storyObj.id;
+            optionMod.textContent = storyObj.id;
+            deleteStorySelect.appendChild(optionMod);
+        });
+
+        if(arrayedStoriesList.length > 0 && !storyDropdown.value) {
+            storyDropdown.selectedIndex = 0;
+            loadCurrentStoryNotes();
+        }
+    });
+
+    storyDropdown.addEventListener('change', loadCurrentStoryNotes);
+
+    // --- SUBMIT AUTHENTICATION KEY ---
+    submitLoginBtn.addEventListener('click', () => {
+        const inputKey = localPassInput.value.trim();
+
+        if (inputKey === "Sudhi@2k26") {
+            devInterface.classList.remove('hidden');
+            modInterface.classList.remove('hidden'); 
+            loginInterface.classList.add('hidden');
+            alert("Developer Mode Unlocked.");
+            localPassInput.value = "";
+            return;
+        } 
+        
+        if (inputKey === currentModPassword || inputKey === "Mod@2k26") {
+            modInterface.classList.remove('hidden');
+            loginInterface.classList.add('hidden');
+            devInterface.classList.add('hidden');
+            alert("Moderator Access Granted.");
+            localPassInput.value = "";
+            return;
+        }
+
+        alert("Access Denied. Incorrect Passkey.");
+        localPassInput.value = ""; 
+    });
+
+    // --- PANEL ENGINE CORE OPERATIONS ---
+    saveGlobalMetaBtn.addEventListener('click', async () => {
+        if(isSystemPaused) return;
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                month: inputMonth.value.trim() || "*****",
+                topic: inputTopic.value.trim() || "*****"
+            }, { merge: true });
+            alert("Configurations saved.");
+        } catch(e) { alert("Database error saving variables."); }
+    });
+
+    updateStoryBtn.addEventListener('click', async () => {
+        if(isSystemPaused) return;
+        const title = newStoryInput.value.trim();
+        if (!title) return alert("Enter a valid story title.");
+        try {
+            updateStoryBtn.disabled = true;
+            await setDoc(doc(db, "competitions", title), { created: Date.now() }, { merge: true });
+            newStoryInput.value = '';
+            updateStoryBtn.disabled = false;
+            alert(`Added: "${title}"`);
+        } catch (err) {
+            alert("Error writing story.");
+            updateStoryBtn.disabled = false;
+        }
+    });
+
+    deleteStoryBtn.addEventListener('click', async () => {
+        if(isSystemPaused) return;
+        const targetStory = deleteStorySelect.value;
+        if(!targetStory) return alert("Select a story to clear.");
+        if(!confirm(`Delete permanently: "${targetStory}"?`)) return;
+        try {
+            deleteStoryBtn.disabled = true;
+            await deleteDoc(doc(db, "competitions", targetStory));
+            alert("Story successfully wiped.");
+            deleteStoryBtn.disabled = false;
+        } catch(e) {
+            alert("Error deleting entry.");
+            deleteStoryBtn.disabled = false;
+        }
+    });
+
+    ratingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(isSystemPaused) return alert("System paused. Submissions blocked.");
+        
+        const activeStorySelection = storyDropdown.value;
+        const name = friendNameInput.value.trim();
+        const score = parseInt(ratingValueInput.value);
+
+        if(!activeStorySelection) return alert("Choose a story to rate first.");
+        
+        if (score < 1 || score > 10 || isNaN(score)) {
+            alert("🛑 Entry Error: Ratings must be an integer value between 1 and 10.");
+            ratingValueInput.focus();
+            return;
+        }
+
+        try {
+            document.getElementById('submitRatingBtn').disabled = true;
+            await setDoc(doc(db, "competitions", activeStorySelection), { [name]: score }, { merge: true });
+            alert(`Saved submission from ${name}.`);
+            ratingForm.reset();
+            document.getElementById('submitRatingBtn').disabled = false;
+        } catch (err) {
+            alert("Error saving rating entry.");
+            document.getElementById('submitRatingBtn').disabled = false;
+        }
+    });
+
+    saveNotesBtn.addEventListener('click', async () => {
+        if(isSystemPaused) return;
+        const tgt = storyDropdown.value;
+        if (!tgt) return alert("Select a story path first.");
+        try {
+            saveNotesBtn.disabled = true;
+            await setDoc(doc(db, "competitions", tgt), {
+                _suggestions: readerSuggestions.value.trim() || "*****",
+                _suggesterName: headingSuggesterInput.value.trim() || "*****",
+                _guesses: correctGuesses.value.trim() || "*****"
+            }, { merge: true });
+            alert("Notes saved successfully.");
+            saveNotesBtn.disabled = false;
+        } catch(err) {
+            alert("Error saving notes.");
+            saveNotesBtn.disabled = false;
+        }
+    });
+
+    async function loadCurrentStoryNotes() {
+        const targetSelected = storyDropdown.value;
+        if (!targetSelected) return;
+        const docSnap = await getDoc(doc(db, "competitions", targetSelected));
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            readerSuggestions.value = data._suggestions || "*****";
+            headingSuggesterInput.value = data._suggesterName || "*****";
+            correctGuesses.value = data._guesses || "*****";
+        } else {
+            readerSuggestions.value = "*****";
+            headingSuggesterInput.value = "*****";
+            correctGuesses.value = "*****";
+        }
+    }
+
+    devResetModNameBtn.addEventListener('click', async () => {
+        const newName = prompt("Enter new Moderator name:", "Mod");
+        if(newName) {
+            await setDoc(doc(db, "app_state", "global_config"), { modName: newName }, { merge: true });
+            alert("Profile updated.");
+            window.location.reload();
+        }
+    });
+
+    devResetModPassBtn.addEventListener('click', async () => {
+        await setDoc(doc(db, "app_state", "global_config"), { modPassword: "Mod@2k26" }, { merge: true });
+        alert("Cloud password force synced to: Mod@2k26");
+    });
+
+    // --- EXCEL SHEET ENGINE & WEBVIEW SYNC MODULE ---
+    exportBtn.addEventListener('click', async () => {
+        try {
+            exportBtn.disabled = true;
+            exportBtn.textContent = "⏳ Rendering Excel Document...";
+            
+            const querySnapshot = await getDocs(collection(db, "competitions"));
+            
+            let excelTemplate = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        th { background-color: #217346; color: white; font-weight: bold; border: 1px solid #ccc; }
+                        td { border: 1px solid #ccc; text-align: left; }
+                        .meta-title { background-color: #f4f7f6; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Story Title</th>
+                                <th>Submissions / Ratings (User: Score)</th>
+                                <th>Author's Favorite Heading</th>
+                                <th>Suggested By</th>
+                                <th>Correct Author Guesses (Winners)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            webviewTableBody.innerHTML = "";
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const storyTitle = doc.id;
+                
+                let metricsArray = [];
+                Object.keys(data).forEach(key => {
+                    if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
+                        metricsArray.push(`${key}: ${data[key]}`);
+                    }
+                });
+                
+                const userScores = metricsArray.length > 0 ? metricsArray.join(', ') : "No ratings logged";
+                const suggestions = data._suggestions || "*****";
+                const suggesterName = data._suggesterName || "*****";
+                const guesses = data._guesses || "*****";
+
+                excelTemplate += `
+                    <tr>
+                        <td class="meta-title">${storyTitle}</td>
+                        <td>${userScores}</td>
+                        <td>${suggestions}</td>
+                        <td>${suggesterName}</td>
+                        <td>${guesses}</td>
+                    </tr>
+                `;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:bold; background-color:#f4f7f6;">${storyTitle}</td>
+                    <td>${userScores}</td>
+                    <td>${suggestions}</td>
+                    <td>${suggesterName}</td>
+                    <td>${guesses}</td>
+                `;
+                webviewTableBody.appendChild(tr);
+            });
+
+            excelTemplate += `
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            webviewWrapper.classList.remove('hidden');
+
+            const blob = new Blob([excelTemplate], { type: "application/vnd.ms-excel;charset=utf-8" });
+            const downloadUrl = URL.createObjectURL(blob);
+            
+            const clientLink = document.createElement("a");
+            clientLink.href = downloadUrl;
+            clientLink.download = `Competition_Master_Data_${new Date().toISOString().split('T')[0]}.xls`;
+            
+            document.body.appendChild(clientLink);
+            clientLink.click();
+            document.body.removeChild(clientLink);
+            
+            alert("📊 Spreadsheet processed successfully! Document saved to memory and preview updated in live WebView panel below.");
+        } catch (err) {
+            console.error(err);
+            alert("Error building running spreadsheet document stream layout.");
+        } finally {
+            exportBtn.disabled = false;
+            exportBtn.textContent = "📊 Download Master Excel Sheet";
+        }
+    });
+</script>
+</body>
+</html>
