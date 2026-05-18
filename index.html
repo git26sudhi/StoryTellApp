@@ -52,7 +52,6 @@
             margin-right: -50vw;
         }
 
-        /* Standardized inside max-width constraints block framework */
         .banner-content-lock {
             max-width: 800px;
             width: 100%;
@@ -60,7 +59,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 4px; /* Modified to align the text elements flush with downstream column layouts */
+            padding: 0 4px;
             box-sizing: border-box;
         }
 
@@ -73,12 +72,11 @@
             line-height: 1;
         }
 
-        /* Shifted leftward precisely matching requirement parameters */
         .banner-content-lock .month-sub {
             font-size: 15px; 
             font-weight: 700;
             color: #ffffff;
-            margin: 0 1mm 0 0; 
+            margin: 0 1mm 0 0;
             letter-spacing: -0.1px;
             line-height: 1;
         }
@@ -91,7 +89,6 @@
             padding: 0 4px;
         }
 
-        /* Transformed font layout profile precisely to deep charcoal pitch black */
         .mod-tag {
             display: block;
             font-size: 14px;
@@ -202,6 +199,29 @@
             height: 20px;
             fill: currentColor;
         }
+
+        .btn-clear-inline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border-radius: 6px;
+            background-color: #f1f3f5;
+            color: #495057;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .btn-clear-inline:hover {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+        .btn-clear-inline svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
         
         .export-btn-container {
             display: flex;
@@ -225,6 +245,25 @@
             overflow-y: auto;
             white-space: pre-wrap;
             margin-top: 10px;
+        }
+
+        .winners-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            min-height: 24px;
+        }
+        .winner-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #c2e7ff;
         }
 
         .hidden { display: none !important; }
@@ -276,6 +315,9 @@
             border-radius: 50%;
         }
         input:checked + .slider {
+            background-color: var(--primary);
+        }
+        .switch-container.danger-toggle input:checked + .slider {
             background-color: var(--danger);
         }
         input:checked + .slider:before {
@@ -381,11 +423,11 @@
                     <label for="ratingValue">Rating (1 to 10) *</label>
                     <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group hidden" id="userAuthorGuessGroup">
                     <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: #777;">(Optional)</span></label>
                     <input type="text" id="authorGuess" placeholder="Who do you think wrote this?">
                 </div>
-                <div class="form-group">
+                <div class="form-group hidden" id="userTitleSuggestionGroup">
                     <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: #777;">(Optional)</span></label>
                     <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
                 </div>
@@ -422,7 +464,6 @@
                 <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add</button>
             </div>
 
-            <!-- Relabeled to clear "Remove story from database" exactly as specified -->
             <div class="form-group" style="margin-top: 15px;">
                 <label for="deleteStorySelect">Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -435,7 +476,6 @@
                 </div>
             </div>
 
-            <!-- Contextually linked tool elements tied directly into mod select story dropdown indexes -->
             <div class="form-group" style="margin-top: 15px; background: #f0f4f8; padding: 15px; border-radius: 6px; border: 1px solid #d0daf0;">
                 <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 140px;">Select Story to populate recommendations buffer...</div>
                 <button type="button" id="copySuggestionsBtn" class="btn-mod-action" style="margin-top: 10px; width: 100%; font-size: 13px; padding: 8px 12px;">Copy Title suggestions list</button>
@@ -443,7 +483,27 @@
             
             <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
 
-            <!-- Relabeled metadata config block layout items -->
+            <!-- Dynamic Fields Feature Access Controls Toggles -->
+            <div class="switch-container">
+                <div>
+                    <strong style="display: block; font-size: 14px;">Enable Guess the author</strong>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggleAuthorGuessBtn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="switch-container">
+                <div>
+                    <strong style="display: block; font-size: 14px;">Enable Title Suggestion</strong>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggleTitleSuggestionBtn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
             <div class="form-group">
                 <label for="inputMonth">Competition Month</label>
                 <input type="text" id="inputMonth" placeholder="e.g., May 2026">
@@ -453,7 +513,6 @@
                 <input type="text" id="inputTopic" placeholder="e.g., Science Fiction Noir">
             </div>
 
-            <!-- Slipped below the Competition Subject configurations component parameter bounds as requested -->
             <div class="form-group" style="margin-top: 15px;">
                 <label for="inputModName">Change moderator name</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -466,7 +525,6 @@
 
             <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
 
-            <!-- Reconfigured to dynamic drop-down choice elements parsed from reviews metadata arrays -->
             <div class="form-group">
                 <label for="readerSuggestions">Author's Favorite Heading</label>
                 <select id="readerSuggestions"></select>
@@ -477,8 +535,16 @@
             </div>
             
             <div class="form-group">
-                <label for="correctGuesses">Guess the author winners</label>
-                <textarea id="correctGuesses" rows="3" placeholder="Name, Name, Name..."></textarea>
+                <label for="correctGuesses">Won-Guess the Author</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="correctGuesses" style="flex: 1; margin: 0;"></select>
+                    <button type="button" id="clearWinnersBtn" class="btn-clear-inline" title="Clear All Selections">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="winnersChipsContainer" class="winners-tags-container"></div>
             </div>
             <button type="button" id="saveNotesBtn" class="btn-mod-action">Save End of Day Notes</button>
         </div>
@@ -507,7 +573,7 @@
                                 <th><b>Rating</b></th>
                                 <th><b>Suggested Title</b></th>
                                 <th><b>Author's Favorite Heading</b></th>
-                                <th><b>Guess the author winners</b></th>
+                                <th><b>Won-Guess the Author</b></th>
                             </tr>
                         </thead>
                         <tbody id="webviewTableBody"></tbody>
@@ -522,12 +588,20 @@
     <!-- =================================== -->
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header">
-            <h2>💻 Developer Options</h2>
+            <h2>💻 Developer Exclusive</h2>
             <p style="font-size: 14px; color: #555; margin-top: 0;">System configuration core active.</p>
 
-            <div class="switch-container">
+            <div class="switch-container danger-toggle">
                 <div>
-                    <strong style="color: var(--danger); display: block;">🛑 Developer Only Mode</strong>
+                    <strong style="color: var(--danger); display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 64 64" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
+                            <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2-1.5 4-3 5" />
+                            <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6 16-5-6-3-12-2-16 2" />
+                            <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
+                            <path d="M32 10v44M26 24c1.5 3 4 5 6 5s4.5-2 6-5M18 19c-4-2-10-2-14 1 5-2 11-1 14 1M46 19c4-2 10-2 14 1-5-2-11-1-14 1" />
+                        </svg>
+                        Exclusive Mode
+                    </strong>
                 </div>
                 <label class="switch">
                     <input type="checkbox" id="devPauseToggle">
@@ -595,10 +669,20 @@
     const authorGuessInput = document.getElementById('authorGuess');
     const titleSuggestionInput = document.getElementById('titleSuggestion');
     const submitRatingBtn = document.getElementById('submitRatingBtn');
+
+    // Form element containers targets for visibility toggles
+    const userAuthorGuessGroup = document.getElementById('userAuthorGuessGroup');
+    const userTitleSuggestionGroup = document.getElementById('userTitleSuggestionGroup');
+    const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
+    const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
     
     const readerSuggestions = document.getElementById('readerSuggestions');
     const headingSuggesterInput = document.getElementById('headingSuggesterInput');
+    
     const correctGuesses = document.getElementById('correctGuesses');
+    const clearWinnersBtn = document.getElementById('clearWinnersBtn');
+    const winnersChipsContainer = document.getElementById('winnersChipsContainer');
+    
     const saveNotesBtn = document.getElementById('saveNotesBtn');
     
     const previewBtn = document.getElementById('previewBtn');
@@ -618,8 +702,12 @@
     let isSystemPaused = false;
     let isDeveloperModeUnlocked = false;
 
-    // Cache to prevent repetitive reads during drop-down mapping lookups
+    let accumulatedWinnersStateArray = [];
     let activeStorySnapshotDataCache = null;
+
+    // Local toggles state tracking variables
+    let isAuthorGuessEnabled = false;
+    let isTitleSuggestionEnabled = false;
 
     // --- CLOUD SYNC MONITOR ---
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
@@ -634,6 +722,13 @@
             currentModName = data.modName || "Mod";
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
             inputModName.value = currentModName;
+
+            // Load and map toggle states synchronously from cloud configurations
+            isAuthorGuessEnabled = !!data.enableAuthorGuess;
+            isTitleSuggestionEnabled = !!data.enableTitleSuggestion;
+            toggleAuthorGuessBtn.checked = isAuthorGuessEnabled;
+            toggleTitleSuggestionBtn.checked = isTitleSuggestionEnabled;
+            updateUserFormFieldsVisibility();
             
             isNameLockedByMod = !!data.isNameLocked;
             if (isNameLockedByMod) {
@@ -656,17 +751,54 @@
                 modPassword: "Mod@2k26",
                 modName: "Mod",
                 isNameLocked: false,
+                enableAuthorGuess: false,
+                enableTitleSuggestion: false,
                 systemPaused: false
             });
         }
+    });
+
+    function updateUserFormFieldsVisibility() {
+        if (isAuthorGuessEnabled) {
+            userAuthorGuessGroup.classList.remove('hidden');
+        } else {
+            userAuthorGuessGroup.classList.add('hidden');
+            authorGuessInput.value = "";
+        }
+
+        if (isTitleSuggestionEnabled) {
+            userTitleSuggestionGroup.classList.remove('hidden');
+        } else {
+            userTitleSuggestionGroup.classList.add('hidden');
+            titleSuggestionInput.value = "";
+        }
+    }
+
+    // Dynamic UI listener interactions bindings for moderator layout toggles
+    toggleAuthorGuessBtn.addEventListener('change', async () => {
+        if (isSystemPaused) return;
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                enableAuthorGuess: toggleAuthorGuessBtn.checked
+            }, { merge: true });
+        } catch(e) { alert("Error syncing configuration."); }
+    });
+
+    toggleTitleSuggestionBtn.addEventListener('change', async () => {
+        if (isSystemPaused) return;
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                enableTitleSuggestion: toggleTitleSuggestionBtn.checked
+            }, { merge: true });
+        } catch(e) { alert("Error syncing configuration."); }
     });
 
     function evaluateSystemFreezeState() {
         const elements = [
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
-            inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions,
-            headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn
+            inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
+            headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn, clearWinnersBtn
         ];
         
         if (isSystemPaused) {
@@ -718,8 +850,9 @@
         } else {
             friendNameInput.disabled = false;
             ratingValueInput.disabled = false;
-            authorGuessInput.disabled = false;
-            titleSuggestionInput.disabled = false;
+            // Respect locked field criteria status profiles locally during validation calls
+            authorGuessInput.disabled = !isAuthorGuessEnabled;
+            titleSuggestionInput.disabled = !isTitleSuggestionEnabled;
             submitRatingBtn.disabled = false;
             submitRatingBtn.textContent = "Submit Review";
         }
@@ -768,13 +901,11 @@
         evaluateLocalStorageRestrictions();
     });
 
-    // Unified index configuration changes tracker
     storyDropdown.addEventListener('change', () => {
         loadCurrentStoryNotes();
         evaluateLocalStorageRestrictions();
     });
 
-    // Contextually binds the visual selection elements across components
     deleteStorySelect.addEventListener('change', () => {
         loadCurrentStoryNotes();
     });
@@ -807,13 +938,38 @@
         localPassInput.value = ""; 
     });
 
-    // --- RESTRUCTURED POPULATE DROPDOWNS & TOOL PIPELINES ---
+    function renderAccumulatedWinnersChips() {
+        winnersChipsContainer.innerHTML = '';
+        accumulatedWinnersStateArray.forEach(name => {
+            const chip = document.createElement('div');
+            chip.className = 'winner-chip';
+            chip.textContent = name;
+            winnersChipsContainer.appendChild(chip);
+        });
+        correctGuesses.value = "";
+    }
+
+    correctGuesses.addEventListener('change', () => {
+        const selectedValue = correctGuesses.value;
+        if (!selectedValue) return;
+
+        if (!accumulatedWinnersStateArray.includes(selectedValue)) {
+            accumulatedWinnersStateArray.push(selectedValue);
+            renderAccumulatedWinnersChips();
+        }
+    });
+
+    clearWinnersBtn.addEventListener('click', () => {
+        if(isSystemPaused) return;
+        accumulatedWinnersStateArray = [];
+        renderAccumulatedWinnersChips();
+    });
+
+    // --- POPULATE DROPDOWNS & TOOL PIPELINES ---
     async function loadCurrentStoryNotes() {
-        // Enforces actual story title references to follow deleteStorySelect options directly
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) return;
         
-        // Updates user facing dropdown position selection indices symmetrically
         if(storyDropdown.value !== targetSelected) {
             storyDropdown.value = targetSelected;
         }
@@ -823,25 +979,29 @@
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
             
-            // Clear drop-down menu items completely before reprocessing matrix vectors
             readerSuggestions.innerHTML = '<option value="">-- Choose Heading --</option>';
             headingSuggesterInput.innerHTML = '<option value="">-- Choose Person --</option>';
+            correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
             
+            accumulatedWinnersStateArray = [];
+
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                activeStorySnapshotDataCache = data; // Locks variable states locally
+                activeStorySnapshotDataCache = data;
 
                 let clipboardLinesArray = [];
                 let rawSavedHeadingMatchValue = data._suggestions || "";
                 let rawSavedSuggesterMatchValue = data._suggesterName || "";
+                
+                if (data._guesses && data._guesses !== "*****") {
+                    accumulatedWinnersStateArray = data._guesses.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                }
 
                 Object.keys(data).forEach(reviewerKey => {
                     if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses') {
                         if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
-                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
                             
-                            // 1. Process custom headings map options list
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None") {
                                 clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
                                 
@@ -851,19 +1011,23 @@
                                 readerSuggestions.appendChild(headingOpt);
                             }
 
-                            // 2. Process reviewer name drop-down option elements
                             const personOpt = document.createElement('option');
                             personOpt.value = reviewerKey;
                             personOpt.textContent = reviewerKey;
                             headingSuggesterInput.appendChild(personOpt);
+
+                            const winnerOpt = document.createElement('option');
+                            winnerOpt.value = reviewerKey;
+                            winnerOpt.textContent = reviewerKey;
+                            correctGuesses.appendChild(winnerOpt);
                         }
                     }
                 });
 
-                // Apply initial index defaults configuration lookups safely
                 if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
                 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
-                correctGuesses.value = data._guesses || "*****";
+
+                renderAccumulatedWinnersChips();
 
                 if(clipboardLinesArray.length > 0) {
                     titleSuggestionClipboardOutput.textContent = clipboardLinesArray.join("\n");
@@ -873,7 +1037,7 @@
 
             } else {
                 activeStorySnapshotDataCache = null;
-                correctGuesses.value = "*****";
+                renderAccumulatedWinnersChips();
                 titleSuggestionClipboardOutput.textContent = "Story target index empty inside cache.";
             }
         } catch(err) {
@@ -962,8 +1126,10 @@
         const activeStorySelection = storyDropdown.value;
         const name = friendNameInput.value.trim();
         const score = parseInt(ratingValueInput.value);
-        const guess = authorGuessInput.value.trim() || "None";
-        const customTitle = titleSuggestionInput.value.trim() || "None";
+        
+        // Dynamic toggle capture filters before packaging payloads
+        const guess = isAuthorGuessEnabled ? (authorGuessInput.value.trim() || "None") : "None";
+        const customTitle = isTitleSuggestionEnabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
         if(!activeStorySelection) return alert("Choose a story to rate first.");
         
@@ -1011,12 +1177,15 @@
         if(isSystemPaused) return;
         const tgt = deleteStorySelect.value;
         if (!tgt) return alert("Select a story path first.");
+        
+        const packedWinnersString = accumulatedWinnersStateArray.length > 0 ? accumulatedWinnersStateArray.join(', ') : "*****";
+
         try {
             saveNotesBtn.disabled = true;
             await setDoc(doc(db, "competitions", tgt), {
                 _suggestions: readerSuggestions.value || "*****",
                 _suggesterName: headingSuggesterInput.value || "*****",
-                _guesses: correctGuesses.value.trim() || "*****"
+                _guesses: packedWinnersString
             }, { merge: true });
             alert("Notes saved successfully.");
             saveNotesBtn.disabled = false;
@@ -1053,7 +1222,7 @@
                             <th><b>Rating</b></th>
                             <th><b>Suggested Title</b></th>
                             <th><b>Author's Favorite Heading</b></th>
-                            <th><b>Guess the author winners</b></th>
+                            <th><b>Won-Guess the Author</b></th>
                         </tr>
                     </thead>
                     <tbody>
