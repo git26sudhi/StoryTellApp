@@ -483,7 +483,6 @@
             
             <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
 
-            <!-- Dynamic Fields Feature Access Controls Toggles -->
             <div class="switch-container">
                 <div>
                     <strong style="display: block; font-size: 14px;">Enable Guess the author</strong>
@@ -670,7 +669,6 @@
     const titleSuggestionInput = document.getElementById('titleSuggestion');
     const submitRatingBtn = document.getElementById('submitRatingBtn');
 
-    // Form element containers targets for visibility toggles
     const userAuthorGuessGroup = document.getElementById('userAuthorGuessGroup');
     const userTitleSuggestionGroup = document.getElementById('userTitleSuggestionGroup');
     const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
@@ -705,7 +703,6 @@
     let accumulatedWinnersStateArray = [];
     let activeStorySnapshotDataCache = null;
 
-    // Local toggles state tracking variables
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
 
@@ -723,7 +720,6 @@
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
             inputModName.value = currentModName;
 
-            // Load and map toggle states synchronously from cloud configurations
             isAuthorGuessEnabled = !!data.enableAuthorGuess;
             isTitleSuggestionEnabled = !!data.enableTitleSuggestion;
             toggleAuthorGuessBtn.checked = isAuthorGuessEnabled;
@@ -774,7 +770,6 @@
         }
     }
 
-    // Dynamic UI listener interactions bindings for moderator layout toggles
     toggleAuthorGuessBtn.addEventListener('change', async () => {
         if (isSystemPaused) return;
         try {
@@ -850,7 +845,6 @@
         } else {
             friendNameInput.disabled = false;
             ratingValueInput.disabled = false;
-            // Respect locked field criteria status profiles locally during validation calls
             authorGuessInput.disabled = !isAuthorGuessEnabled;
             titleSuggestionInput.disabled = !isTitleSuggestionEnabled;
             submitRatingBtn.disabled = false;
@@ -965,7 +959,7 @@
         renderAccumulatedWinnersChips();
     });
 
-    // --- POPULATE DROPDOWNS & TOOL PIPELINES ---
+    // --- POPULATE DROPDOWNS WITH CONDITION-BASED FILTERS ---
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) return;
@@ -1001,25 +995,31 @@
                     if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses') {
                         if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
+                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
                             
-                            if(currentSuggestedTitle && currentSuggestedTitle !== "None") {
+                            // Condition A: Verify real suggested titles data map exists before building headers list dropdowns
+                            if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
                                 clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
                                 
                                 const headingOpt = document.createElement('option');
                                 headingOpt.value = currentSuggestedTitle;
                                 headingOpt.textContent = currentSuggestedTitle;
                                 readerSuggestions.appendChild(headingOpt);
+
+                                // Condition B: Only append into Suggested Person dropdown list if reviewer provided a real suggestion response mapping
+                                const personOpt = document.createElement('option');
+                                personOpt.value = reviewerKey;
+                                personOpt.textContent = reviewerKey;
+                                headingSuggesterInput.appendChild(personOpt);
                             }
 
-                            const personOpt = document.createElement('option');
-                            personOpt.value = reviewerKey;
-                            personOpt.textContent = reviewerKey;
-                            headingSuggesterInput.appendChild(personOpt);
-
-                            const winnerOpt = document.createElement('option');
-                            winnerOpt.value = reviewerKey;
-                            winnerOpt.textContent = reviewerKey;
-                            correctGuesses.appendChild(winnerOpt);
+                            // Condition C: Only show users inside the Won-Guess multi-selection listing if they actually provided an active author guess response string payload
+                            if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
+                                const winnerOpt = document.createElement('option');
+                                winnerOpt.value = reviewerKey;
+                                winnerOpt.textContent = reviewerKey;
+                                correctGuesses.appendChild(winnerOpt);
+                            }
                         }
                     }
                 });
@@ -1127,7 +1127,6 @@
         const name = friendNameInput.value.trim();
         const score = parseInt(ratingValueInput.value);
         
-        // Dynamic toggle capture filters before packaging payloads
         const guess = isAuthorGuessEnabled ? (authorGuessInput.value.trim() || "None") : "None";
         const customTitle = isTitleSuggestionEnabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
@@ -1195,7 +1194,7 @@
         }
     });
 
-    // --- RESTRUCTURED MATRIX TRANSLATION & COMPILE LOGIC MODULE ---
+    // --- MATRIX TRANSLATION & HTML EXPORT MATRIX ---
     async function compileMasterDataMatrix() {
         const querySnapshot = await getDocs(collection(db, "competitions"));
         let serialNumberCounter = 1;
