@@ -24,7 +24,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding: 0 0 20px 0;
+            padding: 0 0 80px 0;
             margin: 0;
         }
 
@@ -266,6 +266,57 @@
             border: 1px solid #c2e7ff;
         }
 
+        .system-navigation-footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 52px;
+            background-color: #e9ecef;
+            display: flex;
+            box-sizing: border-box;
+            border-top: 3px solid #ced4da;
+            z-index: 99999;
+        }
+
+        .nav-split-trigger-btn {
+            flex: 1;
+            height: 100%;
+            background: transparent;
+            color: #495057;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Replaced the rigid vertical line split with a seamless curvy S-shape separating border using a clipping background mask patch */
+        .nav-split-trigger-btn:first-child {
+            border-right: 20px solid transparent;
+            border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E") 0 100% 0 0 vertical repeat;
+            margin-right: -20px;
+            padding-right: 10px;
+        }
+
+        .nav-split-trigger-btn:hover {
+            background-color: #dee2e6;
+            color: #212529;
+        }
+
+        .nav-split-trigger-btn.active-panel-indicator {
+            background-color: #ffffff;
+            color: var(--purple-banner);
+            box-shadow: inset 0 4px 0 0 var(--purple-banner);
+        }
+
         .hidden { display: none !important; }
         
         .divider {
@@ -436,12 +487,10 @@
         </div>
     </div>
 
-    <hr class="divider">
-
     <!-- =================================== -->
-    <!--    PERMANENTLY VISIBLE LOGIN CARD   -->
+    <!--          MODERATOR AUTH CARD        -->
     <!-- =================================== -->
-    <div id="loginInterface" class="plain-section">
+    <div id="loginInterface" class="plain-section hidden">
         <h2>🔒 Moderator / Developer Authentication</h2>
         <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your passkey directly below to reveal the configuration tools.</p>
         <div class="form-group">
@@ -617,6 +666,11 @@
     </div>
 </div>
 
+<div class="system-navigation-footer-bar">
+    <button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">Reviewer</button>
+    <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
+</div>
+
 <!-- FIREBASE SDK MODULES -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -693,18 +747,46 @@
     const devResetModPassBtn = document.getElementById('devResetModPassBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
 
+    const navBtnReviewer = document.getElementById('navBtnReviewer');
+    const navBtnModerator = document.getElementById('navBtnModerator');
+
     let currentModPassword = "Mod@2k26"; 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
     let arrayedStoriesList = [];
     let isSystemPaused = false;
     let isDeveloperModeUnlocked = false;
+    let isModeratorAuthenticated = false;
 
     let accumulatedWinnersStateArray = [];
     let activeStorySnapshotDataCache = null;
 
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
+
+    navBtnReviewer.addEventListener('click', () => {
+        navBtnReviewer.classList.add('active-panel-indicator');
+        navBtnModerator.classList.remove('active-panel-indicator');
+        userInterface.classList.remove('hidden');
+        loginInterface.classList.add('hidden');
+        modInterface.classList.add('hidden');
+        devInterface.classList.add('hidden');
+    });
+
+    navBtnModerator.addEventListener('click', () => {
+        navBtnModerator.classList.add('active-panel-indicator');
+        navBtnReviewer.classList.remove('active-panel-indicator');
+        userInterface.classList.add('hidden');
+        if (isModeratorAuthenticated) {
+            modInterface.classList.remove('hidden');
+            if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
+            loginInterface.classList.add('hidden');
+        } else {
+            loginInterface.classList.remove('hidden');
+            modInterface.classList.add('hidden');
+            devInterface.classList.add('hidden');
+        }
+    });
 
     // --- CLOUD SYNC MONITOR ---
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
@@ -852,16 +934,6 @@
         }
     }
 
-    devPauseToggle.addEventListener('change', async () => {
-        try {
-            await setDoc(doc(db, "app_state", "global_config"), {
-                systemPaused: devPauseToggle.checked
-            }, { merge: true });
-        } catch(e) {
-            alert("Error syncing system status to cloud database.");
-        }
-    });
-
     // --- STREAM STORIES DROPDOWNS ---
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
@@ -909,10 +981,11 @@
         const inputKey = localPassInput.value.trim();
 
         if (inputKey === "Arthur@2k26") {
-            devInterface.classList.remove('hidden');
-            modInterface.classList.remove('hidden'); 
-            loginInterface.classList.add('hidden');
+            isModeratorAuthenticated = true;
             isDeveloperModeUnlocked = true; 
+            loginInterface.classList.add('hidden');
+            modInterface.classList.remove('hidden');
+            devInterface.classList.remove('hidden');
             evaluateLocalStorageRestrictions();
             alert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
             localPassInput.value = "";
@@ -920,8 +993,10 @@
         } 
         
         if (inputKey === currentModPassword || inputKey === "Mod@2k26") {
-            modInterface.classList.remove('hidden');
+            isModeratorAuthenticated = true;
+            isDeveloperModeUnlocked = false;
             loginInterface.classList.add('hidden');
+            modInterface.classList.remove('hidden');
             devInterface.classList.add('hidden');
             alert("Moderator Access Granted.");
             localPassInput.value = "";
@@ -997,7 +1072,6 @@
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
                             const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
                             
-                            // Condition A: Verify real suggested titles data map exists before building headers list dropdowns
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
                                 clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
                                 
@@ -1006,14 +1080,12 @@
                                 headingOpt.textContent = currentSuggestedTitle;
                                 readerSuggestions.appendChild(headingOpt);
 
-                                // Condition B: Only append into Suggested Person dropdown list if reviewer provided a real suggestion response mapping
                                 const personOpt = document.createElement('option');
                                 personOpt.value = reviewerKey;
                                 personOpt.textContent = reviewerKey;
                                 headingSuggesterInput.appendChild(personOpt);
                             }
 
-                            // Condition C: Only show users inside the Won-Guess multi-selection listing if they actually provided an active author guess response string payload
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
                                 const winnerOpt = document.createElement('option');
                                 winnerOpt.value = reviewerKey;
@@ -1194,7 +1266,7 @@
         }
     });
 
-    // --- MATRIX TRANSLATION & HTML EXPORT MATRIX ---
+    // --- RESTRUCTURED MATRIX TRANSLATION & COMPILE LOGIC MODULE ---
     async function compileMasterDataMatrix() {
         const querySnapshot = await getDocs(collection(db, "competitions"));
         let serialNumberCounter = 1;
@@ -1344,7 +1416,7 @@
             alert("📊 Live preview canvas rendering synchronised successfully below.");
         } catch (err) {
             console.error(err);
-            alert("Error parsing system structure data records.");
+            alert("Error parsing data records.");
         } finally {
             previewBtn.disabled = false;
             webviewLoadingBadge.style.display = "none";
