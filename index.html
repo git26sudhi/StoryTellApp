@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tell Tales</title>
+    <title>കഥാസാഗരം</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -56,6 +56,7 @@
             font-size: 30px; 
             font-weight: 800; 
             letter-spacing: -0.5px;
+            line-height: 1;
         }
         
         .topic-header {
@@ -175,7 +176,6 @@
         .btn-danger { background-color: var(--danger); }
         .btn-danger:hover { background-color: #a72e2e; }
 
-        /* Icon-only circular button layout alignment style */
         .btn-icon-only {
             display: inline-flex;
             align-items: center;
@@ -192,8 +192,16 @@
             fill: currentColor;
         }
         
-        .btn-export { background-color: #217346; width: 100%; font-size: 16px; margin-top: 10px;}
-        .btn-export:hover { background-color: #1a5c38; }
+        /* Master panel distinct action control split adjustments */
+        .export-btn-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .btn-preview { background-color: #2b4c7e; flex: 1; font-size: 15px; }
+        .btn-preview:hover { background-color: #1d3557; }
+        .btn-download { background-color: #217346; flex: 1; font-size: 15px; }
+        .btn-download:hover { background-color: #1a5c38; }
 
         .hidden { display: none !important; }
         
@@ -263,7 +271,7 @@
             margin-top: 25px;
             background: #ffffff;
             padding: 15px;
-            border: 2px solid #217346;
+            border: 2px solid #2b4c7e;
             border-radius: 6px;
         }
         .webview-header {
@@ -272,15 +280,15 @@
             align-items: center;
             font-size: 14px;
             font-weight: bold;
-            color: #1a5c38;
-            border-bottom: 2px solid #217346;
+            color: #1d3557;
+            border-bottom: 2px solid #2b4c7e;
             padding-bottom: 6px;
             margin-bottom: 12px;
         }
         .webview-scroll-frame {
             width: 100%;
             overflow-x: auto;
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
         }
         .webview-table {
@@ -289,16 +297,18 @@
             font-size: 13px;
         }
         .webview-table th {
-            background-color: #217346;
+            background-color: #2b4c7e;
             color: white;
             padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
+            font-weight: bold;
         }
         .webview-table td {
             padding: 10px;
             border: 1px solid #ddd;
             color: #333;
+            vertical-align: top;
         }
         .webview-table tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -310,11 +320,11 @@
 <div class="container">
     <header>
         <div class="header-left">
-            <h1>Tell Tales</h1>
-            <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
+            <h1>കഥാസാഗരം</h1>
         </div>
         <div class="header-right">
             <div id="topicDisplay" class="topic-header">*****</div>
+            <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
         </div>
     </header>
 
@@ -396,7 +406,6 @@
                 <label for="deleteStorySelect">Delete a Story From Database</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <select id="deleteStorySelect" style="flex: 1; margin: 0;"></select>
-                    <!-- Updated Button: Red button container housing only a white vector recycle icon wrapper -->
                     <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
                         <svg viewBox="0 0 24 24">
                             <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
@@ -436,24 +445,31 @@
 
         <div class="plain-section">
             <h2>Download System Data</h2>
-            <p style="font-size: 14px; color: #555; margin-top: 0;">Compile cloud logs directly into a formatted Excel sheet document.</p>
-            <button id="exportBtn" class="btn-export">📊 Download Master Excel Sheet</button>
+            <p style="font-size: 14px; color: #555; margin-top: 0;">Compile and coordinate metrics logs into a clean grid canvas layer preview or document stream.</p>
+            
+            <!-- Split action row layout interface elements -->
+            <div class="export-btn-container">
+                <button id="previewBtn" class="btn-preview">Preview</button>
+                <button id="downloadBtn" class="btn-download">Download</button>
+            </div>
 
             <div id="webviewWrapper" class="webview-container hidden">
                 <div class="webview-header">
                     <span>🌐 Live Spreadsheet WebView Preview</span>
-                    <span style="color: #217346; font-size: 12px;">Active Memory Buffer</span>
+                    <span id="webviewLoadingBadge" style="color: #2b4c7e; font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
                 </div>
                 <div class="webview-scroll-frame">
                     <table class="webview-table">
                         <thead>
                             <tr>
-                                <th>Date Created</th>
-                                <th>Story Title</th>
-                                <th>Submissions / Ratings (User: Score [Guess] [Suggested Title])</th>
-                                <th>Author's Favorite Heading</th>
-                                <th>Suggested By</th>
-                                <th>Guess the Author</th>
+                                <th><b>S.No</b></th>
+                                <th><b>Date Created</b></th>
+                                <th><b>Story Title</b></th>
+                                <th><b>Reviewer Name</b></th>
+                                <th><b>Rating</b></th>
+                                <th><b>Suggested Title</b></th>
+                                <th><b>Author's Favorite Heading</b></th>
+                                <th><b>Guess the author winners</b></th>
                             </tr>
                         </thead>
                         <tbody id="webviewTableBody"></tbody>
@@ -538,9 +554,12 @@
     const headingSuggesterInput = document.getElementById('headingSuggesterInput');
     const correctGuesses = document.getElementById('correctGuesses');
     const saveNotesBtn = document.getElementById('saveNotesBtn');
-    const exportBtn = document.getElementById('exportBtn');
+    
+    const previewBtn = document.getElementById('previewBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
     const webviewWrapper = document.getElementById('webviewWrapper');
     const webviewTableBody = document.getElementById('webviewTableBody');
+    const webviewLoadingBadge = document.getElementById('webviewLoadingBadge');
 
     const devResetModNameBtn = document.getElementById('devResetModNameBtn');
     const devResetModPassBtn = document.getElementById('devResetModPassBtn');
@@ -804,120 +823,193 @@
         alert("Cloud password force synced to: Mod@2k26");
     });
 
-    // --- EXCEL SHEET ENGINE & WEBVIEW SYNC MODULE ---
-    exportBtn.addEventListener('click', async () => {
-        try {
-            exportBtn.disabled = true;
-            exportBtn.textContent = "⏳ Rendering Excel Document...";
-            
-            const querySnapshot = await getDocs(collection(db, "competitions"));
-            
-            let excelTemplate = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-                <head>
-                    <meta charset="UTF-8">
-                    <style>
-                        th { background-color: #217346; color: white; font-weight: bold; border: 1px solid #ccc; }
-                        td { border: 1px solid #ccc; text-align: left; }
-                        .meta-title { background-color: #f4f7f6; font-weight: bold; }
-                    </style>
-                </head>
-                <body>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date Created</th>
-                                <th>Story Title</th>
-                                <th>Submissions / Ratings (User: Score [Guess] [Suggested Title])</th>
-                                <th>Author's Favorite Heading</th>
-                                <th>Suggested By</th>
-                                <th>Guess the Author</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
+    // --- RESTRUCTURED MATRIX TRANSLATION & COMPILE LOGIC MODULE ---
+    async function compileMasterDataMatrix() {
+        const querySnapshot = await getDocs(collection(db, "competitions"));
+        let serialNumberCounter = 1;
+        
+        let spreadsheetStringTemplate = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    table { border-collapse: collapse; }
+                    th { background-color: #2b4c7e; color: white; font-weight: bold; border: 1px solid #ccc; text-align: left; }
+                    td { border: 1px solid #ccc; text-align: left; vertical-align: top; }
+                    .meta-title { background-color: #f4f7f6; font-weight: bold; }
+                </style>
+            </head>
+            <body>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><b>S.No</b></th>
+                            <th><b>Date Created</b></th>
+                            <th><b>Story Title</b></th>
+                            <th><b>Reviewer Name</b></th>
+                            <th><b>Rating</b></th>
+                            <th><b>Suggested Title</b></th>
+                            <th><b>Author's Favorite Heading</b></th>
+                            <th><b>Guess the author winners</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
 
-            webviewTableBody.innerHTML = "";
+        let tempTableBodyContent = "";
 
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const storyTitle = doc.id;
-                
-                let formattedDate = "N/A";
-                if (data.created) {
-                    const dateObj = new Date(data.created);
-                    formattedDate = dateObj.toISOString().split('T')[0];
-                }
-                
-                let metricsArray = [];
-                Object.keys(data).forEach(key => {
-                    if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
-                        if (typeof data[key] === 'object' && data[key] !== null) {
-                            const scoreVal = data[key].score ?? "N/A";
-                            const guessVal = data[key].authorGuess ?? "None";
-                            const titleVal = data[key].suggestedTitle ?? "None";
-                            metricsArray.push(`${key}: ${scoreVal} [G: ${guessVal}] [T: ${titleVal}]`);
-                        } else {
-                            metricsArray.push(`${key}: ${data[key]} [G: Legacy] [T: Legacy]`);
-                        }
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const storyTitle = doc.id;
+            
+            let formattedDate = "N/A";
+            if (data.created) {
+                const dateObj = new Date(data.created);
+                formattedDate = dateObj.toISOString().split('T')[0];
+            }
+            
+            const suggestions = data._suggestions || "*****";
+            const guesses = data._guesses || "*****";
+
+            let reviewRows = [];
+            Object.keys(data).forEach(key => {
+                if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
+                    if (typeof data[key] === 'object' && data[key] !== null) {
+                        reviewRows.push({
+                            reviewer: key,
+                            score: data[key].score ?? "N/A",
+                            title: data[key].suggestedTitle ?? "None"
+                        });
+                    } else {
+                        reviewRows.push({
+                            reviewer: key,
+                            score: data[key],
+                            title: "Legacy"
+                        });
                     }
-                });
-                
-                const userScores = metricsArray.length > 0 ? metricsArray.join(', ') : "No ratings logged";
-                const suggestions = data._suggestions || "*****";
-                const suggesterName = data._suggesterName || "*****";
-                const guesses = data._guesses || "*****";
-
-                excelTemplate += `
-                    <tr>
-                        <td>${formattedDate}</td>
-                        <td class="meta-title">${storyTitle}</td>
-                        <td>${userScores}</td>
-                        <td>${suggestions}</td>
-                        <td>${suggesterName}</td>
-                        <td>${guesses}</td>
-                    </tr>
-                `;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${formattedDate}</td>
-                    <td style="font-weight:bold; background-color:#f4f7f6;">${storyTitle}</td>
-                    <td>${userScores}</td>
-                    <td>${suggestions}</td>
-                    <td>${suggesterName}</td>
-                    <td>${guesses}</td>
-                `;
-                webviewTableBody.appendChild(tr);
+                }
             });
 
-            excelTemplate += `
-                        </tbody>
-                    </table>
-                </body>
-                </html>
-            `;
+            const rowSpanCount = reviewRows.length > 0 ? reviewRows.length : 1;
 
+            for (let i = 0; i < rowSpanCount; i++) {
+                const currentReview = reviewRows[i] || { reviewer: "No submissions logged", score: "", title: "" };
+                
+                let rowHtml = "<tr>";
+                
+                // Group block items mapping injection vectors
+                if (i === 0) {
+                    rowHtml += `
+                        <td rowspan="${rowSpanCount}">${serialNumberCounter}</td>
+                        <td rowspan="${rowSpanCount}">${formattedDate}</td>
+                        <td class="meta-title" rowspan="${rowSpanCount}">${storyTitle}</td>
+                    `;
+                }
+                
+                rowHtml += `
+                    <td>${currentReview.reviewer}</td>
+                    <td>${currentReview.score}</td>
+                    <td>${currentReview.title}</td>
+                `;
+                
+                if (i === 0) {
+                    rowHtml += `
+                        <td rowspan="${rowSpanCount}">${suggestions}</td>
+                        <td rowspan="${rowSpanCount}">${guesses}</td>
+                    `;
+                }
+                
+                rowHtml += "</tr>";
+                spreadsheetStringTemplate += rowHtml;
+
+                // Build live UI engine row representations concurrently
+                let trHtml = "";
+                if (i === 0) {
+                    trHtml = `
+                        <td rowspan="${rowSpanCount}">${serialNumberCounter}</td>
+                        <td rowspan="${rowSpanCount}">${formattedDate}</td>
+                        <td style="font-weight:bold; background-color:#f4f7f6;" rowspan="${rowSpanCount}">${storyTitle}</td>
+                        <td>${currentReview.reviewer}</td>
+                        <td>${currentReview.score}</td>
+                        <td>${currentReview.title}</td>
+                        <td rowspan="${rowSpanCount}">${suggestions}</td>
+                        <td rowspan="${rowSpanCount}">${guesses}</td>
+                    `;
+                } else {
+                    trHtml = `
+                        <td>${currentReview.reviewer}</td>
+                        <td>${currentReview.score}</td>
+                        <td>${currentReview.title}</td>
+                    `;
+                }
+                tempTableBodyContent += `<tr>${trHtml}</tr>`;
+            }
+            
+            serialNumberCounter++;
+        });
+
+        spreadsheetStringTemplate += `
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
+
+        return {
+            rawHtmlTemplate: spreadsheetStringTemplate,
+            tableBodyRows: tempTableBodyContent
+        };
+    }
+
+    // --- PREVIEW ACTION OPERATOR BUTTON ---
+    previewBtn.addEventListener('click', async () => {
+        try {
+            previewBtn.disabled = true;
+            webviewLoadingBadge.style.display = "inline";
+            
+            const matrixData = await compileMasterDataMatrix();
+            
+            webviewTableBody.innerHTML = matrixData.tableBodyRows;
+            webviewWrapper.classList.remove('hidden');
+            
+            alert("📊 Live preview canvas rendering synchronised successfully below.");
+        } catch (err) {
+            console.error(err);
+            alert("Error parsing system structure data records.");
+        } finally {
+            previewBtn.disabled = false;
+            webviewLoadingBadge.style.display = "none";
+        }
+    });
+
+    // --- DOWNLOAD ACTION OPERATOR BUTTON ---
+    downloadBtn.addEventListener('click', async () => {
+        try {
+            downloadBtn.disabled = true;
+            
+            const matrixData = await compileMasterDataMatrix();
+            
+            // Sync live webview contents automatically during download actions
+            webviewTableBody.innerHTML = matrixData.tableBodyRows;
             webviewWrapper.classList.remove('hidden');
 
-            const blob = new Blob([excelTemplate], { type: "application/vnd.ms-excel;charset=utf-8" });
+            const blob = new Blob([matrixData.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
             const downloadUrl = URL.createObjectURL(blob);
             
             const clientLink = document.createElement("a");
             clientLink.href = downloadUrl;
-            clientLink.download = `Competition_Master_Data_${new Date().toISOString().split('T')[0]}.xls`;
+            clientLink.download = `Competition_Master_Data_${new Date().toISOString().split('T')[0]}.html`;
             
             document.body.appendChild(clientLink);
             clientLink.click();
             document.body.removeChild(clientLink);
             
-            alert("📊 Spreadsheet processed successfully! Document saved to memory and preview updated in live WebView panel below.");
+            alert("📊 Data payload compressed and compiled to secure HTML format spreadsheet document.");
         } catch (err) {
             console.error(err);
-            alert("Error building running spreadsheet document stream layout.");
+            alert("Error exporting document file streams.");
         } finally {
-            exportBtn.disabled = false;
-            exportBtn.textContent = "📊 Download Master Excel Sheet";
+            downloadBtn.disabled = false;
         }
     });
 </script>
