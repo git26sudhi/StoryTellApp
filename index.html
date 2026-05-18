@@ -16,6 +16,7 @@
             --admin-hover: #1d3557;
             --dev-color: #7b2cbf;
             --danger: #c93b3b;
+            --violet-brand: #7b2cbf;
         }
 
         body {
@@ -51,7 +52,7 @@
 
         h1 { 
             margin: 0 0 4px 0; 
-            color: var(--primary); 
+            color: var(--violet-brand); 
             font-size: 30px; 
             font-weight: 800; 
             letter-spacing: -0.5px;
@@ -173,6 +174,23 @@
         
         .btn-danger { background-color: var(--danger); }
         .btn-danger:hover { background-color: #a72e2e; }
+
+        /* Icon-only circular button layout alignment style */
+        .btn-icon-only {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border-radius: 50%;
+            line-height: 1;
+        }
+        .btn-icon-only svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
         
         .btn-export { background-color: #217346; width: 100%; font-size: 16px; margin-top: 10px;}
         .btn-export:hover { background-color: #1a5c38; }
@@ -333,6 +351,14 @@
                     <label for="ratingValue">Rating (1 to 10) *</label>
                     <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9" required>
                 </div>
+                <div class="form-group">
+                    <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: #777;">(Optional)</span></label>
+                    <input type="text" id="authorGuess" placeholder="Who do you think wrote this?">
+                </div>
+                <div class="form-group">
+                    <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: #777;">(Optional)</span></label>
+                    <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
+                </div>
                 <button type="submit" id="submitRatingBtn">Submit Rating</button>
             </form>
         </div>
@@ -358,18 +384,25 @@
     <!-- =================================== -->
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
-            <h2 id="modWelcomeTitle">🛠️ Moderator Control Panel (Mod)</h2>
+            <h2>🛠️ Moderator Control Panel (Mod)</h2>
             
             <div class="form-group" style="margin-top: 15px;">
-                <label for="newStoryInput">Add New Active Story Title</label>
+                <label for="newStoryInput">Add New Story</label>
                 <input type="text" id="newStoryInput" placeholder="Enter new story name">
                 <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add & Set Active</button>
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
                 <label for="deleteStorySelect">Delete a Story From Database</label>
-                <select id="deleteStorySelect"></select>
-                <button type="button" id="deleteStoryBtn" class="btn-danger" style="margin-top: 10px;">🗑️ Delete Selected Story</button>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="deleteStorySelect" style="flex: 1; margin: 0;"></select>
+                    <!-- Updated Button: Red button container housing only a white vector recycle icon wrapper -->
+                    <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             
             <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
@@ -384,18 +417,18 @@
             </div>
             <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action">Save Month & Topic Configurations</button>
 
-            <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
 
             <div class="form-group">
                 <label for="readerSuggestions">Author's Favorite Heading</label>
                 <textarea id="readerSuggestions" rows="3" placeholder="Favorite Heading Title..."></textarea>
             </div>
             <div class="form-group">
-                <label for="headingSuggesterInput">Person Who Suggested Heading</label>
+                <label for="headingSuggesterInput">Suggested Person</label>
                 <input type="text" id="headingSuggesterInput" placeholder="Enter full name of suggester...">
             </div>
             <div class="form-group">
-                <label for="correctGuesses">People who correctly guessed the author (Winners)</label>
+                <label for="correctGuesses">Guess the Author</label>
                 <textarea id="correctGuesses" rows="3" placeholder="Name, Name, Name..."></textarea>
             </div>
             <button type="button" id="saveNotesBtn" class="btn-mod-action">Save End of Day Notes</button>
@@ -415,11 +448,12 @@
                     <table class="webview-table">
                         <thead>
                             <tr>
+                                <th>Date Created</th>
                                 <th>Story Title</th>
-                                <th>Submissions / Ratings (User: Score)</th>
+                                <th>Submissions / Ratings (User: Score [Guess] [Suggested Title])</th>
                                 <th>Author's Favorite Heading</th>
                                 <th>Suggested By</th>
-                                <th>Correct Author Guesses (Winners)</th>
+                                <th>Guess the Author</th>
                             </tr>
                         </thead>
                         <tbody id="webviewTableBody"></tbody>
@@ -482,7 +516,6 @@
     const topicDisplay = document.getElementById('topicDisplay');
     const monthDisplay = document.getElementById('monthDisplay');
     const headerModNameDisplay = document.getElementById('headerModNameDisplay');
-    const modWelcomeTitle = document.getElementById('modWelcomeTitle');
     const storyDropdown = document.getElementById('storyDropdown');
     const deleteStorySelect = document.getElementById('deleteStorySelect');
 
@@ -494,9 +527,13 @@
     const inputMonth = document.getElementById('inputMonth');
     const inputTopic = document.getElementById('inputTopic');
     const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
+    
     const ratingForm = document.getElementById('ratingForm');
     const friendNameInput = document.getElementById('friendName');
     const ratingValueInput = document.getElementById('ratingValue');
+    const authorGuessInput = document.getElementById('authorGuess');
+    const titleSuggestionInput = document.getElementById('titleSuggestion');
+    
     const readerSuggestions = document.getElementById('readerSuggestions');
     const headingSuggesterInput = document.getElementById('headingSuggesterInput');
     const correctGuesses = document.getElementById('correctGuesses');
@@ -530,7 +567,6 @@
             inputTopic.value = data.topic || "*****";
             currentModPassword = data.modPassword || "Mod@2k26";
             currentModName = data.modName || "Mod";
-            modWelcomeTitle.textContent = `🛠️ Moderator Control Panel (${currentModName})`;
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
             
             isSystemPaused = !!data.systemPaused;
@@ -548,38 +584,21 @@
     });
 
     function evaluateSystemFreezeState() {
+        const elements = [
+            friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
+            newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
+            inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions,
+            headingSuggesterInput, correctGuesses, saveNotesBtn
+        ];
+        
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
-            friendNameInput.disabled = true;
-            ratingValueInput.disabled = true;
             document.getElementById('submitRatingBtn').disabled = true;
-            newStoryInput.disabled = true;
-            updateStoryBtn.disabled = true;
-            deleteStorySelect.disabled = true;
-            deleteStoryBtn.disabled = true;
-            inputMonth.disabled = true;
-            inputTopic.disabled = true;
-            saveGlobalMetaBtn.disabled = true;
-            readerSuggestions.disabled = true;
-            headingSuggesterInput.disabled = true;
-            correctGuesses.disabled = true;
-            saveNotesBtn.disabled = true;
+            elements.forEach(el => el.disabled = true);
         } else {
             pausedBanner.classList.add('hidden');
-            friendNameInput.disabled = false;
-            ratingValueInput.disabled = false;
             document.getElementById('submitRatingBtn').disabled = false;
-            newStoryInput.disabled = false;
-            updateStoryBtn.disabled = false;
-            deleteStorySelect.disabled = false;
-            deleteStoryBtn.disabled = false;
-            inputMonth.disabled = false;
-            inputTopic.disabled = false;
-            saveGlobalMetaBtn.disabled = false;
-            readerSuggestions.disabled = false;
-            headingSuggesterInput.disabled = false;
-            correctGuesses.disabled = false;
-            saveNotesBtn.disabled = false;
+            elements.forEach(el => el.disabled = false);
         }
     }
 
@@ -703,6 +722,8 @@
         const activeStorySelection = storyDropdown.value;
         const name = friendNameInput.value.trim();
         const score = parseInt(ratingValueInput.value);
+        const guess = authorGuessInput.value.trim() || "None";
+        const customTitle = titleSuggestionInput.value.trim() || "None";
 
         if(!activeStorySelection) return alert("Choose a story to rate first.");
         
@@ -714,7 +735,17 @@
 
         try {
             document.getElementById('submitRatingBtn').disabled = true;
-            await setDoc(doc(db, "competitions", activeStorySelection), { [name]: score }, { merge: true });
+            
+            const submissionPayload = {
+                score: score,
+                authorGuess: guess,
+                suggestedTitle: customTitle
+            };
+
+            await setDoc(doc(db, "competitions", activeStorySelection), { 
+                [name]: submissionPayload 
+            }, { merge: true });
+
             alert(`Saved submission from ${name}.`);
             ratingForm.reset();
             document.getElementById('submitRatingBtn').disabled = false;
@@ -795,11 +826,12 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Date Created</th>
                                 <th>Story Title</th>
-                                <th>Submissions / Ratings (User: Score)</th>
+                                <th>Submissions / Ratings (User: Score [Guess] [Suggested Title])</th>
                                 <th>Author's Favorite Heading</th>
                                 <th>Suggested By</th>
-                                <th>Correct Author Guesses (Winners)</th>
+                                <th>Guess the Author</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -811,10 +843,23 @@
                 const data = doc.data();
                 const storyTitle = doc.id;
                 
+                let formattedDate = "N/A";
+                if (data.created) {
+                    const dateObj = new Date(data.created);
+                    formattedDate = dateObj.toISOString().split('T')[0];
+                }
+                
                 let metricsArray = [];
                 Object.keys(data).forEach(key => {
                     if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
-                        metricsArray.push(`${key}: ${data[key]}`);
+                        if (typeof data[key] === 'object' && data[key] !== null) {
+                            const scoreVal = data[key].score ?? "N/A";
+                            const guessVal = data[key].authorGuess ?? "None";
+                            const titleVal = data[key].suggestedTitle ?? "None";
+                            metricsArray.push(`${key}: ${scoreVal} [G: ${guessVal}] [T: ${titleVal}]`);
+                        } else {
+                            metricsArray.push(`${key}: ${data[key]} [G: Legacy] [T: Legacy]`);
+                        }
                     }
                 });
                 
@@ -825,6 +870,7 @@
 
                 excelTemplate += `
                     <tr>
+                        <td>${formattedDate}</td>
                         <td class="meta-title">${storyTitle}</td>
                         <td>${userScores}</td>
                         <td>${suggestions}</td>
@@ -835,6 +881,7 @@
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
+                    <td>${formattedDate}</td>
                     <td style="font-weight:bold; background-color:#f4f7f6;">${storyTitle}</td>
                     <td>${userScores}</td>
                     <td>${suggestions}</td>
