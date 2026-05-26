@@ -63,13 +63,14 @@
             box-sizing: border-box;
         }
 
-        .banner-content-lock h1 { 
-            margin: 0; 
-            color: #ffffff; 
-            font-size: 30px; 
-            font-weight: 800; 
-            letter-spacing: -0.5px;
-            line-height: 1;
+        /* --- NEW CSS FOR YOUR CUSTOM IMAGE LOGO --- */
+        .banner-logo {
+            max-height: 42px; /* Restricts height to match the purple banner padding */
+            max-width: 70%;   /* Prevents it from crushing the month display */
+            width: auto;
+            object-fit: contain; /* Ensures the image scales perfectly without stretching */
+            margin: 0;
+            display: block;
         }
 
         .banner-content-lock .month-sub {
@@ -79,6 +80,7 @@
             margin: 0 1mm 0 0;
             letter-spacing: -0.1px;
             line-height: 1;
+            white-space: nowrap; /* Keeps date on one line */
         }
 
         .metadata-opposite-row {
@@ -435,7 +437,10 @@
 
 <div class="brand-purple-banner">
     <div class="banner-content-lock">
-        <h1>കഥാസാഗരം</h1>
+        
+        <!-- I REPLACED THE <h1> TAG HERE. PASTE YOUR IMAGE LINK INSIDE THE src="" BELOW -->
+        <img src="YOUR_IMAGE_LINK_HERE.png" alt="കഥാസാഗരം Logo" class="banner-logo">
+        
         <div id="monthDisplay" class="month-sub">*****</div>
     </div>
 </div>
