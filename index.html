@@ -38,7 +38,7 @@
         .brand-purple-banner {
             background-color: var(--purple-banner);
             color: #ffffff;
-            padding: 16px 24px;
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -63,13 +63,14 @@
             box-sizing: border-box;
         }
 
-        .banner-content-lock h1 { 
-            margin: 0; 
-            color: #ffffff; 
-            font-size: 30px; 
-            font-weight: 800; 
-            letter-spacing: -0.5px;
-            line-height: 1;
+        /* --- STYLES FOR YOUR BASE64 LOGO --- */
+        .banner-logo {
+            height: 52px; /* Scales the logo perfectly for the header */
+            width: auto; /* Ensures it keeps its natural proportions */
+            object-fit: contain;
+            display: block;
+            margin: 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); /* Uses drop-shadow instead of box-shadow for transparent PNGs */
         }
 
         .banner-content-lock .month-sub {
@@ -435,7 +436,9 @@
 
 <div class="brand-purple-banner">
     <div class="banner-content-lock">
-        <h1>കഥാസാഗരം</h1>
+        
+        <img src="data:image/png;base64,PASTE_YOUR_BASE64_STRING_HERE" alt="കഥാസാഗരം Logo" class="banner-logo">
+        
         <div id="monthDisplay" class="month-sub">*****</div>
     </div>
 </div>
@@ -450,9 +453,6 @@
         ⚠️ System Maintenance Active: Form submissions, scoring, and mod tools are temporarily paused by administration.
     </div>
 
-    <!-- =================================== -->
-    <!--          USER REVIEW VIEW           -->
-    <!-- =================================== -->
     <div id="userInterface">
         <div class="plain-section">
             <h2>Select Story</h2>
@@ -486,9 +486,6 @@
         </div>
     </div>
 
-    <!-- =================================== -->
-    <!--          MODERATOR AUTH CARD        -->
-    <!-- =================================== -->
     <div id="loginInterface" class="plain-section hidden">
         <h2>🔒 Moderator / Developer Authentication</h2>
         <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your passkey directly below to reveal the configuration tools.</p>
@@ -499,9 +496,6 @@
         <button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
     </div>
 
-    <!-- =================================== -->
-    <!--          MODERATOR PANEL            -->
-    <!-- =================================== -->
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
@@ -633,9 +627,6 @@
         </div>
     </div>
 
-    <!-- =================================== -->
-    <!--          DEVELOPER PANEL            -->
-    <!-- =================================== -->
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header">
             <h2>💻 Developer Exclusive</h2>
@@ -673,7 +664,6 @@
     <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
 </div>
 
-<!-- FIREBASE SDK MODULES -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -872,7 +862,7 @@
             }, { merge: true });
         } catch(e) { alert("Error syncing configuration."); }
     });
-    
+
     // NEW EVENT LISTENER: Exclusive Mode / System Pause Toggle
     devPauseToggle.addEventListener('change', async () => {
         try {
@@ -1494,7 +1484,7 @@
     // --- SESSION RECOVERY & LOGOUT LOGIC ---
     function checkAndRestoreSession() {
         const savedAuth = sessionStorage.getItem('authMode');
-        
+
         if (savedAuth === 'developer') {
             isModeratorAuthenticated = true;
             isDeveloperModeUnlocked = true;
@@ -1513,18 +1503,18 @@
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             if (!confirm("Are you sure you want to log out of the control panel?")) return;
-            
+
             // Wipe the session memory
             sessionStorage.removeItem('authMode');
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
-            
+
             // Force the UI back to the Reviewer view
             navBtnReviewer.click(); 
-            
+
             // Re-evaluate reviewer restrictions (since Dev bypass is now disabled)
             evaluateLocalStorageRestrictions();
-            
+
             alert("You have been safely logged out.");
         });
     }
