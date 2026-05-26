@@ -63,14 +63,15 @@
             box-sizing: border-box;
         }
 
-        /* --- STYLES FOR YOUR BASE64 LOGO --- */
+        /* --- STYLES FOR YOUR CIRCULAR LOGO --- */
         .banner-logo {
-            height: 52px; /* Scales the logo perfectly for the header */
-            width: auto; /* Ensures it keeps its natural proportions */
-            object-fit: contain;
+            height: 52px; 
+            width: 52px;
+            object-fit: cover;
+            border-radius: 50%; /* Crops out the black corners */
             display: block;
             margin: 0;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); /* Uses drop-shadow instead of box-shadow for transparent PNGs */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Adds a subtle shadow */
         }
 
         .banner-content-lock .month-sub {
@@ -437,7 +438,7 @@
 <div class="brand-purple-banner">
     <div class="banner-content-lock">
         
-        <img src="data:image/png;base64,PASTE_YOUR_BASE64_STRING_HERE" alt="കഥാസാഗരം Logo" class="banner-logo">
+        <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
         
         <div id="monthDisplay" class="month-sub">*****</div>
     </div>
