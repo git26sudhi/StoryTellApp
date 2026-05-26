@@ -63,7 +63,6 @@
             box-sizing: border-box;
         }
 
-        /* --- STYLES FOR THE LOGO & TOPIC GROUP --- */
         .logo-group {
             display: flex;
             align-items: center;
@@ -115,6 +114,29 @@
             margin: 0;
             text-align: right;
         }
+
+        /* --- PREMIUM MAINTENANCE BANNER --- */
+        .status-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: rgba(255, 241, 241, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 20px;
+            border-left: 6px solid var(--danger);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(201, 59, 59, 0.08);
+        }
+        .status-icon-box {
+            background: #ffeaea;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+        }
+        .status-content h4 { margin: 0; color: var(--danger); font-size: 16px; font-weight: 700; }
+        .status-content p { margin: 4px 0 0 0; color: #5f2020; font-size: 14px; font-weight: 500; }
+        .hidden { display: none !important; }
 
         .plain-section {
             background: transparent;
@@ -383,15 +405,6 @@
         input:checked + .slider:before {
             transform: translateX(22px);
         }
-        .status-alert {
-            background: #ffcccc;
-            color: #b30000;
-            padding: 12px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
 
         .webview-container {
             margin-top: 25px;
@@ -459,7 +472,17 @@
     </div>
 
     <div id="pausedBanner" class="status-alert hidden">
-        ⚠️ System Maintenance Active: Form submissions, scoring, and mod tools are temporarily paused by administration.
+        <div class="status-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c93b3b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </div>
+        <div class="status-content">
+            <h4>System Maintenance Active</h4>
+            <p>Form submissions, scoring, and mod tools are temporarily paused by administration.</p>
+        </div>
     </div>
 
     <div id="userInterface">
