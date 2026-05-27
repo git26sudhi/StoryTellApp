@@ -453,6 +453,84 @@
         .webview-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        /* --- Custom Modal Styles (Ash & Gray Grading) --- */
+        #customModalOverlay {
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh;
+            background: rgba(80, 80, 80, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 999999;
+            display: flex; 
+            align-items: center; justify-content: center;
+        }
+        .custom-modal-box {
+            background: #e6e6e6; /* Light Ash */
+            border: 2px solid #a3a3a3; /* Gray Border */
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #4a4a4a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #customModalMessage {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.5;
+        }
+        #customModalInput {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #b3b3b3;
+            border-radius: 6px;
+            background: #f2f2f2;
+            font-size: 15px;
+            color: #333;
+            box-sizing: border-box;
+        }
+        #customModalInput:focus {
+            outline: none;
+            border-color: #888;
+            background: #fff;
+        }
+        .custom-modal-btn-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .custom-modal-btn-row button {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+        #customModalCancel {
+            background: #cfcfcf; /* Ash light */
+            color: #444;
+            border: 1px solid #b0b0b0;
+        }
+        #customModalCancel:hover {
+            background: #bfbfbf;
+            color: #222;
+        }
+        #customModalOk {
+            background: #7a7a7a; /* Medium dark gray */
+            color: #fff;
+            border: 1px solid #5c5c5c;
+        }
+        #customModalOk:hover {
+            background: #616161;
+        }
     </style>
 </head>
 <body>
@@ -712,7 +790,10 @@
             </div>
 
             <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
-            <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">Load Feedback Data</button>
+            <div class="btn-row">
+                <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">Load Feedback Data</button>
+                <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: #5c5c5c;">Download Feedback Table</button>
+            </div>
             <div id="devFeedbackContainer" class="webview-container hidden" style="border-color: var(--dev-color);">
                 <div class="webview-header" style="border-bottom: 2px solid var(--dev-color); color: var(--dev-color);">
                     <span>Compiled Platform Feedback</span>
@@ -735,9 +816,73 @@
     <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
 </div>
 
+<!-- Custom Pop-up Modal HTML -->
+<div id="customModalOverlay" class="hidden">
+    <div class="custom-modal-box">
+        <p id="customModalMessage"></p>
+        <input type="text" id="customModalInput" class="hidden">
+        <div class="custom-modal-btn-row">
+            <button id="customModalCancel" class="hidden">Cancel</button>
+            <button id="customModalOk">OK</button>
+        </div>
+    </div>
+</div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // --- CUSTOM MODAL LOGIC (Gray & Ash Grading) ---
+    function showCustomModal(type, message, defaultVal = "") {
+        return new Promise((resolve) => {
+            const overlay = document.getElementById('customModalOverlay');
+            const msgEl = document.getElementById('customModalMessage');
+            const inputEl = document.getElementById('customModalInput');
+            const btnCancel = document.getElementById('customModalCancel');
+            const btnOk = document.getElementById('customModalOk');
+
+            msgEl.textContent = message;
+            inputEl.value = defaultVal;
+
+            if(type === 'alert') {
+                inputEl.classList.add('hidden');
+                btnCancel.classList.add('hidden');
+            } else if(type === 'confirm') {
+                inputEl.classList.add('hidden');
+                btnCancel.classList.remove('hidden');
+            } else if(type === 'prompt') {
+                inputEl.classList.remove('hidden');
+                btnCancel.classList.remove('hidden');
+            }
+
+            overlay.classList.remove('hidden');
+
+            const cleanup = () => {
+                overlay.classList.add('hidden');
+                btnOk.onclick = null;
+                btnCancel.onclick = null;
+            };
+
+            btnOk.onclick = () => {
+                cleanup();
+                if(type === 'prompt') resolve(inputEl.value);
+                else if(type === 'confirm') resolve(true);
+                else resolve(true);
+            };
+
+            btnCancel.onclick = () => {
+                cleanup();
+                if(type === 'prompt') resolve(null);
+                else if(type === 'confirm') resolve(false);
+                else resolve(false);
+            };
+        });
+    }
+
+    const customAlert = (msg) => showCustomModal('alert', msg);
+    const customConfirm = (msg) => showCustomModal('confirm', msg);
+    const customPrompt = (msg, def) => showCustomModal('prompt', msg, def);
+    // ------------------------------------------------
 
     const firebaseConfig = {
         apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
@@ -819,6 +964,7 @@
     const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
     
     const devLoadFeedbackBtn = document.getElementById('devLoadFeedbackBtn');
+    const devDownloadFeedbackBtn = document.getElementById('devDownloadFeedbackBtn');
     const devFeedbackContainer = document.getElementById('devFeedbackContainer');
     const feedbackTableHead = document.getElementById('feedbackTableHead');
     const feedbackTableBody = document.getElementById('feedbackTableBody');
@@ -841,12 +987,16 @@
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
 
+    // Variables to hold feedback data for export
+    let cachedFeedbackData = null;
+    let cachedMaxCols = 0;
+
     navBtnReviewer.addEventListener('click', () => {
         try {
             navBtnReviewer.classList.add('active-panel-indicator');
             navBtnModerator.classList.remove('active-panel-indicator');
             userInterface.classList.remove('hidden');
-            feedbackInterface.classList.add('hidden'); // Ensure feedback UI is hidden when returning
+            feedbackInterface.classList.add('hidden'); 
             loginInterface.classList.add('hidden');
             modInterface.classList.add('hidden');
             devInterface.classList.add('hidden');
@@ -885,13 +1035,13 @@
     });
 
     submitFeedbackBtn.addEventListener('click', async () => {
-        if(isSystemPaused && !isDeveloperModeUnlocked) return alert("System paused. Submissions blocked.");
+        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System paused. Submissions blocked."); return; }
         
         const currentName = feedbackNameInput.value.trim();
         const feedback = feedbackTextInput.value.trim();
 
-        if(!currentName) return alert("Please enter your name.");
-        if(!feedback) return alert("Feedback box cannot be empty.");
+        if(!currentName) { customAlert("Please enter your name."); return; }
+        if(!feedback) { customAlert("Feedback box cannot be empty."); return; }
 
         submitFeedbackBtn.disabled = true;
         try {
@@ -899,12 +1049,12 @@
                 [currentName]: arrayUnion(feedback)
             }, { merge: true });
             
-            alert("Feedback submitted successfully! Thank you for helping us improve.");
+            customAlert("Feedback submitted successfully! Thank you for helping us improve.");
             feedbackInterface.classList.add('hidden');
             userInterface.classList.remove('hidden');
         } catch(e) {
             console.error(e);
-            alert("Error submitting feedback. Check your connection.");
+            customAlert("Error submitting feedback. Check your connection.");
         }
         submitFeedbackBtn.disabled = false;
     });
@@ -927,9 +1077,16 @@
                 });
 
                 if (maxCols === 0) {
-                    alert("Feedback document exists but no valid entries found.");
+                    customAlert("Feedback document exists but no valid entries found.");
                     return;
                 }
+
+                // Cache data for export functionality
+                cachedFeedbackData = data;
+                cachedMaxCols = maxCols;
+
+                // Show download button
+                devDownloadFeedbackBtn.classList.remove('hidden');
 
                 // Compile Table Header
                 let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white;"><b>Reviewer Name</b></th>`;
@@ -969,15 +1126,61 @@
                 feedbackTableBody.innerHTML = tbodyHtml;
                 devFeedbackContainer.classList.remove('hidden');
             } else {
-                alert("No feedback records have been found in the database yet.");
+                customAlert("No feedback records have been found in the database yet.");
             }
         } catch(e) {
             console.error(e);
-            alert("Error parsing feedback metrics.");
+            customAlert("Error parsing feedback metrics.");
         } finally {
             devLoadFeedbackBtn.disabled = false;
             devLoadFeedbackBtn.textContent = "Load Feedback Data";
         }
+    });
+
+    // --- APP FEEDBACK DOWNLOAD LOGIC ---
+    devDownloadFeedbackBtn.addEventListener('click', () => {
+        if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
+
+        let theadHtml = `<tr><th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc;"><b>Reviewer Name</b></th>`;
+        for(let i = 1; i <= cachedMaxCols; i++) {
+            theadHtml += `<th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc;"><b>Feedback Entry ${i}</b></th>`;
+        }
+        theadHtml += `</tr>`;
+
+        let tbodyHtml = "";
+        Object.keys(cachedFeedbackData).forEach(user => {
+            tbodyHtml += `<tr><td style="border: 1px solid #ccc;"><strong>${user}</strong></td>`;
+            const userFeedbacks = cachedFeedbackData[user] || [];
+            for(let i = 0; i < cachedMaxCols; i++) {
+                tbodyHtml += `<td style="border: 1px solid #ccc;">${userFeedbacks[i] !== undefined ? userFeedbacks[i] : `-`}</td>`;
+            }
+            tbodyHtml += `</tr>`;
+        });
+
+        const htmlString = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: left; }</style></head>
+            <body>
+                <table>
+                    <thead>${theadHtml}</thead>
+                    <tbody>${tbodyHtml}</tbody>
+                </table>
+            </body>
+            </html>
+        `;
+
+        const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
+        const downloadUrl = URL.createObjectURL(blob);
+
+        const clientLink = document.createElement("a");
+        clientLink.href = downloadUrl;
+        clientLink.download = `Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.html`;
+
+        document.body.appendChild(clientLink);
+        clientLink.click();
+        document.body.removeChild(clientLink);
+
+        customAlert("📥 Feedback table exported successfully.");
     });
 
     // --- CLOUD SYNC MONITOR ---
@@ -1045,7 +1248,7 @@
             await setDoc(doc(db, "app_state", "global_config"), {
                 enableAuthorGuess: toggleAuthorGuessBtn.checked
             }, { merge: true });
-        } catch(e) { alert("Error syncing configuration."); }
+        } catch(e) { customAlert("Error syncing configuration."); }
     });
 
     toggleTitleSuggestionBtn.addEventListener('change', async () => {
@@ -1054,7 +1257,7 @@
             await setDoc(doc(db, "app_state", "global_config"), {
                 enableTitleSuggestion: toggleTitleSuggestionBtn.checked
             }, { merge: true });
-        } catch(e) { alert("Error syncing configuration."); }
+        } catch(e) { customAlert("Error syncing configuration."); }
     });
 
     devPauseToggle.addEventListener('change', async () => {
@@ -1063,7 +1266,7 @@
                 systemPaused: devPauseToggle.checked
             }, { merge: true });
         } catch(e) {
-            alert("Error syncing Exclusive Mode configuration.");
+            customAlert("Error syncing Exclusive Mode configuration.");
             devPauseToggle.checked = !devPauseToggle.checked;
         }
     });
@@ -1199,7 +1402,7 @@
             devInterface.classList.remove('hidden');
             evaluateLocalStorageRestrictions();
             evaluateSystemFreezeState();
-            alert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
+            customAlert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
             localPassInput.value = "";
             return;
         } 
@@ -1211,12 +1414,12 @@
             loginInterface.classList.add('hidden');
             modInterface.classList.remove('hidden');
             devInterface.classList.add('hidden');
-            alert("Moderator Access Granted.");
+            customAlert("Moderator Access Granted.");
             localPassInput.value = "";
             return;
         }
 
-        alert("Access Denied. Incorrect Passkey.");
+        customAlert("Access Denied. Incorrect Passkey.");
         localPassInput.value = ""; 
     });
 
@@ -1333,18 +1536,19 @@
     copySuggestionsBtn.addEventListener('click', () => {
         const textToCopy = titleSuggestionClipboardOutput.textContent;
         if(!textToCopy || textToCopy.startsWith("No ") || textToCopy.startsWith("Select ") || textToCopy.startsWith("⏳")) {
-            return alert("Nothing substantial to copy inside current selection buffer.");
+            customAlert("Nothing substantial to copy inside current selection buffer.");
+            return;
         }
         navigator.clipboard.writeText(textToCopy)
-            .then(() => alert("📋 Title suggestions successfully copied to your device clipboard!"))
-            .catch(() => alert("Clipboard write permission blocked by browser parameters."));
+            .then(() => customAlert("📋 Title suggestions successfully copied to your device clipboard!"))
+            .catch(() => customAlert("Clipboard write permission blocked by browser parameters."));
     });
 
     saveModNameBtn.addEventListener('click', async () => {
         if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
         const targetName = inputModName.value.trim();
-        if(!targetName || targetName === "Mod") return alert("Enter a valid custom signature identifier handle.");
-        if(!confirm(`Are you sure you want to change the moderator name to "${targetName}"? This option cannot be modified again by a moderator once applied.`)) return;
+        if(!targetName || targetName === "Mod") { customAlert("Enter a valid custom signature identifier handle."); return; }
+        if(!(await customConfirm(`Are you sure you want to change the moderator name to "${targetName}"? This option cannot be modified again by a moderator once applied.`))) return;
 
         try {
             saveModNameBtn.disabled = true;
@@ -1352,9 +1556,9 @@
                 modName: targetName,
                 isNameLocked: true
             }, { merge: true });
-            alert("Moderator name locked and compiled successfully.");
+            customAlert("Moderator name locked and compiled successfully.");
         } catch(e) {
-            alert("Error processing profile modifications.");
+            customAlert("Error processing profile modifications.");
             saveModNameBtn.disabled = false;
         }
     });
@@ -1366,22 +1570,22 @@
                 month: inputMonth.value.trim() || "*****",
                 topic: inputTopic.value.trim() || "*****"
             }, { merge: true });
-            alert("Configurations saved.");
-        } catch(e) { alert("Database error saving variables."); }
+            customAlert("Configurations saved.");
+        } catch(e) { customAlert("Database error saving variables."); }
     });
 
     updateStoryBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         const title = newStoryInput.value.trim();
-        if (!title) return alert("Enter a valid story title.");
+        if (!title) { customAlert("Enter a valid story title."); return; }
         try {
             updateStoryBtn.disabled = true;
             await setDoc(doc(db, "competitions", title), { created: Date.now() }, { merge: true });
             newStoryInput.value = '';
             updateStoryBtn.disabled = false;
-            alert(`Added: "${title}"`);
+            customAlert(`Added: "${title}"`);
         } catch (err) {
-            alert("Error writing story.");
+            customAlert("Error writing story.");
             updateStoryBtn.disabled = false;
         }
     });
@@ -1389,22 +1593,22 @@
     deleteStoryBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         const targetStory = deleteStorySelect.value;
-        if(!targetStory) return alert("Select a story to clear.");
-        if(!confirm(`Delete permanently: "${targetStory}"?`)) return;
+        if(!targetStory) { customAlert("Select a story to clear."); return; }
+        if(!(await customConfirm(`Delete permanently: "${targetStory}"?`))) return;
         try {
             deleteStoryBtn.disabled = true;
             await deleteDoc(doc(db, "competitions", targetStory));
-            alert("Story successfully wiped.");
+            customAlert("Story successfully wiped.");
             deleteStoryBtn.disabled = false;
         } catch(e) {
-            alert("Error deleting entry.");
+            customAlert("Error deleting entry.");
             deleteStoryBtn.disabled = false;
         }
     });
 
     ratingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if(isSystemPaused && !isDeveloperModeUnlocked) return alert("System paused. Submissions blocked.");
+        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System paused. Submissions blocked."); return; }
 
         const activeStorySelection = storyDropdown.value;
         const name = friendNameInput.value.trim();
@@ -1413,17 +1617,17 @@
         const guess = isAuthorGuessEnabled ? (authorGuessInput.value.trim() || "None") : "None";
         const customTitle = isTitleSuggestionEnabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
-        if(!activeStorySelection) return alert("Choose a story to rate first.");
+        if(!activeStorySelection) { customAlert("Choose a story to rate first."); return; }
 
         const storageMarkerKey = `rated_${activeStorySelection}`;
         if (localStorage.getItem(storageMarkerKey) === "true" && !isDeveloperModeUnlocked) {
-            alert("🛑 Security System Error: You have already logged a submission review response signature for this story from this phone device.");
+            customAlert("🛑 Security System Error: You have already logged a submission review response signature for this story from this phone device.");
             evaluateLocalStorageRestrictions();
             return;
         }
 
         if (score < 1 || score > 10 || isNaN(score)) {
-            alert("🛑 Entry Error: Ratings must be an integer value between 1 and 10.");
+            customAlert("🛑 Entry Error: Ratings must be an integer value between 1 and 10.");
             ratingValueInput.focus();
             return;
         }
@@ -1445,12 +1649,12 @@
                 try { localStorage.setItem(storageMarkerKey, "true"); } catch(e){}
             }
 
-            alert(`Saved submission from ${name}.`);
+            customAlert(`Saved submission from ${name}.`);
             ratingForm.reset();
             evaluateLocalStorageRestrictions();
             if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
         } catch (err) {
-            alert("Error saving rating entry.");
+            customAlert("Error saving rating entry.");
             submitRatingBtn.disabled = false;
         }
     });
@@ -1458,7 +1662,7 @@
     saveNotesBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         const tgt = deleteStorySelect.value;
-        if (!tgt) return alert("Select a story path first.");
+        if (!tgt) { customAlert("Select a story path first."); return; }
 
         const packedWinnersString = accumulatedWinnersStateArray.length > 0 ? accumulatedWinnersStateArray.join(', ') : "*****";
 
@@ -1469,10 +1673,10 @@
                 _suggesterName: headingSuggesterInput.value || "*****",
                 _guesses: packedWinnersString
             }, { merge: true });
-            alert("Notes saved successfully.");
+            customAlert("Notes saved successfully.");
             saveNotesBtn.disabled = false;
         } catch(err) {
-            alert("Error saving notes.");
+            customAlert("Error saving notes.");
             saveNotesBtn.disabled = false;
         }
     });
@@ -1622,10 +1826,10 @@
             webviewTableBody.innerHTML = matrixData.tableBodyRows;
             webviewWrapper.classList.remove('hidden');
 
-            alert("📊 Live preview canvas rendering synchronised successfully below.");
+            customAlert("📊 Live preview canvas rendering synchronised successfully below.");
         } catch (err) {
             console.error(err);
-            alert("Error parsing data records.");
+            customAlert("Error parsing data records.");
         } finally {
             previewBtn.disabled = false;
             webviewLoadingBadge.style.display = "none";
@@ -1652,29 +1856,29 @@
             clientLink.click();
             document.body.removeChild(clientLink);
 
-            alert("📊 Data payload compressed and compiled to secure HTML format spreadsheet document.");
+            customAlert("📊 Data payload compressed and compiled to secure HTML format spreadsheet document.");
         } catch (err) {
             console.error(err);
-            alert("Error exporting document file streams.");
+            customAlert("Error exporting document file streams.");
         } finally {
             downloadBtn.disabled = false;
         }
     });
 
     devResetModNameBtn.addEventListener('click', async () => {
-        const newName = prompt("Enter new Moderator name:", "Mod");
+        const newName = await customPrompt("Enter new Moderator name:", "Mod");
         if(newName) {
             await setDoc(doc(db, "app_state", "global_config"), { 
                 modName: newName,
                 isNameLocked: false 
             }, { merge: true });
-            alert("Profile reset and unlocked successfully.");
+            customAlert("Profile reset and unlocked successfully.");
         }
     });
 
     devResetModPassBtn.addEventListener('click', async () => {
         await setDoc(doc(db, "app_state", "global_config"), { modPassword: "Mod@2k26" }, { merge: true });
-        alert("Cloud password force synced to: Mod@2k26");
+        customAlert("Cloud password force synced to: Mod@2k26");
     });
 
     function checkAndRestoreSession() {
@@ -1698,8 +1902,8 @@
     checkAndRestoreSession();
 
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            if (!confirm("Are you sure you want to log out of the control panel?")) return;
+        logoutBtn.addEventListener('click', async () => {
+            if (!(await customConfirm("Are you sure you want to log out of the control panel?"))) return;
 
             try { sessionStorage.removeItem('authMode'); } catch(e){}
             isModeratorAuthenticated = false;
@@ -1708,7 +1912,7 @@
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
 
-            alert("You have been safely logged out.");
+            customAlert("You have been safely logged out.");
         });
     }
 
