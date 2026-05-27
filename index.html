@@ -216,6 +216,9 @@
         .btn-danger { background-color: var(--danger); }
         .btn-danger:hover { background-color: #a72e2e; }
 
+        .btn-accent { background-color: var(--accent); color: white; }
+        .btn-accent:hover { background-color: #559691; }
+
         .btn-icon-only {
             display: inline-flex;
             align-items: center;
@@ -514,6 +517,24 @@
                 <button type="submit" id="submitRatingBtn">Submit Review</button>
             </form>
         </div>
+
+        <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border); padding-top: 20px;">
+            <p style="font-size: 14px; color: #666; margin-top: 0;">Have suggestions to improve this web app?</p>
+            <button type="button" id="goToFeedbackBtn" class="btn-accent" style="width: auto;">Give App Feedback</button>
+        </div>
+    </div>
+
+    <div id="feedbackInterface" class="plain-section hidden">
+        <h2>📝 App Feedback</h2>
+        <p style="font-size: 14px; color: #555;">Your feedback goes directly to the developer to help improve the platform.</p>
+        <div class="form-group">
+            <label for="feedbackTextInput">Feedback as <span id="feedbackNameDisplay" style="color: var(--primary); font-weight: bold;"></span></label>
+            <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required></textarea>
+        </div>
+        <div class="btn-row">
+            <button type="button" id="submitFeedbackBtn" class="btn-accent">Submit Feedback</button>
+            <button type="button" id="cancelFeedbackBtn" style="background-color: #6c757d;">Cancel / Back</button>
+        </div>
     </div>
 
     <div id="loginInterface" class="plain-section hidden">
@@ -685,6 +706,22 @@
                 <button type="button" id="devResetModNameBtn" class="btn-dev-action">Reset Name</button>
                 <button type="button" id="devResetModPassBtn" class="btn-dev-action">Reset Password</button>
             </div>
+
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
+            <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">Load Feedback Data</button>
+            <div id="devFeedbackContainer" class="webview-container hidden" style="border-color: var(--dev-color);">
+                <div class="webview-header" style="border-bottom: 2px solid var(--dev-color); color: var(--dev-color);">
+                    <span>Compiled Platform Feedback</span>
+                </div>
+                <div class="webview-scroll-frame">
+                    <table class="webview-table" style="white-space: nowrap;">
+                        <thead id="feedbackTableHead">
+                            </thead>
+                        <tbody id="feedbackTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -696,7 +733,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
@@ -711,6 +748,7 @@
     const db = getFirestore(app);
 
     const userInterface = document.getElementById('userInterface');
+    const feedbackInterface = document.getElementById('feedbackInterface');
     const modInterface = document.getElementById('modInterface');
     const devInterface = document.getElementById('devInterface');
     const loginInterface = document.getElementById('loginInterface');
@@ -768,6 +806,18 @@
     const devResetModNameBtn = document.getElementById('devResetModNameBtn');
     const devResetModPassBtn = document.getElementById('devResetModPassBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
+    
+    // Feedback Specific Elements
+    const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
+    const feedbackNameDisplay = document.getElementById('feedbackNameDisplay');
+    const feedbackTextInput = document.getElementById('feedbackTextInput');
+    const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
+    const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
+    
+    const devLoadFeedbackBtn = document.getElementById('devLoadFeedbackBtn');
+    const devFeedbackContainer = document.getElementById('devFeedbackContainer');
+    const feedbackTableHead = document.getElementById('feedbackTableHead');
+    const feedbackTableBody = document.getElementById('feedbackTableBody');
 
     const navBtnReviewer = document.getElementById('navBtnReviewer');
     const navBtnModerator = document.getElementById('navBtnModerator');
@@ -792,6 +842,7 @@
             navBtnReviewer.classList.add('active-panel-indicator');
             navBtnModerator.classList.remove('active-panel-indicator');
             userInterface.classList.remove('hidden');
+            feedbackInterface.classList.add('hidden'); // Ensure feedback UI is hidden when returning
             loginInterface.classList.add('hidden');
             modInterface.classList.add('hidden');
             devInterface.classList.add('hidden');
@@ -803,6 +854,7 @@
             navBtnModerator.classList.add('active-panel-indicator');
             navBtnReviewer.classList.remove('active-panel-indicator');
             userInterface.classList.add('hidden');
+            feedbackInterface.classList.add('hidden');
             if (isModeratorAuthenticated) {
                 modInterface.classList.remove('hidden');
                 if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
@@ -813,6 +865,105 @@
                 devInterface.classList.add('hidden');
             }
         } catch (e) {}
+    });
+
+    // --- APP FEEDBACK USER LOGIC ---
+    goToFeedbackBtn.addEventListener('click', () => {
+        const currentName = friendNameInput.value.trim();
+        if (!currentName) {
+            alert("Please enter Your Name in the Review section above first, so we know who is providing feedback!");
+            friendNameInput.focus();
+            return;
+        }
+        feedbackNameDisplay.textContent = currentName;
+        feedbackTextInput.value = "";
+        userInterface.classList.add('hidden');
+        feedbackInterface.classList.remove('hidden');
+    });
+
+    cancelFeedbackBtn.addEventListener('click', () => {
+        feedbackInterface.classList.add('hidden');
+        userInterface.classList.remove('hidden');
+    });
+
+    submitFeedbackBtn.addEventListener('click', async () => {
+        if(isSystemPaused && !isDeveloperModeUnlocked) return alert("System paused. Submissions blocked.");
+        
+        const feedback = feedbackTextInput.value.trim();
+        if(!feedback) return alert("Feedback box cannot be empty.");
+        const currentName = friendNameInput.value.trim();
+
+        submitFeedbackBtn.disabled = true;
+        try {
+            // Using arrayUnion allows appending multiple feedback items for the same user name 
+            await setDoc(doc(db, "app_feedback", "user_submissions"), {
+                [currentName]: arrayUnion(feedback)
+            }, { merge: true });
+            
+            alert("Feedback submitted successfully! Thank you for helping us improve.");
+            feedbackInterface.classList.add('hidden');
+            userInterface.classList.remove('hidden');
+        } catch(e) {
+            console.error(e);
+            alert("Error submitting feedback. Check your connection.");
+        }
+        submitFeedbackBtn.disabled = false;
+    });
+
+    // --- APP FEEDBACK DEVELOPER LOAD LOGIC ---
+    devLoadFeedbackBtn.addEventListener('click', async () => {
+        try {
+            devLoadFeedbackBtn.disabled = true;
+            devLoadFeedbackBtn.textContent = "Loading Platform Data...";
+
+            const docSnap = await getDoc(doc(db, "app_feedback", "user_submissions"));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                let maxCols = 0;
+                
+                // Find maximum array length across all users to establish table columns
+                Object.keys(data).forEach(user => {
+                    if (Array.isArray(data[user]) && data[user].length > maxCols) {
+                        maxCols = data[user].length;
+                    }
+                });
+
+                if (maxCols === 0) {
+                    alert("Feedback document exists but no valid entries found.");
+                    return;
+                }
+
+                // Compile Table Header
+                let theadHtml = `<tr><th style="background-color: var(--dev-color);"><b>Reviewer Name</b></th>`;
+                for(let i = 1; i <= maxCols; i++) {
+                    theadHtml += `<th style="background-color: var(--dev-color);"><b>Feedback Entry ${i}</b></th>`;
+                }
+                theadHtml += `</tr>`;
+                feedbackTableHead.innerHTML = theadHtml;
+
+                // Compile Table Rows
+                let tbodyHtml = "";
+                Object.keys(data).forEach(user => {
+                    tbodyHtml += `<tr><td><strong>${user}</strong></td>`;
+                    const userFeedbacks = data[user] || [];
+                    for(let i = 0; i < maxCols; i++) {
+                        // Display feedback if exists in this index slot, otherwise dash
+                        tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? userFeedbacks[i] : `<span style="color:#aaa;">-</span>`}</td>`;
+                    }
+                    tbodyHtml += `</tr>`;
+                });
+                feedbackTableBody.innerHTML = tbodyHtml;
+                devFeedbackContainer.classList.remove('hidden');
+            } else {
+                alert("No feedback records have been found in the database yet.");
+            }
+        } catch(e) {
+            console.error(e);
+            alert("Error parsing feedback metrics.");
+        } finally {
+            devLoadFeedbackBtn.disabled = false;
+            devLoadFeedbackBtn.textContent = "Load Feedback Data";
+        }
     });
 
     // --- CLOUD SYNC MONITOR ---
@@ -892,7 +1043,6 @@
         } catch(e) { alert("Error syncing configuration."); }
     });
 
-    // NEW EVENT LISTENER: Exclusive Mode / System Pause Toggle
     devPauseToggle.addEventListener('change', async () => {
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
@@ -910,23 +1060,20 @@
             newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
             inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
             headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn, clearWinnersBtn,
-            previewBtn, downloadBtn
+            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn
         ];
 
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
             
-            // Standard user form is always disabled
             submitRatingBtn.disabled = true;
             submitRatingBtn.textContent = "System Paused";
             
-            // If Developer, DO NOT lock out the Moderator inputs so they can still manage the competition!
             if (isDeveloperModeUnlocked) {
                 elements.forEach(el => el.disabled = false);
                 inputModName.disabled = isNameLockedByMod;
                 saveModNameBtn.disabled = isNameLockedByMod;
             } else {
-                // Standard moderators get locked out
                 elements.forEach(el => el.disabled = true);
                 inputModName.disabled = true;
                 saveModNameBtn.disabled = true;
@@ -981,13 +1128,11 @@
             }
         } catch (e) {
             console.error("Local storage error (likely blocked by strict mode).", e);
-            // Default safe-fail if local storage is blocked by mobile browser
             submitRatingBtn.disabled = false;
             submitRatingBtn.textContent = "Submit Review";
         }
     }
 
-    // --- STREAM STORIES DROPDOWNS ---
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
         snapshot.forEach(doc => {
@@ -1020,7 +1165,6 @@
         evaluateLocalStorageRestrictions();
     });
 
-    // FIXED: Removed loadCurrentStoryNotes() so Reviewer Dropdown operates independently
     storyDropdown.addEventListener('change', () => {
         evaluateLocalStorageRestrictions();
     });
@@ -1029,7 +1173,6 @@
         loadCurrentStoryNotes();
     });
 
-    // --- SUBMIT AUTHENTICATION KEY ---
     submitLoginBtn.addEventListener('click', () => {
         const inputKey = localPassInput.value.trim();
 
@@ -1041,7 +1184,7 @@
             modInterface.classList.remove('hidden');
             devInterface.classList.remove('hidden');
             evaluateLocalStorageRestrictions();
-            evaluateSystemFreezeState(); // Triggers the Dev bypass so tools unlock instantly
+            evaluateSystemFreezeState();
             alert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
             localPassInput.value = "";
             return;
@@ -1090,7 +1233,6 @@
         renderAccumulatedWinnersChips();
     });
 
-    // --- POPULATE DROPDOWNS WITH CONDITION-BASED FILTERS ---
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) return;
@@ -1184,7 +1326,6 @@
             .catch(() => alert("Clipboard write permission blocked by browser parameters."));
     });
 
-    // --- PANEL ENGINE CORE OPERATIONS ---
     saveModNameBtn.addEventListener('click', async () => {
         if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
         const targetName = inputModName.value.trim();
@@ -1322,7 +1463,6 @@
         }
     });
 
-    // --- RESTRUCTURED MATRIX TRANSLATION & COMPILE LOGIC MODULE ---
     async function compileMasterDataMatrix() {
         const querySnapshot = await getDocs(collection(db, "competitions"));
         let serialNumberCounter = 1;
@@ -1458,7 +1598,6 @@
         };
     }
 
-    // --- PREVIEW ACTION OPERATOR BUTTON ---
     previewBtn.addEventListener('click', async () => {
         try {
             previewBtn.disabled = true;
@@ -1479,7 +1618,6 @@
         }
     });
 
-    // --- DOWNLOAD ACTION OPERATOR BUTTON ---
     downloadBtn.addEventListener('click', async () => {
         try {
             downloadBtn.disabled = true;
@@ -1509,7 +1647,6 @@
         }
     });
 
-    // --- DEVELOPER RESET TRIGGERS PIPELINES ---
     devResetModNameBtn.addEventListener('click', async () => {
         const newName = prompt("Enter new Moderator name:", "Mod");
         if(newName) {
@@ -1526,7 +1663,6 @@
         alert("Cloud password force synced to: Mod@2k26");
     });
 
-    // --- SESSION RECOVERY & LOGOUT LOGIC ---
     function checkAndRestoreSession() {
         try {
             const savedAuth = sessionStorage.getItem('authMode');
@@ -1534,21 +1670,19 @@
             if (savedAuth === 'developer') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = true;
-                navBtnModerator.click(); // Automatically switches back to the mod tab
+                navBtnModerator.click();
             } else if (savedAuth === 'moderator') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = false;
-                navBtnModerator.click(); // Automatically switches back to the mod tab
+                navBtnModerator.click(); 
             }
         } catch (e) {
             console.error("Session storage blocked by browser", e);
         }
     }
 
-    // Run this function immediately when the script loads
     checkAndRestoreSession();
 
-    // Handle Logout
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             if (!confirm("Are you sure you want to log out of the control panel?")) return;
@@ -1557,10 +1691,7 @@
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
 
-            // Force the UI back to the Reviewer view
             navBtnReviewer.click(); 
-
-            // Re-evaluate reviewer restrictions (since Dev bypass is now disabled)
             evaluateLocalStorageRestrictions();
 
             alert("You have been safely logged out.");
