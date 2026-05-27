@@ -528,7 +528,11 @@
         <h2>📝 App Feedback</h2>
         <p style="font-size: 14px; color: #555;">Your feedback goes directly to the developer to help improve the platform.</p>
         <div class="form-group">
-            <label for="feedbackTextInput">Feedback as <span id="feedbackNameDisplay" style="color: var(--primary); font-weight: bold;"></span></label>
+            <label for="feedbackNameInput">Your Name *</label>
+            <input type="text" id="feedbackNameInput" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="feedbackTextInput">Feedback / Suggestions *</label>
             <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required></textarea>
         </div>
         <div class="btn-row">
@@ -809,7 +813,7 @@
     
     // Feedback Specific Elements
     const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
-    const feedbackNameDisplay = document.getElementById('feedbackNameDisplay');
+    const feedbackNameInput = document.getElementById('feedbackNameInput');
     const feedbackTextInput = document.getElementById('feedbackTextInput');
     const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
     const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
@@ -869,13 +873,7 @@
 
     // --- APP FEEDBACK USER LOGIC ---
     goToFeedbackBtn.addEventListener('click', () => {
-        const currentName = friendNameInput.value.trim();
-        if (!currentName) {
-            alert("Please enter Your Name in the Review section above first, so we know who is providing feedback!");
-            friendNameInput.focus();
-            return;
-        }
-        feedbackNameDisplay.textContent = currentName;
+        feedbackNameInput.value = "";
         feedbackTextInput.value = "";
         userInterface.classList.add('hidden');
         feedbackInterface.classList.remove('hidden');
@@ -889,13 +887,14 @@
     submitFeedbackBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return alert("System paused. Submissions blocked.");
         
+        const currentName = feedbackNameInput.value.trim();
         const feedback = feedbackTextInput.value.trim();
+
+        if(!currentName) return alert("Please enter your name.");
         if(!feedback) return alert("Feedback box cannot be empty.");
-        const currentName = friendNameInput.value.trim();
 
         submitFeedbackBtn.disabled = true;
         try {
-            // Using arrayUnion allows appending multiple feedback items for the same user name 
             await setDoc(doc(db, "app_feedback", "user_submissions"), {
                 [currentName]: arrayUnion(feedback)
             }, { merge: true });
@@ -921,7 +920,6 @@
                 const data = docSnap.data();
                 let maxCols = 0;
                 
-                // Find maximum array length across all users to establish table columns
                 Object.keys(data).forEach(user => {
                     if (Array.isArray(data[user]) && data[user].length > maxCols) {
                         maxCols = data[user].length;
@@ -934,10 +932,12 @@
                 }
 
                 // Compile Table Header
-                let theadHtml = `<tr><th style="background-color: var(--dev-color);"><b>Reviewer Name</b></th>`;
+                let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white;"><b>Reviewer Name</b></th>`;
                 for(let i = 1; i <= maxCols; i++) {
-                    theadHtml += `<th style="background-color: var(--dev-color);"><b>Feedback Entry ${i}</b></th>`;
+                    theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>Feedback Entry ${i}</b></th>`;
                 }
+                theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>My Comments</b></th>`;
+                theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>Status</b></th>`;
                 theadHtml += `</tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
@@ -947,9 +947,23 @@
                     tbodyHtml += `<tr><td><strong>${user}</strong></td>`;
                     const userFeedbacks = data[user] || [];
                     for(let i = 0; i < maxCols; i++) {
-                        // Display feedback if exists in this index slot, otherwise dash
                         tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? userFeedbacks[i] : `<span style="color:#aaa;">-</span>`}</td>`;
                     }
+                    
+                    // Add the new interactive cells for Comments and Status
+                    tbodyHtml += `
+                        <td>
+                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid #ccc; border-radius: 4px; width: 180px; box-sizing: border-box;">
+                        </td>
+                        <td>
+                            <select style="padding: 6px; border: 1px solid #ccc; border-radius: 4px; background: white; width: 100%; box-sizing: border-box;">
+                                <option>Pending</option>
+                                <option>In Review</option>
+                                <option>Implemented</option>
+                                <option>Rejected</option>
+                            </select>
+                        </td>
+                    `;
                     tbodyHtml += `</tr>`;
                 });
                 feedbackTableBody.innerHTML = tbodyHtml;
@@ -1060,7 +1074,7 @@
             newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
             inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
             headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn, clearWinnersBtn,
-            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn
+            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput
         ];
 
         if (isSystemPaused) {
