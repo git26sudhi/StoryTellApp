@@ -816,7 +816,6 @@
     <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
 </div>
 
-<!-- Custom Pop-up Modal HTML -->
 <div id="customModalOverlay" class="hidden">
     <div class="custom-modal-box">
         <p id="customModalMessage"></p>
@@ -1183,44 +1182,39 @@
         customAlert("📥 Feedback table exported successfully.");
     });
 
-    // --- CLOUD SYNC MONITOR ---
+    // --- CLOUD SYNC MONITOR (Safe Read-Only Version) ---
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
+            let data = {};
+            
+            // If the document exists, use its data. If not, fallback to an empty object
+            // WITHOUT triggering a forced database overwrite.
             if (docSnap.exists()) {
-                const data = docSnap.data();
-                topicDisplay.textContent = data.topic || "*****";
-                monthDisplay.textContent = data.month || "*****";
-                inputMonth.value = data.month || "*****";
-                inputTopic.value = data.topic || "*****";
-                currentModPassword = data.modPassword || "Mod@2k26";
-
-                currentModName = data.modName || "Mod";
-                headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
-                inputModName.value = currentModName;
-
-                isAuthorGuessEnabled = !!data.enableAuthorGuess;
-                isTitleSuggestionEnabled = !!data.enableTitleSuggestion;
-                toggleAuthorGuessBtn.checked = isAuthorGuessEnabled;
-                toggleTitleSuggestionBtn.checked = isTitleSuggestionEnabled;
-                updateUserFormFieldsVisibility();
-
-                isNameLockedByMod = !!data.isNameLocked;
-                
-                isSystemPaused = !!data.systemPaused;
-                devPauseToggle.checked = isSystemPaused;
-                evaluateSystemFreezeState();
-            } else {
-                setDoc(doc(db, "app_state", "global_config"), {
-                    topic: "*****",
-                    month: "*****",
-                    modPassword: "Mod@2k26",
-                    modName: "Mod",
-                    isNameLocked: false,
-                    enableAuthorGuess: false,
-                    enableTitleSuggestion: false,
-                    systemPaused: false
-                });
+                data = docSnap.data();
             }
+
+            topicDisplay.textContent = data.topic || "*****";
+            monthDisplay.textContent = data.month || "*****";
+            inputMonth.value = data.month || "";
+            inputTopic.value = data.topic || "";
+            currentModPassword = data.modPassword || "Mod@2k26";
+
+            currentModName = data.modName || "Mod";
+            headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
+            inputModName.value = currentModName;
+
+            isAuthorGuessEnabled = !!data.enableAuthorGuess;
+            isTitleSuggestionEnabled = !!data.enableTitleSuggestion;
+            toggleAuthorGuessBtn.checked = isAuthorGuessEnabled;
+            toggleTitleSuggestionBtn.checked = isTitleSuggestionEnabled;
+            updateUserFormFieldsVisibility();
+
+            isNameLockedByMod = !!data.isNameLocked;
+            
+            isSystemPaused = !!data.systemPaused;
+            devPauseToggle.checked = isSystemPaused;
+            evaluateSystemFreezeState();
+
         } catch(e) {
             console.error("Error reading global config:", e);
         }
