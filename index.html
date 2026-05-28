@@ -835,6 +835,14 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+    // --- SECURITY PATCH: XSS SANITIZATION FUNCTION ---
+    function sanitizeText(str) {
+        if (str === null || str === undefined) return "";
+        const temp = document.createElement('div');
+        temp.textContent = String(str);
+        return temp.innerHTML;
+    }
+
     // --- CUSTOM MODAL LOGIC (Gray & Ash Grading) ---
     function showCustomModal(type, message, defaultVal = "") {
         return new Promise((resolve) => {
@@ -1101,13 +1109,13 @@
                 theadHtml += `</tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
-                // Compile Table Rows
+                // Compile Table Rows (WITH SANITIZATION PATCH)
                 let tbodyHtml = "";
                 Object.keys(data).forEach(user => {
-                    tbodyHtml += `<tr><td><strong>${user}</strong></td>`;
+                    tbodyHtml += `<tr><td><strong>${sanitizeText(user)}</strong></td>`;
                     const userFeedbacks = data[user] || [];
                     for(let i = 0; i < maxCols; i++) {
-                        tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? userFeedbacks[i] : `<span style="color:#aaa;">-</span>`}</td>`;
+                        tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `<span style="color:#aaa;">-</span>`}</td>`;
                     }
                     
                     // Add the new interactive cells for Comments and Status
@@ -1150,12 +1158,13 @@
         }
         theadHtml += `</tr>`;
 
+        // (WITH SANITIZATION PATCH)
         let tbodyHtml = "";
         Object.keys(cachedFeedbackData).forEach(user => {
-            tbodyHtml += `<tr><td style="border: 1px solid #ccc;"><strong>${user}</strong></td>`;
+            tbodyHtml += `<tr><td style="border: 1px solid #ccc;"><strong>${sanitizeText(user)}</strong></td>`;
             const userFeedbacks = cachedFeedbackData[user] || [];
             for(let i = 0; i < cachedMaxCols; i++) {
-                tbodyHtml += `<td style="border: 1px solid #ccc;">${userFeedbacks[i] !== undefined ? userFeedbacks[i] : `-`}</td>`;
+                tbodyHtml += `<td style="border: 1px solid #ccc;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
             }
             tbodyHtml += `</tr>`;
         });
@@ -1359,12 +1368,12 @@
         arrayedStoriesList.forEach(storyObj => {
             const optionUser = document.createElement('option');
             optionUser.value = storyObj.id;
-            optionUser.textContent = storyObj.id;
+            optionUser.textContent = storyObj.id; // Using textContent is naturally safe from XSS
             storyDropdown.appendChild(optionUser);
 
             const optionMod = document.createElement('option');
             optionMod.value = storyObj.id;
-            optionMod.textContent = storyObj.id;
+            optionMod.textContent = storyObj.id; // Using textContent is naturally safe from XSS
             deleteStorySelect.appendChild(optionMod);
         });
 
@@ -1438,7 +1447,7 @@
         accumulatedWinnersStateArray.forEach(name => {
             const chip = document.createElement('div');
             chip.className = 'winner-chip';
-            chip.textContent = name;
+            chip.textContent = name; // textContent is safe from XSS
             winnersChipsContainer.appendChild(chip);
         });
         correctGuesses.value = "";
@@ -1502,19 +1511,19 @@
 
                                 const headingOpt = document.createElement('option');
                                 headingOpt.value = currentSuggestedTitle;
-                                headingOpt.textContent = currentSuggestedTitle;
+                                headingOpt.textContent = currentSuggestedTitle; // Safe
                                 readerSuggestions.appendChild(headingOpt);
 
                                 const personOpt = document.createElement('option');
                                 personOpt.value = reviewerKey;
-                                personOpt.textContent = reviewerKey;
+                                personOpt.textContent = reviewerKey; // Safe
                                 headingSuggesterInput.appendChild(personOpt);
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
                                 const winnerOpt = document.createElement('option');
                                 winnerOpt.value = reviewerKey;
-                                winnerOpt.textContent = reviewerKey;
+                                winnerOpt.textContent = reviewerKey; // Safe
                                 correctGuesses.appendChild(winnerOpt);
                             }
                         }
@@ -1727,7 +1736,7 @@
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const storyTitle = doc.id;
+            const storyTitle = sanitizeText(doc.id); // SANITIZATION PATCH
 
             let formattedDate = "N/A";
             if (data.created) {
@@ -1735,22 +1744,22 @@
                 formattedDate = dateObj.toISOString().split('T')[0];
             }
 
-            const suggestions = data._suggestions || "*****";
-            const guesses = data._guesses || "*****";
+            const suggestions = sanitizeText(data._suggestions || "*****"); // SANITIZATION PATCH
+            const guesses = sanitizeText(data._guesses || "*****"); // SANITIZATION PATCH
 
             let reviewRows = [];
             Object.keys(data).forEach(key => {
                 if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
                     if (typeof data[key] === 'object' && data[key] !== null) {
                         reviewRows.push({
-                            reviewer: key,
-                            score: data[key].score ?? "N/A",
-                            title: data[key].suggestedTitle ?? "None"
+                            reviewer: sanitizeText(key), // SANITIZATION PATCH
+                            score: sanitizeText(data[key].score ?? "N/A"), // SANITIZATION PATCH
+                            title: sanitizeText(data[key].suggestedTitle ?? "None") // SANITIZATION PATCH
                         });
                     } else {
                         reviewRows.push({
-                            reviewer: key,
-                            score: data[key],
+                            reviewer: sanitizeText(key), // SANITIZATION PATCH
+                            score: sanitizeText(data[key]), // SANITIZATION PATCH
                             title: "Legacy"
                         });
                     }
