@@ -1034,7 +1034,7 @@
     });
 
     submitFeedbackBtn.addEventListener('click', async () => {
-        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System paused. Submissions blocked."); return; }
+        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System Maintenance"); return; }
         
         const currentName = feedbackNameInput.value.trim();
         const feedback = feedbackTextInput.value.trim();
@@ -1384,10 +1384,36 @@
         loadCurrentStoryNotes();
     });
 
+    // --- RATE LIMITER FOR LOGIN ---
     submitLoginBtn.addEventListener('click', () => {
+        let failedLoginAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0');
+        let lockoutTimestamp = parseInt(localStorage.getItem('lockoutTimestamp') || '0');
+        const LOCKOUT_DURATION = 60000; // 60 seconds
+        const currentTime = Date.now();
+
+        // Check if user is currently locked out
+        if (lockoutTimestamp > 0) {
+            if (currentTime < lockoutTimestamp + LOCKOUT_DURATION) {
+                const remaining = Math.ceil((lockoutTimestamp + LOCKOUT_DURATION - currentTime) / 1000);
+                customAlert(`Retry after ${remaining}s`);
+                localPassInput.value = "";
+                return;
+            } else {
+                // Lockout period has expired, reset counters
+                localStorage.setItem('lockoutTimestamp', '0');
+                localStorage.setItem('failedLoginAttempts', '0');
+                failedLoginAttempts = 0;
+                lockoutTimestamp = 0;
+            }
+        }
+
         const inputKey = localPassInput.value.trim();
 
         if (inputKey === "Arthur@2k26") {
+            // Success (Dev)
+            localStorage.setItem('failedLoginAttempts', '0');
+            localStorage.setItem('lockoutTimestamp', '0');
+            
             isModeratorAuthenticated = true;
             isDeveloperModeUnlocked = true; 
             try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
@@ -1396,24 +1422,37 @@
             devInterface.classList.remove('hidden');
             evaluateLocalStorageRestrictions();
             evaluateSystemFreezeState();
-            customAlert("Developer Mode Unlocked. Duplicate checks bypassed for testing.");
+            customAlert("Authentication Successful(Dev)");
             localPassInput.value = "";
             return;
         } 
 
         if (inputKey === currentModPassword || inputKey === "Mod@2k26") {
+            // Success (Mod)
+            localStorage.setItem('failedLoginAttempts', '0');
+            localStorage.setItem('lockoutTimestamp', '0');
+            
             isModeratorAuthenticated = true;
             isDeveloperModeUnlocked = false;
             try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
             loginInterface.classList.add('hidden');
             modInterface.classList.remove('hidden');
             devInterface.classList.add('hidden');
-            customAlert("Moderator Access Granted.");
+            customAlert("Authentication Successful(Mod)");
             localPassInput.value = "";
             return;
         }
 
-        customAlert("Access Denied. Incorrect Passkey.");
+        // Failure
+        failedLoginAttempts++;
+        localStorage.setItem('failedLoginAttempts', failedLoginAttempts.toString());
+        
+        if (failedLoginAttempts >= 5) {
+            localStorage.setItem('lockoutTimestamp', Date.now().toString());
+            customAlert("Authentication failed(Key). Retry after 60s");
+        } else {
+            customAlert("Authentication failed(Key)");
+        }
         localPassInput.value = ""; 
     });
 
@@ -1602,7 +1641,7 @@
 
     ratingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System paused. Submissions blocked."); return; }
+        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System Maintenance"); return; }
 
         const activeStorySelection = storyDropdown.value;
         const name = friendNameInput.value.trim();
@@ -1611,17 +1650,17 @@
         const guess = isAuthorGuessEnabled ? (authorGuessInput.value.trim() || "None") : "None";
         const customTitle = isTitleSuggestionEnabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
-        if(!activeStorySelection) { customAlert("Choose a story to rate first."); return; }
+        if(!activeStorySelection) { customAlert("Select a story to Rate"); return; }
 
         const storageMarkerKey = `rated_${activeStorySelection}`;
         if (localStorage.getItem(storageMarkerKey) === "true" && !isDeveloperModeUnlocked) {
-            customAlert("🛑 Security System Error: You have already logged a submission review response signature for this story from this phone device.");
+            customAlert("You have already submitted review");
             evaluateLocalStorageRestrictions();
             return;
         }
 
         if (score < 1 || score > 10 || isNaN(score)) {
-            customAlert("🛑 Entry Error: Ratings must be an integer value between 1 and 10.");
+            customAlert("Rating must be an Integer");
             ratingValueInput.focus();
             return;
         }
@@ -1643,12 +1682,12 @@
                 try { localStorage.setItem(storageMarkerKey, "true"); } catch(e){}
             }
 
-            customAlert(`Saved submission from ${name}.`);
+            customAlert(`Saved submission from ${name}`);
             ratingForm.reset();
             evaluateLocalStorageRestrictions();
             if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
         } catch (err) {
-            customAlert("Error saving rating entry.");
+            customAlert("Error saving Entry");
             submitRatingBtn.disabled = false;
         }
     });
@@ -1897,7 +1936,7 @@
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
-            if (!(await customConfirm("Are you sure you want to log out of the control panel?"))) return;
+            if (!(await customConfirm("Confirm Logout!"))) return;
 
             try { sessionStorage.removeItem('authMode'); } catch(e){}
             isModeratorAuthenticated = false;
@@ -1906,7 +1945,7 @@
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
 
-            customAlert("You have been safely logged out.");
+            customAlert("Logout Successfull");
         });
     }
 
