@@ -621,10 +621,14 @@
 
     <div id="loginInterface" class="plain-section hidden">
         <h2>🔒 Moderator / Developer Authentication</h2>
-        <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your passkey directly below to reveal the configuration tools.</p>
+        <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your credentials below to access the control panels.</p>
+        <div class="form-group">
+            <label for="localEmailInput">Email Address</label>
+            <input type="text" id="localEmailInput" placeholder="mod@admin.com">
+        </div>
         <div class="form-group">
             <label for="localPassInput">Enter Password</label>
-            <input type="password" id="localPassInput" placeholder="•••••">
+            <input type="password" id="localPassInput" placeholder="••••••••">
         </div>
         <button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
     </div>
@@ -786,7 +790,6 @@
             <h3>🛠️ Moderator Options</h3>
             <div class="btn-row">
                 <button type="button" id="devResetModNameBtn" class="btn-dev-action">Reset Name</button>
-                <button type="button" id="devResetModPassBtn" class="btn-dev-action">Reset Password</button>
             </div>
 
             <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
@@ -830,6 +833,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     // --- CUSTOM MODAL LOGIC (Gray & Ash Grading) ---
     function showCustomModal(type, message, defaultVal = "") {
@@ -894,6 +898,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app); 
 
     const userInterface = document.getElementById('userInterface');
     const feedbackInterface = document.getElementById('feedbackInterface');
@@ -911,6 +916,7 @@
     const titleSuggestionClipboardOutput = document.getElementById('titleSuggestionClipboardOutput');
     const copySuggestionsBtn = document.getElementById('copySuggestionsBtn');
 
+    const localEmailInput = document.getElementById('localEmailInput');
     const localPassInput = document.getElementById('localPassInput');
     const submitLoginBtn = document.getElementById('submitLoginBtn');
     const newStoryInput = document.getElementById('newStoryInput');
@@ -952,7 +958,6 @@
     const webviewLoadingBadge = document.getElementById('webviewLoadingBadge');
 
     const devResetModNameBtn = document.getElementById('devResetModNameBtn');
-    const devResetModPassBtn = document.getElementById('devResetModPassBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
     
     // Feedback Specific Elements
@@ -972,7 +977,6 @@
     const navBtnModerator = document.getElementById('navBtnModerator');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    let currentModPassword = "Mod@2k26"; 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
     let arrayedStoriesList = [];
@@ -1186,9 +1190,6 @@
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
             let data = {};
-            
-            // If the document exists, use its data. If not, fallback to an empty object
-            // WITHOUT triggering a forced database overwrite.
             if (docSnap.exists()) {
                 data = docSnap.data();
             }
@@ -1197,7 +1198,6 @@
             monthDisplay.textContent = data.month || "*****";
             inputMonth.value = data.month || "";
             inputTopic.value = data.topic || "";
-            currentModPassword = data.modPassword || "Mod@2k26";
 
             currentModName = data.modName || "Mod";
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
@@ -1384,76 +1384,53 @@
         loadCurrentStoryNotes();
     });
 
-    // --- RATE LIMITER FOR LOGIN ---
-    submitLoginBtn.addEventListener('click', () => {
-        let failedLoginAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0');
-        let lockoutTimestamp = parseInt(localStorage.getItem('lockoutTimestamp') || '0');
-        const LOCKOUT_DURATION = 60000; // 60 seconds
-        const currentTime = Date.now();
+    // --- SECURE FIREBASE AUTHENTICATION LOGIC ---
+    submitLoginBtn.addEventListener('click', async () => {
+        const email = localEmailInput.value.trim();
+        const password = localPassInput.value.trim();
 
-        // Check if user is currently locked out
-        if (lockoutTimestamp > 0) {
-            if (currentTime < lockoutTimestamp + LOCKOUT_DURATION) {
-                const remaining = Math.ceil((lockoutTimestamp + LOCKOUT_DURATION - currentTime) / 1000);
-                customAlert(`Retry after ${remaining}s`);
-                localPassInput.value = "";
-                return;
-            } else {
-                // Lockout period has expired, reset counters
-                localStorage.setItem('lockoutTimestamp', '0');
-                localStorage.setItem('failedLoginAttempts', '0');
-                failedLoginAttempts = 0;
-                lockoutTimestamp = 0;
-            }
+        if (!email || !password) {
+            customAlert("Please enter both email and password.");
+            return;
         }
 
-        const inputKey = localPassInput.value.trim();
+        submitLoginBtn.disabled = true;
+        submitLoginBtn.textContent = "Authenticating...";
 
-        if (inputKey === "Arthur@2k26") {
-            // Success (Dev)
-            localStorage.setItem('failedLoginAttempts', '0');
-            localStorage.setItem('lockoutTimestamp', '0');
-            
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
             isModeratorAuthenticated = true;
-            isDeveloperModeUnlocked = true; 
-            try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
+            
+            if (user.email === "dev@admin.com" || user.email === "dev@kathasagaram.com") {
+                isDeveloperModeUnlocked = true;
+                try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
+                customAlert("Authentication Successful (Dev)");
+            } else {
+                isDeveloperModeUnlocked = false;
+                try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
+                customAlert("Authentication Successful (Mod)");
+            }
+
             loginInterface.classList.add('hidden');
             modInterface.classList.remove('hidden');
-            devInterface.classList.remove('hidden');
+            if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
+
             evaluateLocalStorageRestrictions();
             evaluateSystemFreezeState();
-            customAlert("Authentication Successful(Dev)");
-            localPassInput.value = "";
-            return;
-        } 
-
-        if (inputKey === currentModPassword || inputKey === "Mod@2k26") {
-            // Success (Mod)
-            localStorage.setItem('failedLoginAttempts', '0');
-            localStorage.setItem('lockoutTimestamp', '0');
             
-            isModeratorAuthenticated = true;
-            isDeveloperModeUnlocked = false;
-            try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
-            loginInterface.classList.add('hidden');
-            modInterface.classList.remove('hidden');
-            devInterface.classList.add('hidden');
-            customAlert("Authentication Successful(Mod)");
+            localEmailInput.value = "";
             localPassInput.value = "";
-            return;
-        }
 
-        // Failure
-        failedLoginAttempts++;
-        localStorage.setItem('failedLoginAttempts', failedLoginAttempts.toString());
-        
-        if (failedLoginAttempts >= 5) {
-            localStorage.setItem('lockoutTimestamp', Date.now().toString());
-            customAlert("Authentication failed(Key). Retry after 60s");
-        } else {
-            customAlert("Authentication failed(Key)");
+        } catch (error) {
+            console.error(error.code, error.message);
+            customAlert("Authentication failed. Please check your credentials.");
+            localPassInput.value = "";
+        } finally {
+            submitLoginBtn.disabled = false;
+            submitLoginBtn.textContent = "Unlock Control Panels";
         }
-        localPassInput.value = ""; 
     });
 
     function renderAccumulatedWinnersChips() {
@@ -1909,11 +1886,6 @@
         }
     });
 
-    devResetModPassBtn.addEventListener('click', async () => {
-        await setDoc(doc(db, "app_state", "global_config"), { modPassword: "Mod@2k26" }, { merge: true });
-        customAlert("Cloud password force synced to: Mod@2k26");
-    });
-
     function checkAndRestoreSession() {
         try {
             const savedAuth = sessionStorage.getItem('authMode');
@@ -1934,18 +1906,25 @@
 
     checkAndRestoreSession();
 
+    // --- SECURE LOGOUT LOGIC ---
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             if (!(await customConfirm("Confirm Logout!"))) return;
 
-            try { sessionStorage.removeItem('authMode'); } catch(e){}
+            try {
+                await signOut(auth);
+                sessionStorage.removeItem('authMode'); 
+            } catch(e) {
+                console.error("Error signing out", e);
+            }
+
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
 
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
 
-            customAlert("Logout Successfull");
+            customAlert("Logout Successful");
         });
     }
 
