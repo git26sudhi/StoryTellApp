@@ -439,7 +439,6 @@
             overflow-y: auto;
         }
         
-        /* Smaller font specifically for sidebar inner tools */
         .side-menu-content label { font-size: 13px; }
         .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
         .side-menu-content button { padding: 8px 12px; font-size: 13px; }
@@ -554,7 +553,6 @@
 
         .btn-mod-action { background-color: var(--admin-color); color: var(--btn-admin-text); }
         .btn-dev-action { background-color: var(--dev-color); color: white;}
-        .btn-danger { background-color: var(--danger); color: white;}
         .btn-accent { background-color: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
         
         .btn-icon-only {
@@ -602,7 +600,7 @@
             gap: 12px;
             margin-top: 15px;
         }
-        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; }
+        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
         .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
         .preview-output-box {
@@ -774,7 +772,7 @@
         .webview-scroll-frame {
             width: 100%;
             overflow-x: auto;
-            max-height: 600px; /* Increased Preview Height */
+            max-height: 600px; 
             overflow-y: auto;
         }
         .webview-table {
@@ -815,9 +813,10 @@
             background: var(--modal-bg); 
             border: var(--modal-border); 
             border-radius: 12px;
-            padding: 25px;
-            width: 90%;
-            max-width: 400px;
+            padding: 25px 2ch;
+            width: fit-content;
+            min-width: min(90%, 250px);
+            max-width: 90%;
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
             color: var(--modal-text);
