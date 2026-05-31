@@ -316,7 +316,8 @@
             justify-content: flex-end; 
             align-items: center;
             padding: 20px; 
-            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+            border-bottom: none;
         }
         
         .side-menu-close {
@@ -339,6 +340,11 @@
             flex-grow: 1;
             overflow-y: auto;
         }
+        
+        /* Smaller font specifically for sidebar inner tools */
+        .side-menu-content label { font-size: 13px; }
+        .side-menu-content input { padding: 8px; font-size: 14px; }
+        .side-menu-content button { padding: 8px 12px; font-size: 13px; }
 
         /* --- PREMIUM MAINTENANCE BANNER --- */
         .status-alert {
@@ -784,11 +790,66 @@
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
     <div class="side-menu-content">
+        <!-- GLOBAL OPTIONS (VISIBLE TO ALL) -->
         <div class="form-group">
             <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
                 <option value="light">☀️ Light Theme</option>
                 <option value="dark">🌌 Dark Theme</option>
             </select>
+        </div>
+
+        <!-- MODERATOR OPTIONS (HIDDEN UNTIL AUTHENTICATED) -->
+        <div id="sidebarModOptions" class="hidden" style="margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
+            <h4 style="color: var(--admin-color); margin: 0 0 15px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">🛠️ Mod Tools</h4>
+            
+            <div class="form-group">
+                <label for="newStoryInput">Add New Story</label>
+                <input type="text" id="newStoryInput" placeholder="Story name">
+                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 8px; width: 100%;">Add Story</button>
+            </div>
+
+            <div class="switch-container" style="padding: 10px; margin-bottom: 10px;">
+                <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
+                <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                    <input type="checkbox" id="toggleAuthorGuessBtn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="switch-container" style="padding: 10px;">
+                <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
+                <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                    <input type="checkbox" id="toggleTitleSuggestionBtn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="inputMonth">Month</label>
+                <input type="text" id="inputMonth" placeholder="e.g., May 2026">
+            </div>
+            
+            <div class="form-group">
+                <label for="inputTopic">Subject</label>
+                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi">
+            </div>
+
+            <div class="form-group">
+                <label for="inputModName">Mod Name</label>
+                <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="flex: 1;">Save Config</button>
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action" style="flex: 1;">Save Profile</button>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 25px;">
+                <label style="color: var(--text-color);">System Data</label>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
+                    <button id="previewBtn" class="btn-preview">Preview Matrix</button>
+                    <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -805,7 +866,14 @@
 
 <div class="container">
     <div class="metadata-opposite-row">
-        <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold;">☰ Menu</button>
+        <!-- THEME DROPDOWN BUTTON WITH PAINTBRUSH ICON -->
+        <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                <path d="M9 15c-2.3 0-4-1-4-1s-1.5 2.5-1.5 5c0 1 1 2 2.5 2s5-1.5 5-1.5-1-1.7-1-4z"></path>
+            </svg>
+            Theme
+        </button>
         <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
     </div>
 
@@ -899,12 +967,6 @@
                 <button type="button" id="logoutBtn" class="btn-danger" style="padding: 6px 12px; font-size: 13px; margin: 0;">🚪 Logout</button>
             </div>
 
-            <div class="form-group" style="margin-top: 20px;">
-                <label for="newStoryInput">Add New Story</label>
-                <input type="text" id="newStoryInput" placeholder="Enter new story name">
-                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 10px;">Add</button>
-            </div>
-
             <div class="form-group" style="margin-top: 15px;">
                 <label for="deleteStorySelect">Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -923,45 +985,6 @@
             </div>
 
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
-
-            <div class="switch-container">
-                <div>
-                    <strong style="display: block; font-size: 14px; color: var(--text-color);">Enable Guess the author</strong>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="toggleAuthorGuessBtn">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="switch-container">
-                <div>
-                    <strong style="display: block; font-size: 14px; color: var(--text-color);">Enable Title Suggestion</strong>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="toggleTitleSuggestionBtn">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="form-group">
-                <label for="inputMonth">Competition Month</label>
-                <input type="text" id="inputMonth" placeholder="e.g., May 2026">
-            </div>
-            <div class="form-group">
-                <label for="inputTopic">Competition Subject</label>
-                <input type="text" id="inputTopic" placeholder="e.g., Science Fiction Noir">
-            </div>
-
-            <div class="form-group" style="margin-top: 15px;">
-                <label for="inputModName">Change moderator name</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="inputModName" placeholder="Enter new moderator custom handle" style="flex: 1; margin: 0;">
-                    <button type="button" id="saveModNameBtn" class="btn-mod-action">Save Profile Name</button>
-                </div>
-            </div>
-
-            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-top: 5px; width: 100%;">change configuration</button>
 
             <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
 
@@ -990,13 +1013,8 @@
         </div>
 
         <div class="plain-section">
-            <h2>Download System Data</h2>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Compile and coordinate metrics logs into a clean grid canvas layer preview or document stream.</p>
-
-            <div class="export-btn-container">
-                <button id="previewBtn" class="btn-preview">Preview</button>
-                <button id="downloadBtn" class="btn-download">Download</button>
-            </div>
+            <h2>Data Preview Canvas</h2>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Generate previews from the sidebar to view compiled metrics here.</p>
 
             <div id="webviewWrapper" class="webview-container hidden">
                 <div class="webview-header">
@@ -1100,6 +1118,7 @@
     const sideMenu = document.getElementById('sideMenu');
     const menuOverlay = document.getElementById('menuOverlay');
     const themeSelect = document.getElementById('themeSelect');
+    const sidebarModOptions = document.getElementById('sidebarModOptions');
 
     let isDarkTheme = localStorage.getItem('kathasagaram_theme') === 'dark';
 
@@ -1132,7 +1151,7 @@
         isDarkTheme = e.target.value === 'dark';
         localStorage.setItem('kathasagaram_theme', isDarkTheme ? 'dark' : 'light');
         applyTheme();
-        setTimeout(() => toggleMenu(false), 150); // Small delay to show choice before closing
+        setTimeout(() => toggleMenu(false), 150); 
     });
 
     // --------------------------------------
@@ -1226,16 +1245,21 @@
     const localEmailInput = document.getElementById('localEmailInput');
     const localPassInput = document.getElementById('localPassInput');
     const submitLoginBtn = document.getElementById('submitLoginBtn');
+    
+    // Elements moved to Sidebar
     const newStoryInput = document.getElementById('newStoryInput');
     const updateStoryBtn = document.getElementById('updateStoryBtn');
-    const deleteStoryBtn = document.getElementById('deleteStoryBtn');
-
     const inputModName = document.getElementById('inputModName');
     const saveModNameBtn = document.getElementById('saveModNameBtn');
-
     const inputMonth = document.getElementById('inputMonth');
     const inputTopic = document.getElementById('inputTopic');
     const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
+    const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
+    const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
+    const previewBtn = document.getElementById('previewBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const deleteStoryBtn = document.getElementById('deleteStoryBtn');
 
     const ratingForm = document.getElementById('ratingForm');
     const friendNameInput = document.getElementById('friendName');
@@ -1246,8 +1270,6 @@
 
     const userAuthorGuessGroup = document.getElementById('userAuthorGuessGroup');
     const userTitleSuggestionGroup = document.getElementById('userTitleSuggestionGroup');
-    const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
-    const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
 
     const readerSuggestions = document.getElementById('readerSuggestions');
     const headingSuggesterInput = document.getElementById('headingSuggesterInput');
@@ -1258,8 +1280,6 @@
 
     const saveNotesBtn = document.getElementById('saveNotesBtn');
 
-    const previewBtn = document.getElementById('previewBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
     const webviewWrapper = document.getElementById('webviewWrapper');
     const webviewTableBody = document.getElementById('webviewTableBody');
     const webviewLoadingBadge = document.getElementById('webviewLoadingBadge');
@@ -1708,6 +1728,7 @@
 
             loginInterface.classList.add('hidden');
             modInterface.classList.remove('hidden');
+            sidebarModOptions.classList.remove('hidden');
             if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
 
             evaluateLocalStorageRestrictions();
@@ -2129,6 +2150,8 @@
             webviewTableBody.innerHTML = matrixData.tableBodyRows;
             webviewWrapper.classList.remove('hidden');
 
+            toggleMenu(false); // Close sidebar so user can see preview table
+
             customAlert("📊 Live preview canvas rendering synchronised successfully below.");
         } catch (err) {
             console.error(err);
@@ -2159,6 +2182,8 @@
             clientLink.click();
             document.body.removeChild(clientLink);
 
+            toggleMenu(false); // Close sidebar
+            
             customAlert("📊 Data payload compressed and compiled to secure HTML format spreadsheet document.");
         } catch (err) {
             console.error(err);
@@ -2186,10 +2211,12 @@
             if (savedAuth === 'developer') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = true;
+                sidebarModOptions.classList.remove('hidden');
                 navBtnModerator.click();
             } else if (savedAuth === 'moderator') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = false;
+                sidebarModOptions.classList.remove('hidden');
                 navBtnModerator.click(); 
             }
         } catch (e) {
@@ -2212,7 +2239,8 @@
 
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
-
+            sidebarModOptions.classList.add('hidden'); // Hide from Sidebar
+            
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
 
