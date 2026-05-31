@@ -7,7 +7,7 @@
     <style>
         :root {
             /* =========================================
-               THEME 1: DEFAULT LIGHT (Purple & White)
+               THEME 1: CLASSIC LIGHT (Purple & White)
                ========================================= */
             --bg-color: #ffffff;
             --bg-gradient: none;
@@ -88,87 +88,192 @@
             --status-shadow: none;
         }
 
-        [data-theme="dark"] {
-            /* =========================================
-               THEME 2: DARK GLASS (Saturated Green & Peach)
-               ========================================= */
-            --bg-color: #1F2943;
-            --bg-gradient: linear-gradient(135deg, #1F2943 0%, #3D5F6B 100%);
+        /* Base Variables for all Dark Premium Themes */
+        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="gold"], [data-theme="coral"] {
+            --bg-color: #111827;
+            --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1F2937 100%);
             --text-color: #ffffff;
-            --text-muted: #b0c4de;
-            --primary: #00E676;
-            --primary-hover: #00C853;
-            --accent: #A2C953;
-            --border: rgba(255, 255, 255, 0.15);
-            --admin-color: #FFB085;
-            --admin-hover: #E6956A;
-            --dev-color: #7F5E9F;
-            --danger: #D65D65;
-            --purple-banner: rgba(31, 41, 67, 0.6);
+            --text-muted: #9CA3AF;
+            --danger: #EF4444;
+            --purple-banner: rgba(17, 24, 39, 0.75);
             
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            --card-border: 1px solid var(--border);
-            --card-backdrop: blur(10px);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --card-backdrop: blur(12px);
             --card-padding: 20px;
             --card-radius: 12px;
             
-            --h3-color: #e0e0e0;
+            --h3-color: #e5e7eb;
             
-            --input-bg: rgba(0, 0, 0, 0.2);
+            --input-bg: rgba(0, 0, 0, 0.25);
             --input-text: #ffffff;
             --input-placeholder: rgba(255, 255, 255, 0.4);
             
-            --btn-text-color: #0b2e1b;
-            --btn-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-            --btn-text-shadow: 0 1px 2px rgba(255,255,255,0.2);
+            --btn-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+            --btn-text-shadow: none;
             --btn-active-transform: translateY(2px);
-            --btn-admin-text: #3b2011;
-            --btn-accent-text: #1a3300;
             
             --banner-backdrop: blur(8px);
-            --banner-border: 1px solid var(--border);
+            --banner-border: 1px solid rgba(255, 255, 255, 0.05);
             --banner-title-shadow: 0 2px 4px rgba(0,0,0,0.5);
             
-            --nav-bg: rgba(20, 28, 46, 0.95);
-            --nav-border-top: 2px solid var(--border);
-            --nav-btn-text: var(--text-muted);
+            --nav-bg: rgba(17, 24, 39, 0.95);
+            --nav-border-top: 1px solid rgba(255, 255, 255, 0.1);
+            --nav-btn-text: #9CA3AF;
             --nav-btn-hover-bg: rgba(255,255,255,0.05);
             --nav-btn-hover-text: #ffffff;
             --nav-active-bg: rgba(255,255,255,0.05);
-            --nav-active-color: var(--primary);
-            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='4'/%3E%3C/svg%3E");
+            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='4'/%3E%3C/svg%3E");
             
             --switch-bg: rgba(255, 255, 255, 0.05);
-            --switch-border: 1px solid var(--border);
             --slider-bg: rgba(255,255,255,0.2);
             
             --webview-bg: rgba(0, 0, 0, 0.2);
-            --webview-border: 2px solid var(--admin-color);
-            --webview-th-text: #1a1a1a;
-            --webview-td-text: #e0e0e0;
-            --webview-row-alt: rgba(255, 255, 255, 0.03);
+            --webview-th-text: #000;
+            --webview-td-text: #e5e7eb;
+            --webview-row-alt: rgba(255, 255, 255, 0.02);
             
-            --modal-overlay: rgba(20, 28, 46, 0.8);
-            --modal-bg: #2A3B4C;
-            --modal-border: 1px solid #4A637D;
+            --modal-overlay: rgba(17, 24, 39, 0.85);
+            --modal-bg: #1F2937;
             --modal-text: #fff;
-            --modal-input-bg: rgba(0,0,0,0.3);
+            --modal-input-bg: rgba(0,0,0,0.4);
             --modal-btn-cancel-bg: rgba(255,255,255,0.1);
             --modal-btn-cancel-text: #fff;
-            --modal-btn-cancel-border: 1px solid var(--border);
-            --modal-btn-ok-bg: var(--primary);
-            --modal-btn-ok-text: #0b2e1b;
-            --modal-btn-ok-border: none;
             
-            --winner-bg: rgba(0, 230, 118, 0.2);
-            --winner-text: var(--primary);
-            --winner-border: 1px solid var(--primary);
-            
-            --status-bg: rgba(214, 93, 101, 0.15);
-            --status-icon-bg: rgba(214, 93, 101, 0.2);
-            --status-text: #f8d7da;
+            --status-bg: rgba(239, 68, 68, 0.1);
+            --status-icon-bg: rgba(239, 68, 68, 0.2);
+            --status-text: #FECACA;
             --status-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 1. Midnight Cyan */
+        [data-theme="cyan"] {
+            --primary: #00D4FF;
+            --primary-hover: #0078FF;
+            --accent: #00A3FF;
+            --admin-color: #7EE7FF;
+            --admin-hover: #00D4FF;
+            --dev-color: #00A3FF;
+            --border: rgba(0,212,255,0.25);
+            --card-border: 1px solid rgba(0,212,255,0.25);
+            --winner-bg: rgba(0,230,118,0.15);
+            --winner-text: #00E676;
+            --winner-border: 1px solid rgba(0,230,118,0.4);
+            --btn-text-color: #000;
+            --btn-admin-text: #000;
+            --btn-accent-text: #000;
+            --nav-active-color: #00D4FF;
+            --switch-border: 1px solid rgba(0,212,255,0.25);
+            --webview-border: 2px solid #7EE7FF;
+            --modal-border: 1px solid rgba(0,212,255,0.3);
+            --modal-btn-cancel-border: 1px solid rgba(0,212,255,0.3);
+            --modal-btn-ok-bg: #00D4FF;
+            --modal-btn-ok-text: #000;
+            --modal-btn-ok-border: none;
+        }
+
+        /* 2. Royal Purple */
+        [data-theme="purple"] {
+            --primary: #A855F7;
+            --primary-hover: #6D28D9;
+            --accent: #7C3AED;
+            --admin-color: #D8B4FE;
+            --admin-hover: #A855F7;
+            --dev-color: #7C3AED;
+            --border: rgba(168,85,247,0.25);
+            --card-border: 1px solid rgba(168,85,247,0.25);
+            --winner-bg: rgba(34,197,94,0.15);
+            --winner-text: #22C55E;
+            --winner-border: 1px solid rgba(34,197,94,0.4);
+            --btn-text-color: #fff;
+            --btn-admin-text: #000;
+            --btn-accent-text: #fff;
+            --nav-active-color: #A855F7;
+            --switch-border: 1px solid rgba(168,85,247,0.25);
+            --webview-border: 2px solid #D8B4FE;
+            --modal-border: 1px solid rgba(168,85,247,0.3);
+            --modal-btn-cancel-border: 1px solid rgba(168,85,247,0.3);
+            --modal-btn-ok-bg: #A855F7;
+            --modal-btn-ok-text: #fff;
+            --modal-btn-ok-border: none;
+        }
+
+        /* 3. Emerald Mint */
+        [data-theme="emerald"] {
+            --primary: #10B981;
+            --primary-hover: #059669;
+            --accent: #34D399;
+            --admin-color: #6EE7B7;
+            --admin-hover: #10B981;
+            --dev-color: #34D399;
+            --border: rgba(16,185,129,0.25);
+            --card-border: 1px solid rgba(16,185,129,0.25);
+            --winner-bg: rgba(34,197,94,0.15);
+            --winner-text: #22C55E;
+            --winner-border: 1px solid rgba(34,197,94,0.4);
+            --btn-text-color: #000;
+            --btn-admin-text: #000;
+            --btn-accent-text: #000;
+            --nav-active-color: #10B981;
+            --switch-border: 1px solid rgba(16,185,129,0.25);
+            --webview-border: 2px solid #6EE7B7;
+            --modal-border: 1px solid rgba(16,185,129,0.3);
+            --modal-btn-cancel-border: 1px solid rgba(16,185,129,0.3);
+            --modal-btn-ok-bg: #10B981;
+            --modal-btn-ok-text: #000;
+            --modal-btn-ok-border: none;
+        }
+
+        /* 4. Gold & Navy */
+        [data-theme="gold"] {
+            --primary: #FBBF24;
+            --primary-hover: #D97706;
+            --accent: #F59E0B;
+            --admin-color: #FFD580;
+            --admin-hover: #FBBF24;
+            --dev-color: #F59E0B;
+            --border: rgba(251,191,36,0.25);
+            --card-border: 1px solid rgba(251,191,36,0.25);
+            --winner-bg: rgba(34,197,94,0.15);
+            --winner-text: #22C55E;
+            --winner-border: 1px solid rgba(34,197,94,0.4);
+            --btn-text-color: #000;
+            --btn-admin-text: #000;
+            --btn-accent-text: #000;
+            --nav-active-color: #FBBF24;
+            --switch-border: 1px solid rgba(251,191,36,0.25);
+            --webview-border: 2px solid #FFD580;
+            --modal-border: 1px solid rgba(251,191,36,0.3);
+            --modal-btn-cancel-border: 1px solid rgba(251,191,36,0.3);
+            --modal-btn-ok-bg: #FBBF24;
+            --modal-btn-ok-text: #000;
+            --modal-btn-ok-border: none;
+        }
+
+        /* 5. Coral Sunset */
+        [data-theme="coral"] {
+            --primary: #FF8A65;
+            --primary-hover: #F4511E;
+            --accent: #FF7043;
+            --admin-color: #FFB199;
+            --admin-hover: #FF8A65;
+            --dev-color: #FF7043;
+            --border: rgba(255,138,101,0.25);
+            --card-border: 1px solid rgba(255,138,101,0.25);
+            --winner-bg: rgba(0,230,118,0.15);
+            --winner-text: #00E676;
+            --winner-border: 1px solid rgba(0,230,118,0.4);
+            --btn-text-color: #000;
+            --btn-admin-text: #000;
+            --btn-accent-text: #000;
+            --nav-active-color: #FF8A65;
+            --switch-border: 1px solid rgba(255,138,101,0.25);
+            --webview-border: 2px solid #FFB199;
+            --modal-border: 1px solid rgba(255,138,101,0.3);
+            --modal-btn-cancel-border: 1px solid rgba(255,138,101,0.3);
+            --modal-btn-ok-bg: #FF8A65;
+            --modal-btn-ok-text: #000;
+            --modal-btn-ok-border: none;
         }
 
         /* --- GLOBAL STYLES --- */
@@ -341,7 +446,6 @@
             overflow-y: auto;
         }
         
-        /* Smaller font specifically for sidebar inner tools */
         .side-menu-content label { font-size: 13px; }
         .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
         .side-menu-content button { padding: 8px 12px; font-size: 13px; }
@@ -793,8 +897,12 @@
                 <span style="font-size: 16px;">🖌️</span> Theme
             </label>
             <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
-                <option value="light">Classic</option>
-                <option value="dark">Green</option>
+                <option value="light">Classic Light</option>
+                <option value="cyan">Midnight Cyan</option>
+                <option value="purple">Royal Purple</option>
+                <option value="emerald">Emerald Mint</option>
+                <option value="gold">Gold & Navy</option>
+                <option value="coral">Coral Sunset</option>
             </select>
         </div>
 
