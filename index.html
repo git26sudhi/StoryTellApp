@@ -880,9 +880,13 @@
 
 <div class="container">
     <div class="metadata-opposite-row">
-        <!-- MENU OPEN BUTTON WITH GEAR EMOJI -->
+        <!-- MENU OPEN BUTTON WITH GEAR SVG -->
         <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 18px; line-height: 1;">⚙️</span> Menu
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Menu
         </button>
         <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
     </div>
@@ -1063,8 +1067,7 @@
 
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header">
-            <h2>💻 Developer Exclusive</h2>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">System configuration core active.</p>
+            <h2>💻 Developer options</h2>
 
             <div class="switch-container danger-toggle">
                 <div>
@@ -1084,14 +1087,12 @@
                 </label>
             </div>
 
-            <h3>🛠️ Moderator Options</h3>
-            <div class="btn-row">
-                <button type="button" id="devResetModNameBtn" class="btn-dev-action">Reset Name</button>
+            <div class="btn-row" style="margin-top: 20px;">
+                <button type="button" id="devSeasonResetBtn" class="btn-dev-action">Season Reset</button>
             </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
-            <div class="btn-row">
-                <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">Load Feedback Data</button>
+            <div class="btn-row" style="margin-top: 25px;">
+                <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">User feedback preview</button>
                 <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: var(--input-bg); box-shadow:none;">Download Feedback Table</button>
             </div>
             <div id="devFeedbackContainer" class="webview-container hidden" style="border-color: var(--dev-color);">
@@ -1310,7 +1311,7 @@
     const webviewTableBody = document.getElementById('webviewTableBody');
     const webviewLoadingBadge = document.getElementById('webviewLoadingBadge');
 
-    const devResetModNameBtn = document.getElementById('devResetModNameBtn');
+    const devSeasonResetBtn = document.getElementById('devSeasonResetBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
     
     const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
@@ -1483,7 +1484,7 @@
             customAlert("Error parsing feedback metrics.");
         } finally {
             devLoadFeedbackBtn.disabled = false;
-            devLoadFeedbackBtn.textContent = "Load Feedback Data";
+            devLoadFeedbackBtn.textContent = "User feedback preview";
         }
     });
 
@@ -2246,14 +2247,19 @@
         }
     });
 
-    devResetModNameBtn.addEventListener('click', async () => {
-        const newName = await customPrompt("Enter new Moderator name:", "Mod");
-        if(newName) {
-            await setDoc(doc(db, "app_state", "global_config"), { 
-                modName: newName,
-                isNameLocked: false 
-            }, { merge: true });
-            customAlert("Profile reset and unlocked successfully.");
+    devSeasonResetBtn.addEventListener('click', async () => {
+        if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, and clear the Subject.")) {
+            try {
+                await setDoc(doc(db, "app_state", "global_config"), { 
+                    modName: "Mod",
+                    isNameLocked: false,
+                    month: "January",
+                    topic: ""
+                }, { merge: true });
+                customAlert("Season reset successfully.");
+            } catch(e) {
+                customAlert("Error resetting season.");
+            }
         }
     });
 
