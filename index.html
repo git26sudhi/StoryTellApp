@@ -91,7 +91,7 @@
         /* =========================================
            BASE VARIABLES FOR ALL MATTE/SATURATED THEMES
            ========================================= */
-        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="gold"], [data-theme="coral"], [data-theme="mono"] {
+        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="mono"] {
             --text-color: #ffffff;
             --text-muted: #CBD5E1;
             --danger: #DC2626;
@@ -230,63 +230,7 @@
             --modal-btn-ok-border: none;
         }
 
-        /* 4. Burnt Amber (Matte & Saturated) */
-        [data-theme="gold"] {
-            --bg-color: #261100;
-            --bg-gradient: linear-gradient(135deg, #261100 0%, #662A00 100%);
-            --primary: #D97706;
-            --primary-hover: #B45309;
-            --accent: #D97706;
-            --admin-color: #059669;
-            --admin-hover: #047857;
-            --dev-color: #D97706;
-            --border: rgba(217, 119, 6, 0.3);
-            --card-border: 1px solid rgba(217, 119, 6, 0.2);
-            --winner-bg: rgba(5, 150, 105, 0.2);
-            --winner-text: #10B981;
-            --winner-border: 1px solid #059669;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #D97706;
-            --switch-border: 1px solid rgba(217, 119, 6, 0.3);
-            --webview-border: 2px solid #D97706;
-            --modal-border: 1px solid #D97706;
-            --modal-btn-cancel-border: 1px solid rgba(217, 119, 6, 0.3);
-            --modal-btn-ok-bg: #D97706;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
-        }
-
-        /* 5. Crimson Matte (Matte & Saturated) */
-        [data-theme="coral"] {
-            --bg-color: #2A0000;
-            --bg-gradient: linear-gradient(135deg, #2A0000 0%, #660000 100%);
-            --primary: #DC2626;
-            --primary-hover: #B91C1C;
-            --accent: #DC2626;
-            --admin-color: #0284C7;
-            --admin-hover: #0369A1;
-            --dev-color: #DC2626;
-            --border: rgba(220, 38, 38, 0.3);
-            --card-border: 1px solid rgba(220, 38, 38, 0.2);
-            --winner-bg: rgba(2, 132, 199, 0.2);
-            --winner-text: #38BDF8;
-            --winner-border: 1px solid #0284C7;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #DC2626;
-            --switch-border: 1px solid rgba(220, 38, 38, 0.3);
-            --webview-border: 2px solid #DC2626;
-            --modal-border: 1px solid #DC2626;
-            --modal-btn-cancel-border: 1px solid rgba(220, 38, 38, 0.3);
-            --modal-btn-ok-bg: #DC2626;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
-        }
-
-        /* 6. Black & Gray (Solid & Minimal) */
+        /* 4. Black & Gray (Solid & Minimal) */
         [data-theme="mono"] {
             --bg-color: #000000;
             --bg-gradient: none;
@@ -609,7 +553,8 @@
         button:disabled { background-color: rgba(128, 128, 128, 0.3); color: rgba(128, 128, 128, 0.8); cursor: not-allowed; box-shadow: none; transform: none;}
 
         .btn-mod-action { background-color: var(--admin-color); color: var(--btn-admin-text); }
-        .btn-dev-action { background-color: var(--dev-color); color: var(--btn-text-color);}
+        .btn-dev-action { background-color: var(--dev-color); color: white;}
+        .btn-danger { background-color: var(--danger); color: white;}
         .btn-accent { background-color: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
         
         .btn-icon-only {
@@ -657,12 +602,12 @@
             gap: 12px;
             margin-top: 15px;
         }
-        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
+        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; }
         .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
         .preview-output-box {
             background-color: var(--input-bg);
-            border: 1px dashed rgba(255,255,255,0.4);
+            border: 1px dashed var(--admin-color);
             padding: 12px;
             border-radius: 6px;
             font-family: inherit;
@@ -822,14 +767,14 @@
             font-size: 14px;
             font-weight: bold;
             color: var(--admin-color);
-            border-bottom: 2px solid var(--border);
+            border-bottom: 2px solid var(--admin-color);
             padding-bottom: 6px;
             margin-bottom: 12px;
         }
         .webview-scroll-frame {
             width: 100%;
             overflow-x: auto;
-            max-height: 600px; 
+            max-height: 600px; /* Increased Preview Height */
             overflow-y: auto;
         }
         .webview-table {
@@ -838,7 +783,7 @@
             font-size: 13px;
         }
         .webview-table th {
-            background: var(--admin-color);
+            background-color: var(--admin-color);
             color: var(--webview-th-text);
             padding: 10px;
             border: 1px solid var(--border);
@@ -953,8 +898,6 @@
                 <option value="cyan">Deep Cyan</option>
                 <option value="purple">Matte Purple</option>
                 <option value="emerald">Forest Green</option>
-                <option value="gold">Burnt Amber</option>
-                <option value="coral">Crimson Matte</option>
                 <option value="mono">Black & Gray</option>
             </select>
         </div>
