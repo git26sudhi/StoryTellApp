@@ -6,22 +6,27 @@
     <title>കഥാസാഗരം</title>
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --primary: #4a7c59;
-            --primary-hover: #3b6346;
-            --accent: #68b0ab;
-            --border: #dddddd;
-            --admin-color: #2b4c7e;
-            --admin-hover: #1d3557;
-            --dev-color: #7b2cbf;
-            --danger: #c93b3b;
-            --purple-banner: #4a154b;
+            /* Palette updated with Saturated Green & Peach */
+            --bg-dark-blue: #1F2943;
+            --bg-teal: #3D5F6B;
+            --text-color: #ffffff;
+            --text-muted: #b0c4de;
+            --primary: #00E676;        /* Saturated Green */
+            --primary-hover: #00C853;
+            --accent: #A2C953;         /* Settings button Olive */
+            --border: rgba(255, 255, 255, 0.15);
+            --admin-color: #FFB085;    /* Peach */
+            --admin-hover: #E6956A;
+            --dev-color: #7F5E9F;      /* Purple tile */
+            --danger: #D65D65;         /* Red tile */
+            --purple-banner: rgba(31, 41, 67, 0.6); /* Blends into dark theme */
+            --card-bg: rgba(255, 255, 255, 0.08);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, var(--bg-dark-blue) 0%, var(--bg-teal) 100%);
+            background-attachment: fixed;
             color: var(--text-color);
             line-height: 1.6;
             padding: 0 0 80px 0;
@@ -50,6 +55,8 @@
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
         }
 
         .banner-content-lock {
@@ -76,7 +83,7 @@
             border-radius: 50%;
             display: block;
             margin: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5); 
         }
 
         .banner-topic {
@@ -86,6 +93,7 @@
             margin: 0;
             text-align: left;
             line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .banner-content-lock .month-sub {
@@ -95,6 +103,7 @@
             margin: 0 1mm 0 0;
             letter-spacing: -0.1px;
             line-height: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .metadata-opposite-row {
@@ -110,7 +119,7 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: #222222;
+            color: var(--text-muted);
             margin: 0;
             text-align: right;
         }
@@ -120,30 +129,32 @@
             display: flex;
             align-items: flex-start;
             gap: 16px;
-            background: rgba(255, 241, 241, 0.7);
+            background: rgba(214, 93, 101, 0.15);
             backdrop-filter: blur(8px);
             padding: 20px;
             border-radius: 20px;
             border-left: 6px solid var(--danger);
             margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(201, 59, 59, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         .status-icon-box {
-            background: #ffeaea;
+            background: rgba(214, 93, 101, 0.2);
             padding: 10px;
             border-radius: 50%;
             display: flex;
         }
         .status-content h4 { margin: 0; color: var(--danger); font-size: 16px; font-weight: 700; }
-        .status-content p { margin: 4px 0 0 0; color: #5f2020; font-size: 14px; font-weight: 500; }
+        .status-content p { margin: 4px 0 0 0; color: #f8d7da; font-size: 14px; font-weight: 500; }
         .hidden { display: none !important; }
 
         .plain-section {
-            background: transparent;
-            padding: 0;
+            background: var(--card-bg);
+            padding: 20px;
             margin-bottom: 35px;
-            border-radius: 0;
-            box-shadow: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
         }
 
         h2 {
@@ -156,7 +167,7 @@
 
         h3 {
             margin: 20px 0 10px 0;
-            color: #444;
+            color: #e0e0e0;
             font-size: 16px;
             font-weight: 600;
         }
@@ -180,6 +191,7 @@
             margin-bottom: 6px;
             font-weight: 600;
             font-size: 14px;
+            color: #e0e0e0;
         }
 
         input[type="text"], input[type="password"], input[type="number"], textarea, select {
@@ -189,36 +201,41 @@
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
-            background-color: #fafafa;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-color);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         button {
             background-color: var(--primary);
-            color: white;
+            color: #0b2e1b;
             border: none;
             padding: 11px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 15px;
             font-weight: bold;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.2);
         }
 
-        button:hover { background-color: var(--primary-hover); }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+        }
 
-        .btn-mod-action { background-color: var(--admin-color); }
-        .btn-mod-action:hover { background-color: var(--admin-hover); }
+        button:hover { filter: brightness(1.1); }
+        button:disabled { background-color: rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.5); cursor: not-allowed; box-shadow: none; transform: none;}
 
-        .btn-dev-action { background-color: var(--dev-color); }
-        .btn-dev-action:hover { background-color: #5a189a; }
-
-        .btn-danger { background-color: var(--danger); }
-        .btn-danger:hover { background-color: #a72e2e; }
-
-        .btn-accent { background-color: var(--accent); color: white; }
-        .btn-accent:hover { background-color: #559691; }
-
+        .btn-mod-action { background-color: var(--admin-color); color: #3b2011; }
+        .btn-dev-action { background-color: var(--dev-color); color: white;}
+        .btn-danger { background-color: var(--danger); color: white;}
+        .btn-accent { background-color: var(--accent); color: #1a3300; text-shadow: none; }
+        
         .btn-icon-only {
             display: inline-flex;
             align-items: center;
@@ -243,14 +260,15 @@
             height: 42px;
             padding: 0;
             border-radius: 6px;
-            background-color: #f1f3f5;
-            color: #495057;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             border: 1px solid var(--border);
             transition: all 0.2s;
+            box-shadow: none;
         }
         .btn-clear-inline:hover {
-            background-color: #e9ecef;
-            color: #212529;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
         }
         .btn-clear-inline svg {
             width: 18px;
@@ -263,19 +281,17 @@
             gap: 12px;
             margin-top: 15px;
         }
-        .btn-preview { background-color: #2b4c7e; flex: 1; font-size: 15px; }
-        .btn-preview:hover { background-color: #1d3557; }
-        .btn-download { background-color: #217346; flex: 1; font-size: 15px; }
-        .btn-download:hover { background-color: #1a5c38; }
+        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; }
+        .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
         .preview-output-box {
-            background-color: #f8f9fa;
+            background-color: rgba(0, 0, 0, 0.2);
             border: 1px dashed var(--admin-color);
             padding: 12px;
             border-radius: 6px;
             font-family: inherit;
             font-size: 14px;
-            color: #333;
+            color: #e0e0e0;
             max-height: 180px;
             overflow-y: auto;
             white-space: pre-wrap;
@@ -292,13 +308,13 @@
         .winner-chip {
             display: inline-flex;
             align-items: center;
-            background-color: #e8f0fe;
-            color: #1a73e8;
+            background-color: rgba(0, 230, 118, 0.2); /* Adjusted for saturated green */
+            color: var(--primary);
             padding: 4px 10px;
             border-radius: 16px;
             font-size: 13px;
             font-weight: 600;
-            border: 1px solid #c2e7ff;
+            border: 1px solid var(--primary);
         }
 
         .system-navigation-footer-bar {
@@ -307,18 +323,19 @@
             left: 0;
             width: 100vw;
             height: 52px;
-            background-color: #e9ecef;
+            background-color: rgba(20, 28, 46, 0.95);
             display: flex;
             box-sizing: border-box;
-            border-top: 3px solid #ced4da;
+            border-top: 2px solid var(--border);
             z-index: 99999;
+            backdrop-filter: blur(10px);
         }
 
         .nav-split-trigger-btn {
             flex: 1;
             height: 100%;
             background: transparent;
-            color: #495057;
+            color: var(--text-muted);
             border: none;
             border-radius: 0;
             padding: 0;
@@ -331,29 +348,37 @@
             justify-content: center;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: none;
+            text-shadow: none;
         }
 
         .nav-split-trigger-btn:first-child {
             border-right: 20px solid transparent;
-            border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E") 0 100% 0 0 vertical repeat;
+            border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='4'/%3E%3C/svg%3E") 0 100% 0 0 vertical repeat;
             margin-right: -20px;
             padding-right: 10px;
         }
 
         .nav-split-trigger-btn:hover {
-            background-color: #dee2e6;
-            color: #212529;
+            background-color: rgba(255,255,255,0.05);
+            color: #ffffff;
+            transform: none;
+            box-shadow: none;
         }
 
         .nav-split-trigger-btn.active-panel-indicator {
-            background-color: #ffffff;
-            color: var(--purple-banner);
-            box-shadow: inset 0 4px 0 0 var(--purple-banner);
+            background-color: rgba(255,255,255,0.05);
+            color: var(--primary);
+            box-shadow: inset 0 4px 0 0 var(--primary);
+        }
+        
+        .nav-split-trigger-btn.active-panel-indicator:hover {
+            box-shadow: inset 0 4px 0 0 var(--primary);
         }
 
         .divider {
             border: 0;
-            border-top: 2px dashed #e4e4e4;
+            border-top: 2px dashed rgba(255,255,255,0.2);
             margin: 40px 0;
         }
 
@@ -361,10 +386,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #f7f1fe;
+            background: rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 8px;
-            border: 1px solid #e1d0f7;
+            border: 1px solid var(--border);
             margin-bottom: 20px;
         }
         .switch {
@@ -382,7 +407,7 @@
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc;
+            background-color: rgba(255,255,255,0.2);
             transition: .4s;
             border-radius: 28px;
         }
@@ -409,9 +434,9 @@
 
         .webview-container {
             margin-top: 25px;
-            background: #ffffff;
+            background: rgba(0, 0, 0, 0.2);
             padding: 15px;
-            border: 2px solid #2b4c7e;
+            border: 2px solid var(--admin-color);
             border-radius: 6px;
         }
         .webview-header {
@@ -420,8 +445,8 @@
             align-items: center;
             font-size: 14px;
             font-weight: bold;
-            color: #1d3557;
-            border-bottom: 2px solid #2b4c7e;
+            color: var(--admin-color);
+            border-bottom: 2px solid var(--admin-color);
             padding-bottom: 6px;
             margin-bottom: 12px;
         }
@@ -437,68 +462,67 @@
             font-size: 13px;
         }
         .webview-table th {
-            background-color: #2b4c7e;
-            color: white;
+            background-color: var(--admin-color);
+            color: #1a1a1a;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border);
             text-align: left;
             font-weight: bold;
         }
         .webview-table td {
             padding: 10px;
-            border: 1px solid #ddd;
-            color: #333;
+            border: 1px solid var(--border);
+            color: #e0e0e0;
             vertical-align: top;
         }
         .webview-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
-        /* --- Custom Modal Styles (Ash & Gray Grading) --- */
+        /* --- Custom Modal Styles --- */
         #customModalOverlay {
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh;
-            background: rgba(80, 80, 80, 0.7);
+            background: rgba(20, 28, 46, 0.8);
             backdrop-filter: blur(4px);
             z-index: 999999;
             display: flex; 
             align-items: center; justify-content: center;
         }
         .custom-modal-box {
-            background: #e6e6e6; /* Light Ash */
-            border: 2px solid #a3a3a3; /* Gray Border */
+            background: #2A3B4C; 
+            border: 1px solid #4A637D; 
             border-radius: 12px;
             padding: 25px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
-            color: #4a4a4a;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+            font-family: inherit;
         }
         #customModalMessage {
             margin: 0 0 20px 0;
             font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #fff;
             line-height: 1.5;
         }
         #customModalInput {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #b3b3b3;
+            border: 1px solid var(--border);
             border-radius: 6px;
-            background: #f2f2f2;
+            background: rgba(0,0,0,0.3);
             font-size: 15px;
-            color: #333;
+            color: #fff;
             box-sizing: border-box;
         }
         #customModalInput:focus {
             outline: none;
-            border-color: #888;
-            background: #fff;
+            border-color: var(--primary);
         }
         .custom-modal-btn-row {
             display: flex;
@@ -513,23 +537,24 @@
             cursor: pointer;
             transition: all 0.2s ease;
             flex: 1;
+            box-shadow: none;
+            text-shadow: none;
         }
         #customModalCancel {
-            background: #cfcfcf; /* Ash light */
-            color: #444;
-            border: 1px solid #b0b0b0;
+            background: rgba(255,255,255,0.1); 
+            color: #fff;
+            border: 1px solid var(--border);
         }
         #customModalCancel:hover {
-            background: #bfbfbf;
-            color: #222;
+            background: rgba(255,255,255,0.2);
         }
         #customModalOk {
-            background: #7a7a7a; /* Medium dark gray */
-            color: #fff;
-            border: 1px solid #5c5c5c;
+            background: var(--primary); 
+            color: #0b2e1b;
+            border: none;
         }
         #customModalOk:hover {
-            background: #616161;
+            background: var(--primary-hover);
         }
     </style>
 </head>
@@ -552,7 +577,7 @@
 
     <div id="pausedBanner" class="status-alert hidden">
         <div class="status-icon-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c93b3b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--danger)">
                 <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                 <line x1="12" y1="9" x2="12" y2="13"></line>
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -585,11 +610,11 @@
                     <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9" required>
                 </div>
                 <div class="form-group hidden" id="userAuthorGuessGroup">
-                    <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: #777;">(Optional)</span></label>
+                    <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: rgba(255,255,255,0.5);">(Optional)</span></label>
                     <input type="text" id="authorGuess" placeholder="Who do you think wrote this?">
                 </div>
                 <div class="form-group hidden" id="userTitleSuggestionGroup">
-                    <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: #777;">(Optional)</span></label>
+                    <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: rgba(255,255,255,0.5);">(Optional)</span></label>
                     <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
                 </div>
                 <button type="submit" id="submitRatingBtn">Submit Review</button>
@@ -597,14 +622,14 @@
         </div>
 
         <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border); padding-top: 20px;">
-            <p style="font-size: 14px; color: #666; margin-top: 0;">Have suggestions to improve this web app?</p>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Have suggestions to improve this web app?</p>
             <button type="button" id="goToFeedbackBtn" class="btn-accent" style="width: auto;">Give App Feedback</button>
         </div>
     </div>
 
     <div id="feedbackInterface" class="plain-section hidden">
         <h2>📝 App Feedback</h2>
-        <p style="font-size: 14px; color: #555;">Your feedback goes directly to the developer to help improve the platform.</p>
+        <p style="font-size: 14px; color: var(--text-muted);">Your feedback goes directly to the developer to help improve the platform.</p>
         <div class="form-group">
             <label for="feedbackNameInput">Your Name *</label>
             <input type="text" id="feedbackNameInput" placeholder="Enter your name" required>
@@ -615,13 +640,13 @@
         </div>
         <div class="btn-row">
             <button type="button" id="submitFeedbackBtn" class="btn-accent">Submit Feedback</button>
-            <button type="button" id="cancelFeedbackBtn" style="background-color: #6c757d;">Cancel / Back</button>
+            <button type="button" id="cancelFeedbackBtn" style="background-color: rgba(255,255,255,0.1); color: #fff; box-shadow:none;">Cancel / Back</button>
         </div>
     </div>
 
     <div id="loginInterface" class="plain-section hidden">
         <h2>🔒 Moderator / Developer Authentication</h2>
-        <p style="font-size: 14px; color: #555; margin-top: 0;">Enter your credentials below to access the control panels.</p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Enter your credentials below to access the control panels.</p>
         <div class="form-group">
             <label for="localEmailInput">Email Address</label>
             <input type="text" id="localEmailInput" placeholder="mod@admin.com">
@@ -658,12 +683,12 @@
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 15px; background: #f0f4f8; padding: 15px; border-radius: 6px; border: 1px solid #d0daf0;">
+            <div class="form-group" style="margin-top: 15px; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 6px; border: 1px solid var(--border);">
                 <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 140px;">Select Story to populate recommendations buffer...</div>
                 <button type="button" id="copySuggestionsBtn" class="btn-mod-action" style="margin-top: 10px; width: 100%; font-size: 13px; padding: 8px 12px;">Copy Title suggestions list</button>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid #ccc; margin: 25px 0;">
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
 
             <div class="switch-container">
                 <div>
@@ -704,7 +729,7 @@
 
             <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-top: 5px; width: 100%;">change configuration</button>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
 
             <div class="form-group">
                 <label for="readerSuggestions">Author's Favorite Heading</label>
@@ -732,7 +757,7 @@
 
         <div class="plain-section">
             <h2>Download System Data</h2>
-            <p style="font-size: 14px; color: #555; margin-top: 0;">Compile and coordinate metrics logs into a clean grid canvas layer preview or document stream.</p>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Compile and coordinate metrics logs into a clean grid canvas layer preview or document stream.</p>
 
             <div class="export-btn-container">
                 <button id="previewBtn" class="btn-preview">Preview</button>
@@ -741,7 +766,7 @@
 
             <div id="webviewWrapper" class="webview-container hidden">
                 <div class="webview-header">
-                    <span id="webviewLoadingBadge" style="color: #2b4c7e; font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
+                    <span id="webviewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
                 </div>
                 <div class="webview-scroll-frame">
                     <table class="webview-table">
@@ -767,7 +792,7 @@
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header">
             <h2>💻 Developer Exclusive</h2>
-            <p style="font-size: 14px; color: #555; margin-top: 0;">System configuration core active.</p>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">System configuration core active.</p>
 
             <div class="switch-container danger-toggle">
                 <div>
@@ -792,10 +817,10 @@
                 <button type="button" id="devResetModNameBtn" class="btn-dev-action">Reset Name</button>
             </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--dev-color);">📬 User App Feedback</h3>
             <div class="btn-row">
                 <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action">Load Feedback Data</button>
-                <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: #5c5c5c;">Download Feedback Table</button>
+                <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: rgba(255,255,255,0.2); box-shadow:none;">Download Feedback Table</button>
             </div>
             <div id="devFeedbackContainer" class="webview-container hidden" style="border-color: var(--dev-color);">
                 <div class="webview-header" style="border-bottom: 2px solid var(--dev-color); color: var(--dev-color);">
@@ -831,11 +856,12 @@
 </div>
 
 <script type="module">
+    // ... (Your Existing JavaScript remains completely identical here) ...
+    // Note: Do not forget to paste back your original <script> tag contents!
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // --- SECURITY PATCH: XSS SANITIZATION FUNCTION ---
     function sanitizeText(str) {
         if (str === null || str === undefined) return "";
         const temp = document.createElement('div');
@@ -843,7 +869,6 @@
         return temp.innerHTML;
     }
 
-    // --- CUSTOM MODAL LOGIC (Gray & Ash Grading) ---
     function showCustomModal(type, message, defaultVal = "") {
         return new Promise((resolve) => {
             const overlay = document.getElementById('customModalOverlay');
@@ -893,7 +918,6 @@
     const customAlert = (msg) => showCustomModal('alert', msg);
     const customConfirm = (msg) => showCustomModal('confirm', msg);
     const customPrompt = (msg, def) => showCustomModal('prompt', msg, def);
-    // ------------------------------------------------
 
     const firebaseConfig = {
         apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
@@ -968,7 +992,6 @@
     const devResetModNameBtn = document.getElementById('devResetModNameBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
     
-    // Feedback Specific Elements
     const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
     const feedbackNameInput = document.getElementById('feedbackNameInput');
     const feedbackTextInput = document.getElementById('feedbackTextInput');
@@ -998,7 +1021,6 @@
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
 
-    // Variables to hold feedback data for export
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
@@ -1032,7 +1054,6 @@
         } catch (e) {}
     });
 
-    // --- APP FEEDBACK USER LOGIC ---
     goToFeedbackBtn.addEventListener('click', () => {
         feedbackNameInput.value = "";
         feedbackTextInput.value = "";
@@ -1070,7 +1091,6 @@
         submitFeedbackBtn.disabled = false;
     });
 
-    // --- APP FEEDBACK DEVELOPER LOAD LOGIC ---
     devLoadFeedbackBtn.addEventListener('click', async () => {
         try {
             devLoadFeedbackBtn.disabled = true;
@@ -1092,14 +1112,10 @@
                     return;
                 }
 
-                // Cache data for export functionality
                 cachedFeedbackData = data;
                 cachedMaxCols = maxCols;
-
-                // Show download button
                 devDownloadFeedbackBtn.classList.remove('hidden');
 
-                // Compile Table Header
                 let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white;"><b>Reviewer Name</b></th>`;
                 for(let i = 1; i <= maxCols; i++) {
                     theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>Feedback Entry ${i}</b></th>`;
@@ -1109,7 +1125,6 @@
                 theadHtml += `</tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
-                // Compile Table Rows (WITH SANITIZATION PATCH)
                 let tbodyHtml = "";
                 Object.keys(data).forEach(user => {
                     tbodyHtml += `<tr><td><strong>${sanitizeText(user)}</strong></td>`;
@@ -1117,14 +1132,12 @@
                     for(let i = 0; i < maxCols; i++) {
                         tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `<span style="color:#aaa;">-</span>`}</td>`;
                     }
-                    
-                    // Add the new interactive cells for Comments and Status
                     tbodyHtml += `
                         <td>
-                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid #ccc; border-radius: 4px; width: 180px; box-sizing: border-box;">
+                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; width: 180px; box-sizing: border-box; background: rgba(0,0,0,0.3); color: #fff;">
                         </td>
                         <td>
-                            <select style="padding: 6px; border: 1px solid #ccc; border-radius: 4px; background: white; width: 100%; box-sizing: border-box;">
+                            <select style="padding: 6px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; width: 100%; box-sizing: border-box;">
                                 <option>Pending</option>
                                 <option>In Review</option>
                                 <option>Implemented</option>
@@ -1148,7 +1161,6 @@
         }
     });
 
-    // --- APP FEEDBACK DOWNLOAD LOGIC ---
     devDownloadFeedbackBtn.addEventListener('click', () => {
         if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
 
@@ -1158,7 +1170,6 @@
         }
         theadHtml += `</tr>`;
 
-        // (WITH SANITIZATION PATCH)
         let tbodyHtml = "";
         Object.keys(cachedFeedbackData).forEach(user => {
             tbodyHtml += `<tr><td style="border: 1px solid #ccc;"><strong>${sanitizeText(user)}</strong></td>`;
@@ -1195,7 +1206,6 @@
         customAlert("📥 Feedback table exported successfully.");
     });
 
-    // --- CLOUD SYNC MONITOR (Safe Read-Only Version) ---
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
             let data = {};
@@ -1368,12 +1378,12 @@
         arrayedStoriesList.forEach(storyObj => {
             const optionUser = document.createElement('option');
             optionUser.value = storyObj.id;
-            optionUser.textContent = storyObj.id; // Using textContent is naturally safe from XSS
+            optionUser.textContent = storyObj.id; 
             storyDropdown.appendChild(optionUser);
 
             const optionMod = document.createElement('option');
             optionMod.value = storyObj.id;
-            optionMod.textContent = storyObj.id; // Using textContent is naturally safe from XSS
+            optionMod.textContent = storyObj.id;
             deleteStorySelect.appendChild(optionMod);
         });
 
@@ -1393,7 +1403,6 @@
         loadCurrentStoryNotes();
     });
 
-    // --- SECURE FIREBASE AUTHENTICATION LOGIC ---
     submitLoginBtn.addEventListener('click', async () => {
         const email = localEmailInput.value.trim();
         const password = localPassInput.value.trim();
@@ -1447,7 +1456,7 @@
         accumulatedWinnersStateArray.forEach(name => {
             const chip = document.createElement('div');
             chip.className = 'winner-chip';
-            chip.textContent = name; // textContent is safe from XSS
+            chip.textContent = name;
             winnersChipsContainer.appendChild(chip);
         });
         correctGuesses.value = "";
@@ -1511,19 +1520,19 @@
 
                                 const headingOpt = document.createElement('option');
                                 headingOpt.value = currentSuggestedTitle;
-                                headingOpt.textContent = currentSuggestedTitle; // Safe
+                                headingOpt.textContent = currentSuggestedTitle; 
                                 readerSuggestions.appendChild(headingOpt);
 
                                 const personOpt = document.createElement('option');
                                 personOpt.value = reviewerKey;
-                                personOpt.textContent = reviewerKey; // Safe
+                                personOpt.textContent = reviewerKey; 
                                 headingSuggesterInput.appendChild(personOpt);
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
                                 const winnerOpt = document.createElement('option');
                                 winnerOpt.value = reviewerKey;
-                                winnerOpt.textContent = reviewerKey; // Safe
+                                winnerOpt.textContent = reviewerKey; 
                                 correctGuesses.appendChild(winnerOpt);
                             }
                         }
@@ -1710,7 +1719,7 @@
                 <meta charset="UTF-8">
                 <style>
                     table { border-collapse: collapse; }
-                    th { background-color: #2b4c7e; color: white; font-weight: bold; border: 1px solid #ccc; text-align: left; }
+                    th { background-color: #DFAD55; color: #1a1a1a; font-weight: bold; border: 1px solid #ccc; text-align: left; }
                     td { border: 1px solid #ccc; text-align: left; vertical-align: top; }
                     .meta-title { background-color: #f4f7f6; font-weight: bold; }
                 </style>
@@ -1736,7 +1745,7 @@
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const storyTitle = sanitizeText(doc.id); // SANITIZATION PATCH
+            const storyTitle = sanitizeText(doc.id);
 
             let formattedDate = "N/A";
             if (data.created) {
@@ -1744,22 +1753,22 @@
                 formattedDate = dateObj.toISOString().split('T')[0];
             }
 
-            const suggestions = sanitizeText(data._suggestions || "*****"); // SANITIZATION PATCH
-            const guesses = sanitizeText(data._guesses || "*****"); // SANITIZATION PATCH
+            const suggestions = sanitizeText(data._suggestions || "*****");
+            const guesses = sanitizeText(data._guesses || "*****");
 
             let reviewRows = [];
             Object.keys(data).forEach(key => {
                 if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses') {
                     if (typeof data[key] === 'object' && data[key] !== null) {
                         reviewRows.push({
-                            reviewer: sanitizeText(key), // SANITIZATION PATCH
-                            score: sanitizeText(data[key].score ?? "N/A"), // SANITIZATION PATCH
-                            title: sanitizeText(data[key].suggestedTitle ?? "None") // SANITIZATION PATCH
+                            reviewer: sanitizeText(key),
+                            score: sanitizeText(data[key].score ?? "N/A"),
+                            title: sanitizeText(data[key].suggestedTitle ?? "None")
                         });
                     } else {
                         reviewRows.push({
-                            reviewer: sanitizeText(key), // SANITIZATION PATCH
-                            score: sanitizeText(data[key]), // SANITIZATION PATCH
+                            reviewer: sanitizeText(key),
+                            score: sanitizeText(data[key]),
                             title: "Legacy"
                         });
                     }
@@ -1802,7 +1811,7 @@
                     trHtml = `
                         <td rowspan="${rowSpanCount}">${serialNumberCounter}</td>
                         <td rowspan="${rowSpanCount}">${formattedDate}</td>
-                        <td style="font-weight:bold; background-color:#f4f7f6;" rowspan="${rowSpanCount}">${storyTitle}</td>
+                        <td style="font-weight:bold; background-color:rgba(255,255,255,0.05);" rowspan="${rowSpanCount}">${storyTitle}</td>
                         <td>${currentReview.reviewer}</td>
                         <td>${currentReview.score}</td>
                         <td>${currentReview.title}</td>
@@ -1915,7 +1924,6 @@
 
     checkAndRestoreSession();
 
-    // --- SECURE LOGOUT LOGIC ---
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             if (!(await customConfirm("Confirm Logout!"))) return;
