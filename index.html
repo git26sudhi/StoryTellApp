@@ -89,201 +89,240 @@
         }
 
         /* =========================================
-           BASE VARIABLES FOR ALL SATURATED THEMES
+           BASE VARIABLES FOR ALL MATTE/SATURATED THEMES
            ========================================= */
-        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="gold"], [data-theme="coral"] {
+        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="gold"], [data-theme="coral"], [data-theme="mono"] {
             --text-color: #ffffff;
-            --text-muted: #E2E8F0;
-            --danger: linear-gradient(90deg, #EF4444, #DC2626);
-            --purple-banner: rgba(0, 0, 0, 0.4);
+            --text-muted: #CBD5E1;
+            --danger: #DC2626;
+            --purple-banner: rgba(0, 0, 0, 0.6);
             
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-            --card-backdrop: blur(16px);
+            --card-bg: rgba(0, 0, 0, 0.4);
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            --card-backdrop: blur(10px);
             --card-padding: 20px;
-            --card-radius: 12px;
+            --card-radius: 8px;
             
             --h3-color: #ffffff;
             
-            --input-bg: rgba(0, 0, 0, 0.35);
+            --input-bg: rgba(0, 0, 0, 0.5);
             --input-text: #ffffff;
             --input-placeholder: rgba(255, 255, 255, 0.5);
             
-            --btn-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            --btn-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
             --btn-text-shadow: none;
-            --btn-active-transform: translateY(2px);
+            --btn-active-transform: translateY(1px);
             
             --banner-backdrop: blur(12px);
-            --banner-border: 1px solid rgba(255, 255, 255, 0.1);
-            --banner-title-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            --banner-border: 1px solid rgba(255, 255, 255, 0.05);
+            --banner-title-shadow: none;
             
-            --nav-bg: rgba(0, 0, 0, 0.7);
-            --nav-border-top: 1px solid rgba(255, 255, 255, 0.15);
-            --nav-btn-text: #E2E8F0;
-            --nav-btn-hover-bg: rgba(255,255,255,0.1);
+            --nav-bg: rgba(0, 0, 0, 0.85);
+            --nav-border-top: 1px solid rgba(255, 255, 255, 0.1);
+            --nav-btn-text: #CBD5E1;
+            --nav-btn-hover-bg: rgba(255,255,255,0.08);
             --nav-btn-hover-text: #ffffff;
-            --nav-active-bg: rgba(255,255,255,0.1);
-            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='4'/%3E%3C/svg%3E");
+            --nav-active-bg: rgba(255,255,255,0.05);
+            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='4'/%3E%3C/svg%3E");
             
-            --switch-bg: rgba(255, 255, 255, 0.1);
+            --switch-bg: rgba(0, 0, 0, 0.5);
             --slider-bg: rgba(255,255,255,0.3);
             
-            --webview-bg: rgba(0, 0, 0, 0.4);
+            --webview-bg: rgba(0, 0, 0, 0.5);
             --webview-th-text: #ffffff;
             --webview-td-text: #ffffff;
-            --webview-row-alt: rgba(255, 255, 255, 0.04);
+            --webview-row-alt: rgba(255, 255, 255, 0.03);
             
-            --modal-overlay: rgba(0, 0, 0, 0.8);
-            --modal-bg: #111827;
+            --modal-overlay: rgba(0, 0, 0, 0.85);
+            --modal-bg: #1E293B;
             --modal-text: #fff;
-            --modal-input-bg: rgba(0,0,0,0.5);
-            --modal-btn-cancel-bg: rgba(255,255,255,0.15);
+            --modal-input-bg: rgba(0,0,0,0.6);
+            --modal-btn-cancel-bg: rgba(255,255,255,0.1);
             --modal-btn-cancel-text: #fff;
             
-            --status-bg: rgba(239, 68, 68, 0.15);
-            --status-icon-bg: rgba(239, 68, 68, 0.3);
+            --status-bg: rgba(220, 38, 38, 0.15);
+            --status-icon-bg: rgba(220, 38, 38, 0.25);
             --status-text: #FECACA;
-            --status-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            --status-shadow: none;
         }
 
-        /* 1. Midnight Cyan */
+        /* 1. Deep Cyan (Matte & Saturated) */
         [data-theme="cyan"] {
             --bg-color: #001122;
-            --bg-gradient: linear-gradient(135deg, #000B18 0%, #0050A0 50%, #00D4FF 100%);
-            --primary: linear-gradient(90deg, #00C2FF, #0078FF);
-            --primary-hover: linear-gradient(90deg, #00A3FF, #005CE6);
-            --accent: linear-gradient(90deg, #00D4FF, #00A3FF);
-            --admin-color: linear-gradient(90deg, #00E676, #00B359);
-            --admin-hover: linear-gradient(90deg, #00C853, #00994D);
-            --dev-color: linear-gradient(90deg, #7EE7FF, #00A3FF);
-            --border: rgba(0, 212, 255, 0.4);
-            --card-border: 1px solid rgba(0, 212, 255, 0.3);
-            --winner-bg: rgba(0, 230, 118, 0.2);
-            --winner-text: #00E676;
-            --winner-border: 1px solid #00E676;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #002244;
-            --nav-active-color: #00D4FF;
-            --switch-border: 1px solid rgba(0, 212, 255, 0.4);
-            --webview-border: 2px solid #00A3FF;
-            --modal-border: 1px solid #00D4FF;
-            --modal-btn-cancel-border: 1px solid rgba(0, 212, 255, 0.4);
-            --modal-btn-ok-bg: linear-gradient(90deg, #00C2FF, #0078FF);
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
-        }
-
-        /* 2. Royal Purple */
-        [data-theme="purple"] {
-            --bg-color: #1A0B2E;
-            --bg-gradient: linear-gradient(135deg, #11001C 0%, #4C1D95 50%, #A855F7 100%);
-            --primary: linear-gradient(90deg, #A855F7, #6D28D9);
-            --primary-hover: linear-gradient(90deg, #9333EA, #5B21B6);
-            --accent: linear-gradient(90deg, #A855F7, #7C3AED);
-            --admin-color: linear-gradient(90deg, #22C55E, #16A34A);
-            --admin-hover: linear-gradient(90deg, #16A34A, #15803D);
-            --dev-color: linear-gradient(90deg, #D8B4FE, #A855F7);
-            --border: rgba(168, 85, 247, 0.4);
-            --card-border: 1px solid rgba(168, 85, 247, 0.3);
-            --winner-bg: rgba(34, 197, 94, 0.2);
-            --winner-text: #4ADE80;
-            --winner-border: 1px solid #22C55E;
+            --bg-gradient: linear-gradient(135deg, #000B18 0%, #004D66 100%);
+            --primary: #0284C7;
+            --primary-hover: #0369A1;
+            --accent: #0284C7;
+            --admin-color: #059669;
+            --admin-hover: #047857;
+            --dev-color: #0284C7;
+            --border: rgba(2, 132, 199, 0.3);
+            --card-border: 1px solid rgba(2, 132, 199, 0.2);
+            --winner-bg: rgba(5, 150, 105, 0.2);
+            --winner-text: #10B981;
+            --winner-border: 1px solid #059669;
             --btn-text-color: #ffffff;
             --btn-admin-text: #ffffff;
             --btn-accent-text: #ffffff;
-            --nav-active-color: #A855F7;
-            --switch-border: 1px solid rgba(168, 85, 247, 0.4);
-            --webview-border: 2px solid #A855F7;
-            --modal-border: 1px solid #A855F7;
-            --modal-btn-cancel-border: 1px solid rgba(168, 85, 247, 0.4);
-            --modal-btn-ok-bg: linear-gradient(90deg, #A855F7, #6D28D9);
+            --nav-active-color: #0284C7;
+            --switch-border: 1px solid rgba(2, 132, 199, 0.3);
+            --webview-border: 2px solid #059669;
+            --modal-border: 1px solid #0284C7;
+            --modal-btn-cancel-border: 1px solid rgba(2, 132, 199, 0.3);
+            --modal-btn-ok-bg: #0284C7;
             --modal-btn-ok-text: #ffffff;
             --modal-btn-ok-border: none;
         }
 
-        /* 3. Emerald Mint */
-        [data-theme="emerald"] {
-            --bg-color: #022C22;
-            --bg-gradient: linear-gradient(135deg, #021812 0%, #065F46 50%, #10B981 100%);
-            --primary: linear-gradient(90deg, #10B981, #059669);
-            --primary-hover: linear-gradient(90deg, #059669, #047857);
-            --accent: linear-gradient(90deg, #34D399, #10B981);
-            --admin-color: linear-gradient(90deg, #34D399, #10B981);
-            --admin-hover: linear-gradient(90deg, #10B981, #059669);
-            --dev-color: linear-gradient(90deg, #6EE7B7, #34D399);
-            --border: rgba(16, 185, 129, 0.4);
-            --card-border: 1px solid rgba(16, 185, 129, 0.3);
-            --winner-bg: rgba(34, 197, 94, 0.2);
-            --winner-text: #4ADE80;
-            --winner-border: 1px solid #22C55E;
+        /* 2. Matte Purple (Saturated) */
+        [data-theme="purple"] {
+            --bg-color: #12001F;
+            --bg-gradient: linear-gradient(135deg, #12001F 0%, #3B0066 100%);
+            --primary: #7C3AED;
+            --primary-hover: #6D28D9;
+            --accent: #7C3AED;
+            --admin-color: #059669;
+            --admin-hover: #047857;
+            --dev-color: #7C3AED;
+            --border: rgba(124, 58, 237, 0.3);
+            --card-border: 1px solid rgba(124, 58, 237, 0.2);
+            --winner-bg: rgba(5, 150, 105, 0.2);
+            --winner-text: #10B981;
+            --winner-border: 1px solid #059669;
             --btn-text-color: #ffffff;
-            --btn-admin-text: #00331A;
-            --btn-accent-text: #022C22;
-            --nav-active-color: #34D399;
-            --switch-border: 1px solid rgba(16, 185, 129, 0.4);
-            --webview-border: 2px solid #10B981;
-            --modal-border: 1px solid #10B981;
-            --modal-btn-cancel-border: 1px solid rgba(16, 185, 129, 0.4);
-            --modal-btn-ok-bg: linear-gradient(90deg, #10B981, #059669);
+            --btn-admin-text: #ffffff;
+            --btn-accent-text: #ffffff;
+            --nav-active-color: #7C3AED;
+            --switch-border: 1px solid rgba(124, 58, 237, 0.3);
+            --webview-border: 2px solid #7C3AED;
+            --modal-border: 1px solid #7C3AED;
+            --modal-btn-cancel-border: 1px solid rgba(124, 58, 237, 0.3);
+            --modal-btn-ok-bg: #7C3AED;
             --modal-btn-ok-text: #ffffff;
             --modal-btn-ok-border: none;
         }
 
-        /* 4. Gold & Navy */
-        [data-theme="gold"] {
-            --bg-color: #0A192F;
-            --bg-gradient: linear-gradient(135deg, #020C1B 0%, #172A45 50%, #F59E0B 100%);
-            --primary: linear-gradient(90deg, #FBBF24, #D97706);
-            --primary-hover: linear-gradient(90deg, #F59E0B, #B45309);
-            --accent: linear-gradient(90deg, #FBBF24, #F59E0B);
-            --admin-color: linear-gradient(90deg, #22C55E, #16A34A);
-            --admin-hover: linear-gradient(90deg, #16A34A, #15803D);
-            --dev-color: linear-gradient(90deg, #FFD580, #FBBF24);
-            --border: rgba(251, 191, 36, 0.4);
-            --card-border: 1px solid rgba(251, 191, 36, 0.3);
-            --winner-bg: rgba(34, 197, 94, 0.2);
-            --winner-text: #4ADE80;
-            --winner-border: 1px solid #22C55E;
-            --btn-text-color: #000000;
+        /* 3. Forest Green (Matte & Saturated) */
+        [data-theme="emerald"] {
+            --bg-color: #001A0F;
+            --bg-gradient: linear-gradient(135deg, #001A0F 0%, #004D2E 100%);
+            --primary: #059669;
+            --primary-hover: #047857;
+            --accent: #059669;
+            --admin-color: #0284C7;
+            --admin-hover: #0369A1;
+            --dev-color: #059669;
+            --border: rgba(5, 150, 105, 0.3);
+            --card-border: 1px solid rgba(5, 150, 105, 0.2);
+            --winner-bg: rgba(2, 132, 199, 0.2);
+            --winner-text: #38BDF8;
+            --winner-border: 1px solid #0284C7;
+            --btn-text-color: #ffffff;
             --btn-admin-text: #ffffff;
-            --btn-accent-text: #000000;
-            --nav-active-color: #FBBF24;
-            --switch-border: 1px solid rgba(251, 191, 36, 0.4);
-            --webview-border: 2px solid #FBBF24;
-            --modal-border: 1px solid #FBBF24;
-            --modal-btn-cancel-border: 1px solid rgba(251, 191, 36, 0.4);
-            --modal-btn-ok-bg: linear-gradient(90deg, #FBBF24, #D97706);
-            --modal-btn-ok-text: #000000;
+            --btn-accent-text: #ffffff;
+            --nav-active-color: #059669;
+            --switch-border: 1px solid rgba(5, 150, 105, 0.3);
+            --webview-border: 2px solid #059669;
+            --modal-border: 1px solid #059669;
+            --modal-btn-cancel-border: 1px solid rgba(5, 150, 105, 0.3);
+            --modal-btn-ok-bg: #059669;
+            --modal-btn-ok-text: #ffffff;
             --modal-btn-ok-border: none;
         }
 
-        /* 5. Coral Sunset */
-        [data-theme="coral"] {
-            --bg-color: #2D0B04;
-            --bg-gradient: linear-gradient(135deg, #1A0500 0%, #7A1A05 50%, #FF8A65 100%);
-            --primary: linear-gradient(90deg, #FF8A65, #F4511E);
-            --primary-hover: linear-gradient(90deg, #FF7043, #E64A19);
-            --accent: linear-gradient(90deg, #FF8A65, #FF7043);
-            --admin-color: linear-gradient(90deg, #00E676, #00B359);
-            --admin-hover: linear-gradient(90deg, #00C853, #00994D);
-            --dev-color: linear-gradient(90deg, #FFB199, #FF8A65);
-            --border: rgba(255, 138, 101, 0.4);
-            --card-border: 1px solid rgba(255, 138, 101, 0.3);
-            --winner-bg: rgba(0, 230, 118, 0.2);
-            --winner-text: #00FFAA;
-            --winner-border: 1px solid #00E676;
-            --btn-text-color: #000000;
+        /* 4. Burnt Amber (Matte & Saturated) */
+        [data-theme="gold"] {
+            --bg-color: #261100;
+            --bg-gradient: linear-gradient(135deg, #261100 0%, #662A00 100%);
+            --primary: #D97706;
+            --primary-hover: #B45309;
+            --accent: #D97706;
+            --admin-color: #059669;
+            --admin-hover: #047857;
+            --dev-color: #D97706;
+            --border: rgba(217, 119, 6, 0.3);
+            --card-border: 1px solid rgba(217, 119, 6, 0.2);
+            --winner-bg: rgba(5, 150, 105, 0.2);
+            --winner-text: #10B981;
+            --winner-border: 1px solid #059669;
+            --btn-text-color: #ffffff;
             --btn-admin-text: #ffffff;
-            --btn-accent-text: #000000;
-            --nav-active-color: #FF8A65;
-            --switch-border: 1px solid rgba(255, 138, 101, 0.4);
-            --webview-border: 2px solid #FFB199;
-            --modal-border: 1px solid #FF8A65;
-            --modal-btn-cancel-border: 1px solid rgba(255, 138, 101, 0.4);
-            --modal-btn-ok-bg: linear-gradient(90deg, #FF8A65, #F4511E);
-            --modal-btn-ok-text: #000000;
+            --btn-accent-text: #ffffff;
+            --nav-active-color: #D97706;
+            --switch-border: 1px solid rgba(217, 119, 6, 0.3);
+            --webview-border: 2px solid #D97706;
+            --modal-border: 1px solid #D97706;
+            --modal-btn-cancel-border: 1px solid rgba(217, 119, 6, 0.3);
+            --modal-btn-ok-bg: #D97706;
+            --modal-btn-ok-text: #ffffff;
             --modal-btn-ok-border: none;
+        }
+
+        /* 5. Crimson Matte (Matte & Saturated) */
+        [data-theme="coral"] {
+            --bg-color: #2A0000;
+            --bg-gradient: linear-gradient(135deg, #2A0000 0%, #660000 100%);
+            --primary: #DC2626;
+            --primary-hover: #B91C1C;
+            --accent: #DC2626;
+            --admin-color: #0284C7;
+            --admin-hover: #0369A1;
+            --dev-color: #DC2626;
+            --border: rgba(220, 38, 38, 0.3);
+            --card-border: 1px solid rgba(220, 38, 38, 0.2);
+            --winner-bg: rgba(2, 132, 199, 0.2);
+            --winner-text: #38BDF8;
+            --winner-border: 1px solid #0284C7;
+            --btn-text-color: #ffffff;
+            --btn-admin-text: #ffffff;
+            --btn-accent-text: #ffffff;
+            --nav-active-color: #DC2626;
+            --switch-border: 1px solid rgba(220, 38, 38, 0.3);
+            --webview-border: 2px solid #DC2626;
+            --modal-border: 1px solid #DC2626;
+            --modal-btn-cancel-border: 1px solid rgba(220, 38, 38, 0.3);
+            --modal-btn-ok-bg: #DC2626;
+            --modal-btn-ok-text: #ffffff;
+            --modal-btn-ok-border: none;
+        }
+
+        /* 6. Black & Gray (Solid & Minimal) */
+        [data-theme="mono"] {
+            --bg-color: #000000;
+            --bg-gradient: none;
+            --primary: #555555;
+            --primary-hover: #333333;
+            --accent: #555555;
+            --admin-color: #666666;
+            --admin-hover: #4D4D4D;
+            --dev-color: #555555;
+            --border: #333333;
+            
+            --card-bg: #1A1A1A;
+            --card-border: 1px solid #333333;
+            --card-backdrop: none;
+            --card-shadow: none;
+            
+            --input-bg: #0A0A0A;
+            --input-border: 1px solid #333333;
+            
+            --winner-bg: #333333;
+            --winner-text: #FFFFFF;
+            --winner-border: 1px solid #555555;
+            
+            --btn-text-color: #ffffff;
+            --btn-admin-text: #ffffff;
+            --btn-accent-text: #ffffff;
+            --nav-active-color: #ffffff;
+            --switch-border: 1px solid #444444;
+            --webview-border: 2px solid #444444;
+            --webview-bg: #0A0A0A;
+            --modal-border: 1px solid #444444;
+            --modal-btn-cancel-border: 1px solid #444444;
+            --modal-btn-ok-bg: #555555;
+            --modal-btn-ok-text: #ffffff;
+            --modal-btn-ok-border: 1px solid #555555;
+            --modal-bg: #1A1A1A;
         }
 
         /* --- GLOBAL STYLES --- */
@@ -456,6 +495,7 @@
             overflow-y: auto;
         }
         
+        /* Smaller font specifically for sidebar inner tools */
         .side-menu-content label { font-size: 13px; }
         .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
         .side-menu-content button { padding: 8px 12px; font-size: 13px; }
@@ -498,10 +538,7 @@
             margin-top: 0;
             border-bottom: 1px solid var(--border);
             padding-bottom: 8px;
-            color: var(--primary); /* Fallback for older browsers */
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
             font-size: 20px;
         }
 
@@ -512,8 +549,8 @@
             font-weight: 600;
         }
 
-        .admin-header h2 { background: var(--admin-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .dev-header h2 { background: var(--dev-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .admin-header h2 { color: var(--admin-color); }
+        .dev-header h2 { color: var(--dev-color); }
 
         .form-group {
             margin-bottom: 18px;
@@ -550,7 +587,7 @@
         }
 
         button {
-            background: var(--primary);
+            background-color: var(--primary);
             color: var(--btn-text-color);
             border: none;
             padding: 11px 20px;
@@ -569,12 +606,11 @@
         }
 
         button:hover { filter: brightness(1.1); }
-        button:disabled { background: rgba(128, 128, 128, 0.3); color: rgba(128, 128, 128, 0.8); cursor: not-allowed; box-shadow: none; transform: none;}
+        button:disabled { background-color: rgba(128, 128, 128, 0.3); color: rgba(128, 128, 128, 0.8); cursor: not-allowed; box-shadow: none; transform: none;}
 
-        .btn-mod-action { background: var(--admin-color); color: var(--btn-admin-text); }
-        .btn-dev-action { background: var(--dev-color); color: var(--text-color);}
-        .btn-danger { background: var(--danger); color: white;}
-        .btn-accent { background: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
+        .btn-mod-action { background-color: var(--admin-color); color: var(--btn-admin-text); }
+        .btn-dev-action { background-color: var(--dev-color); color: var(--btn-text-color);}
+        .btn-accent { background-color: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
         
         .btn-icon-only {
             display: inline-flex;
@@ -621,8 +657,8 @@
             gap: 12px;
             margin-top: 15px;
         }
-        .btn-preview { background: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
-        .btn-download { background: var(--primary); flex: 1; font-size: 15px; }
+        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
+        .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
         .preview-output-box {
             background-color: var(--input-bg);
@@ -914,11 +950,12 @@
             </label>
             <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
                 <option value="light">Classic Light</option>
-                <option value="cyan">Midnight Cyan</option>
-                <option value="purple">Royal Purple</option>
-                <option value="emerald">Emerald Mint</option>
-                <option value="gold">Gold & Navy</option>
-                <option value="coral">Coral Sunset</option>
+                <option value="cyan">Deep Cyan</option>
+                <option value="purple">Matte Purple</option>
+                <option value="emerald">Forest Green</option>
+                <option value="gold">Burnt Amber</option>
+                <option value="coral">Crimson Matte</option>
+                <option value="mono">Black & Gray</option>
             </select>
         </div>
 
@@ -982,7 +1019,7 @@
                 <label style="color: var(--text-color);">System Data</label>
                 <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
                     <button id="previewBtn" class="btn-preview">Preview Entire Season</button>
-                    <button id="downloadBtn" class="btn-download">Download HTML</button>
+                    <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
                 </div>
             </div>
         </div>
@@ -1132,7 +1169,7 @@
 
             <!-- DEFAULT LIVE DAILY TABLE -->
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
-            <h3 id="modDailyHeading" style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px;"></h3>
+            <h3 id="modDailyHeading" style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);"></h3>
             
             <div class="webview-scroll-frame" style="margin-bottom: 25px; border: 1px solid var(--border); border-radius: 6px;">
                 <table class="webview-table" style="margin: 0;">
@@ -1150,7 +1187,7 @@
                 </table>
             </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px;">📅 Select Story Winners</h3>
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);">📅 Select Story Winners</h3>
 
             <div class="form-group">
                 <label for="authorGivenHeadingInput">Author given Heading</label>
@@ -1186,7 +1223,7 @@
             <h2>Season Preview Canvas</h2>
             <div id="webviewWrapper" class="webview-container">
                 <div class="webview-header">
-                    <span id="webviewLoadingBadge" style="font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
+                    <span id="webviewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
                 </div>
                 <div class="webview-scroll-frame" style="max-height: 600px;">
                     <table class="webview-table">
