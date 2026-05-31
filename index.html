@@ -313,16 +313,12 @@
 
         .side-menu-header {
             display: flex; 
-            justify-content: space-between; 
+            justify-content: flex-end; 
             align-items: center;
             padding: 20px; 
             border-bottom: 1px solid var(--border);
         }
-        .side-menu-header h3 {
-            margin: 0; 
-            font-size: 18px; 
-            color: var(--primary);
-        }
+        
         .side-menu-close {
             background: transparent;
             border: none;
@@ -342,42 +338,6 @@
             padding: 20px;
             flex-grow: 1;
             overflow-y: auto;
-        }
-        .side-menu-content h4 {
-            margin: 0 0 15px 0; 
-            font-size: 13px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        .theme-list {
-            list-style: none; 
-            padding: 0; 
-            margin: 0;
-        }
-        .theme-option {
-            padding: 14px 15px; 
-            margin-bottom: 10px; 
-            border-radius: 8px;
-            cursor: pointer; 
-            background: var(--modal-input-bg); 
-            border: 1px solid var(--border);
-            transition: all 0.2s; 
-            font-weight: 600; 
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .theme-option:hover {
-            border-color: var(--primary);
-        }
-        .theme-option.active {
-            background: var(--primary); 
-            color: var(--btn-text-color); 
-            border-color: var(--primary);
-            box-shadow: var(--btn-shadow);
         }
 
         /* --- PREMIUM MAINTENANCE BANNER --- */
@@ -817,22 +777,19 @@
 </head>
 <body>
 
+<!-- SIDEBAR OVERLAY & MENU -->
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
     <div class="side-menu-header">
-        <h3>⚙️ Settings</h3>
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
     <div class="side-menu-content">
-        <h4>🎨 Interface Theme</h4>
-        <ul class="theme-list">
-            <li id="themeBtnLight" class="theme-option">
-                <span style="font-size: 18px;">☀️</span> Light (Purple/White)
-            </li>
-            <li id="themeBtnDark" class="theme-option">
-                <span style="font-size: 18px;">🌌</span> Dark (Space/Green)
-            </li>
-        </ul>
+        <div class="form-group">
+            <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
+                <option value="light">☀️ Light Theme</option>
+                <option value="dark">🌌 Dark Theme</option>
+            </select>
+        </div>
     </div>
 </div>
 
@@ -1142,20 +1099,17 @@
     const menuCloseBtn = document.getElementById('menuCloseBtn');
     const sideMenu = document.getElementById('sideMenu');
     const menuOverlay = document.getElementById('menuOverlay');
-    const themeBtnLight = document.getElementById('themeBtnLight');
-    const themeBtnDark = document.getElementById('themeBtnDark');
+    const themeSelect = document.getElementById('themeSelect');
 
     let isDarkTheme = localStorage.getItem('kathasagaram_theme') === 'dark';
 
     function applyTheme() {
         if (isDarkTheme) {
             document.documentElement.setAttribute('data-theme', 'dark');
-            themeBtnDark.classList.add('active');
-            themeBtnLight.classList.remove('active');
+            themeSelect.value = 'dark';
         } else {
             document.documentElement.removeAttribute('data-theme');
-            themeBtnLight.classList.add('active');
-            themeBtnDark.classList.remove('active');
+            themeSelect.value = 'light';
         }
     }
     applyTheme();
@@ -1174,18 +1128,11 @@
     menuCloseBtn.addEventListener('click', () => toggleMenu(false));
     menuOverlay.addEventListener('click', () => toggleMenu(false));
 
-    themeBtnLight.addEventListener('click', () => {
-        isDarkTheme = false;
-        localStorage.setItem('kathasagaram_theme', 'light');
+    themeSelect.addEventListener('change', (e) => {
+        isDarkTheme = e.target.value === 'dark';
+        localStorage.setItem('kathasagaram_theme', isDarkTheme ? 'dark' : 'light');
         applyTheme();
-        setTimeout(() => toggleMenu(false), 150); // Optional slight delay before closing
-    });
-
-    themeBtnDark.addEventListener('click', () => {
-        isDarkTheme = true;
-        localStorage.setItem('kathasagaram_theme', 'dark');
-        applyTheme();
-        setTimeout(() => toggleMenu(false), 150);
+        setTimeout(() => toggleMenu(false), 150); // Small delay to show choice before closing
     });
 
     // --------------------------------------
