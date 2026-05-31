@@ -343,7 +343,7 @@
         
         /* Smaller font specifically for sidebar inner tools */
         .side-menu-content label { font-size: 13px; }
-        .side-menu-content input { padding: 8px; font-size: 14px; }
+        .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
         .side-menu-content button { padding: 8px 12px; font-size: 13px; }
 
         /* --- PREMIUM MAINTENANCE BANNER --- */
@@ -676,7 +676,7 @@
         .webview-scroll-frame {
             width: 100%;
             overflow-x: auto;
-            max-height: 600px;
+            max-height: 600px; /* Increased Preview Height */
             overflow-y: auto;
         }
         .webview-table {
@@ -829,7 +829,21 @@
 
             <div class="form-group" style="margin-top: 15px;">
                 <label for="inputMonth">Month</label>
-                <input type="text" id="inputMonth" placeholder="e.g., May 2026">
+                <select id="inputMonth" style="cursor: pointer; border-radius: 6px;">
+                    <option value="">-- Select Month --</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
             </div>
             
             <div class="form-group">
@@ -848,7 +862,7 @@
             <div class="form-group" style="margin-top: 25px;">
                 <label style="color: var(--text-color);">System Data</label>
                 <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
-                    <button id="previewBtn" class="btn-preview">Preview Matrix</button>
+                    <button id="previewBtn" class="btn-preview">Preview Entire Season</button>
                     <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
                 </div>
             </div>
@@ -982,9 +996,27 @@
                 <button type="button" id="copySuggestionsBtn" class="btn-mod-action" style="margin-top: 10px; width: 100%; font-size: 13px; padding: 8px 12px;">Copy Title suggestions list</button>
             </div>
 
+            <!-- DEFAULT LIVE DAILY TABLE -->
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
+            <h3 id="modDailyHeading" style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);"></h3>
+            
+            <div class="webview-scroll-frame" style="margin-bottom: 25px; border: 1px solid var(--border); border-radius: 6px;">
+                <table class="webview-table" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th><b>Reviewer</b></th>
+                            <th><b>Rating</b></th>
+                            <th><b>Suggested Title</b></th>
+                            <th><b>Author Guess</b></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyReviewsTableBody">
+                        <tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);">📅 Daily Updates</h3>
+            <h3 style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);">📅 Select Story Winners</h3>
 
             <div class="form-group">
                 <label for="readerSuggestions">Author's Favorite Heading</label>
@@ -1010,15 +1042,13 @@
             <button type="button" id="saveNotesBtn" class="btn-mod-action">Save End of Day Notes</button>
         </div>
 
-        <div class="plain-section">
-            <h2>Data Preview Canvas</h2>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Generate previews from the sidebar to view compiled metrics here.</p>
-
-            <div id="webviewWrapper" class="webview-container hidden">
+        <div id="previewSection" class="plain-section hidden">
+            <h2>Season Preview Canvas</h2>
+            <div id="webviewWrapper" class="webview-container">
                 <div class="webview-header">
                     <span id="webviewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
                 </div>
-                <div class="webview-scroll-frame">
+                <div class="webview-scroll-frame" style="max-height: 600px;">
                     <table class="webview-table">
                         <tbody id="webviewTableBody"></tbody>
                     </table>
@@ -1218,6 +1248,7 @@
     const devInterface = document.getElementById('devInterface');
     const loginInterface = document.getElementById('loginInterface');
     const pausedBanner = document.getElementById('pausedBanner');
+    const previewSection = document.getElementById('previewSection');
 
     const topicDisplay = document.getElementById('topicDisplay');
     const monthDisplay = document.getElementById('monthDisplay');
@@ -1265,6 +1296,10 @@
     const winnersChipsContainer = document.getElementById('winnersChipsContainer');
 
     const saveNotesBtn = document.getElementById('saveNotesBtn');
+    
+    // Live Dashboard Table Elements
+    const modDailyHeading = document.getElementById('modDailyHeading');
+    const dailyReviewsTableBody = document.getElementById('dailyReviewsTableBody');
 
     const webviewWrapper = document.getElementById('webviewWrapper');
     const webviewTableBody = document.getElementById('webviewTableBody');
@@ -1304,6 +1339,9 @@
 
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
+    
+    // Set initial date for Dashboard heading
+    modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     navBtnReviewer.addEventListener('click', () => {
         try {
@@ -1314,6 +1352,7 @@
             loginInterface.classList.add('hidden');
             modInterface.classList.add('hidden');
             devInterface.classList.add('hidden');
+            previewSection.classList.add('hidden');
         } catch (e) {}
     });
 
@@ -1331,6 +1370,7 @@
                 loginInterface.classList.remove('hidden');
                 modInterface.classList.add('hidden');
                 devInterface.classList.add('hidden');
+                previewSection.classList.add('hidden');
             }
         } catch (e) {}
     });
@@ -1672,6 +1712,9 @@
             if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
             if(!deleteStorySelect.value) deleteStorySelect.selectedIndex = 0;
             loadCurrentStoryNotes();
+        } else {
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
         evaluateLocalStorageRestrictions();
     });
@@ -1714,7 +1757,7 @@
 
             loginInterface.classList.add('hidden');
             modInterface.classList.remove('hidden');
-            sidebarModOptions.classList.remove('hidden'); // Show Sidebar mod options
+            sidebarModOptions.classList.remove('hidden'); 
             if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
 
             evaluateLocalStorageRestrictions();
@@ -1762,13 +1805,18 @@
 
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
-        if (!targetSelected) return;
+        if (!targetSelected) {
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            return;
+        }
 
         if(storyDropdown.value !== targetSelected) {
             storyDropdown.value = targetSelected;
         }
 
         titleSuggestionClipboardOutput.textContent = "⏳ Synchronizing clipboard stream buffer...";
+        modDailyHeading.textContent = `📖 Story: ${targetSelected}`;
 
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
@@ -1778,6 +1826,8 @@
             correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
+            let dailyHtml = "";
+            let reviewCount = 0;
 
             if (docSnap.exists()) {
                 const data = docSnap.data();
@@ -1793,18 +1843,25 @@
 
                 Object.keys(data).forEach(reviewerKey => {
                     if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses') {
+                        reviewCount++;
+                        let score = "N/A";
+                        let title = "None";
+                        let guess = "None";
+
                         if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
+                            score = sanitizeText(data[reviewerKey].score ?? "N/A");
+                            title = sanitizeText(data[reviewerKey].suggestedTitle || "None");
+                            guess = sanitizeText(data[reviewerKey].authorGuess || "None");
+                            
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
                             const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
 
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
                                 clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
-
                                 const headingOpt = document.createElement('option');
                                 headingOpt.value = currentSuggestedTitle;
                                 headingOpt.textContent = currentSuggestedTitle; 
                                 readerSuggestions.appendChild(headingOpt);
-
                                 const personOpt = document.createElement('option');
                                 personOpt.value = reviewerKey;
                                 personOpt.textContent = reviewerKey; 
@@ -1817,7 +1874,17 @@
                                 winnerOpt.textContent = reviewerKey; 
                                 correctGuesses.appendChild(winnerOpt);
                             }
+                        } else {
+                            score = sanitizeText(data[reviewerKey]);
+                            title = "Legacy";
                         }
+                        
+                        dailyHtml += `<tr>
+                            <td>${sanitizeText(reviewerKey)}</td>
+                            <td>${score}/10</td>
+                            <td>${title}</td>
+                            <td>${guess}</td>
+                        </tr>`;
                     }
                 });
 
@@ -1831,15 +1898,22 @@
                 } else {
                     titleSuggestionClipboardOutput.textContent = "No title suggestions logged for this story path yet.";
                 }
+                
+                if(reviewCount === 0) {
+                    dailyHtml = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
+                }
+                dailyReviewsTableBody.innerHTML = dailyHtml;
 
             } else {
                 activeStorySnapshotDataCache = null;
                 renderAccumulatedWinnersChips();
                 titleSuggestionClipboardOutput.textContent = "Story target index empty inside cache.";
+                dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
             }
         } catch(err) {
             console.error(err);
             titleSuggestionClipboardOutput.textContent = "Error parsing cloud configurations.";
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
         }
     }
 
@@ -2035,16 +2109,16 @@
 
             tempTableBodyContent += `
                 <tr>
-                    <th colspan="5" style="background-color: var(--primary); color: #fff; font-size: 15px; text-align: left; padding: 12px; border: 1px solid var(--border);">
+                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: left; padding: 12px; border: 1px solid var(--border);">
                         📖 Story: ${storyTitle}
                     </th>
                 </tr>
                 <tr>
-                    <th style="background-color: var(--admin-color); color: var(--bg-dark-blue);"><b>Date</b></th>
-                    <th style="background-color: var(--admin-color); color: var(--bg-dark-blue);"><b>Reviewer Name</b></th>
-                    <th style="background-color: var(--admin-color); color: var(--bg-dark-blue);"><b>Rating</b></th>
-                    <th style="background-color: var(--admin-color); color: var(--bg-dark-blue);"><b>Suggested Title</b></th>
-                    <th style="background-color: var(--admin-color); color: var(--bg-dark-blue);"><b>Author Guess</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Date</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Reviewer Name</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Rating</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Suggested Title</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Author Guess</b></th>
                 </tr>
             `;
 
@@ -2110,10 +2184,15 @@
             const matrixData = await compileMasterDataMatrix();
 
             webviewTableBody.innerHTML = matrixData.tableBodyRows;
+            previewSection.classList.remove('hidden');
             webviewWrapper.classList.remove('hidden');
 
-            toggleMenu(false); // Close sidebar so user can see preview table
-            navBtnModerator.click(); // Ensure moderator view is active 
+            toggleMenu(false); 
+
+            // Scroll down to preview section automatically
+            setTimeout(() => {
+                previewSection.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
 
             customAlert("📊 Live preview canvas rendering synchronised successfully in the main view.");
         } catch (err) {
@@ -2132,6 +2211,7 @@
             const matrixData = await compileMasterDataMatrix();
 
             webviewTableBody.innerHTML = matrixData.tableBodyRows;
+            previewSection.classList.remove('hidden');
             webviewWrapper.classList.remove('hidden');
 
             const blob = new Blob([matrixData.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
@@ -2203,6 +2283,7 @@
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
             sidebarModOptions.classList.add('hidden'); 
+            previewSection.classList.add('hidden');
             
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
