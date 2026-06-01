@@ -675,6 +675,7 @@
             border: 1px solid var(--border);
             text-align: center;
             font-weight: bold;
+            vertical-align: middle;
         }
         .webview-table td {
             padding: 10px;
@@ -893,13 +894,38 @@
             padding: 8px 14px !important;
             font-size: 13px !important;
         }
+        
+        /* Sidebar layout adjustments */
+        .side-menu-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 20px; 
+            padding-bottom: 5px;
+            border-bottom: none;
+        }
+        
+        .side-menu-close {
+            background: transparent;
+            border: none;
+            color: var(--modal-text);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            box-shadow: none;
+            transition: color 0.2s;
+        }
+        .side-menu-close:hover {
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
 
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
-    <div class="side-menu-header" style="justify-content: space-between; padding: 20px; align-items: center;">
+    <div class="side-menu-header">
         <div style="display: flex; align-items: center; gap: 6px;">
             <span style="font-size: 12px; font-weight: bold; text-transform: uppercase; opacity: 0.7;">Season:</span>
             <span id="sidebarSeasonBadge" style="font-size: 15px; font-weight: 800; color: var(--primary);">Jan00</span>
@@ -957,7 +983,7 @@
                 </div>
             </div>
 
-            <div id="modRestrictedGroup" style="opacity: 0.5; pointer-events: none;">
+            <div id="modRestrictedGroup" class="hidden">
                 <div class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 15px;">
                     <label for="newStoryInput">Add New Story</label>
                     <input type="text" id="newStoryInput" placeholder="Story name">
@@ -1236,7 +1262,7 @@
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header" style="position: relative;">
             <div style="display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
-                <svg viewBox="0 0 64 64" style="width: 32px; height: 32px; fill: none; stroke: var(--dev-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; display: block; margin: 0; padding: 0; line-height: 1;">
+                <svg viewBox="0 0 64 64" style="width: 36px; height: 36px; fill: none; stroke: var(--dev-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
                     <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2 1.5 4 3 5" />
                     <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6-16-5-6-3-12-2-16 2" />
                     <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
@@ -1543,9 +1569,6 @@
 
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
-
-    // Realtime Version Control Local Cache Config Initialization
-    let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
     // Initialize Dashboard Header Date Format
     const initToday = new Date();
@@ -1785,6 +1808,7 @@
             cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
             cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
             
+            // Smart update: Prevent overwriting time fields if the user is actively typing in them
             if (document.activeElement !== authorGuessLockTime) {
                 authorGuessLockTime.value = cachedAuthorGuessLockTime;
             }
@@ -1824,8 +1848,8 @@
             inputMonth.disabled = true;
             inputTopic.disabled = true;
             saveGlobalMetaBtn.disabled = true;
-            modRestrictedGroup.style.opacity = "0.5";
-            modRestrictedGroup.style.pointerEvents = "none";
+            saveGlobalMetaBtn.textContent = "Start Season";
+            modRestrictedGroup.classList.add('hidden');
         } 
         // Step 2: Enable meta setup config blocks once name is registered
         else if (isNameLockedByMod && !isSeasonActive) {
@@ -1835,8 +1859,7 @@
             inputTopic.disabled = false;
             saveGlobalMetaBtn.disabled = false;
             saveGlobalMetaBtn.textContent = "Start Season";
-            modRestrictedGroup.style.opacity = "0.5";
-            modRestrictedGroup.style.pointerEvents = "none";
+            modRestrictedGroup.classList.add('hidden');
         } 
         // Step 3: Fully open dashboard after Season activation trigger
         else if (isNameLockedByMod && isSeasonActive) {
@@ -1846,8 +1869,7 @@
             inputTopic.disabled = true;
             saveGlobalMetaBtn.disabled = true;
             saveGlobalMetaBtn.textContent = "Season Active";
-            modRestrictedGroup.style.opacity = "1";
-            modRestrictedGroup.style.pointerEvents = "auto";
+            modRestrictedGroup.classList.remove('hidden');
         }
     }
     
@@ -1930,6 +1952,7 @@
 
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
+            
             submitRatingBtn.disabled = true;
             submitRatingBtn.textContent = "System Paused";
             
