@@ -800,24 +800,45 @@
 
         /* --- Custom Suggestion Items --- */
         .suggestion-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 8px;
+            display: grid;
+            grid-template-columns: 85px 1fr 28px; /* Fixed Name width | Flexible Title space | Fixed Button width */
+            gap: 12px;
+            align-items: start; /* Keeps items anchored to top when text wraps */
+            padding-bottom: 10px;
             border-bottom: 1px dashed var(--border);
         }
         .suggestion-item:last-child {
             border-bottom: none;
             padding-bottom: 0;
         }
+        .sugg-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+            word-break: break-word;
+            padding-top: 4px;
+        }
+        .sugg-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--h3-color);
+            word-break: break-word;
+            border-left: 1px solid var(--border); /* Creates the separator line */
+            padding-left: 12px;
+            padding-top: 3px;
+            line-height: 1.4;
+        }
         .btn-copy-small {
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 4px;
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: bold;
+            padding: 0;
+            height: 28px;
+            width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             box-shadow: var(--btn-shadow);
             transition: all 0.2s;
@@ -2035,11 +2056,14 @@
                                 const itemDiv = document.createElement('div');
                                 itemDiv.className = 'suggestion-item';
                                 itemDiv.innerHTML = `
-                                    <span style="flex:1; margin-right: 10px; font-size: 13px; line-height: 1.4;">
-                                        <strong>"${currentSuggestedTitle}"</strong><br>
-                                        <span style="color: var(--text-muted); font-size: 11px;">by ${reviewerKey}</span>
-                                    </span>
-                                    <button type="button" class="btn-copy-small">Copy</button>
+                                    <div class="sugg-name">${reviewerKey}</div>
+                                    <div class="sugg-title">"${currentSuggestedTitle}"</div>
+                                    <button type="button" class="btn-copy-small" title="Copy to clipboard">
+                                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
                                 `;
                                 
                                 itemDiv.querySelector('.btn-copy-small').addEventListener('click', () => {
