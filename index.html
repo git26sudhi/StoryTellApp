@@ -928,6 +928,42 @@
         #customModalOk:hover {
             filter: brightness(1.1);
         }
+        
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .version-box {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .version-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+        .version-num {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .about-list {
+            text-align: left;
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .about-list li {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -949,6 +985,12 @@
                 <option value="emerald">Forest Green</option>
                 <option value="mono">Black & Gray</option>
             </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 15px;">
+            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span>ℹ️</span> About Platform
+            </button>
         </div>
 
         <div id="sidebarModOptions" class="hidden" style="margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
@@ -1136,7 +1178,15 @@
                     </svg>
                     Logout
                 </button>
+            </div>
 
+            <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
+                <label for="dashboardNewStoryInput" style="color: var(--admin-color); font-size: 14px; font-weight: bold;">✨ Fast-Track Add Story Pathway</label>
+                <p style="font-size: 12px; margin: 2px 0 10px 0; color: var(--text-muted);">Creates a standard structural document node inside the target Firebase collection database schema.</p>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story path title description..." style="flex: 1;">
+                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap;">Create Path</button>
+                </div>
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
@@ -1226,11 +1276,34 @@
         <div class="plain-section dev-header">
             <h2>💻 Developer options</h2>
 
+            <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
+                <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
+                <div class="version-grid">
+                    <div class="version-box">
+                        <div class="version-label">Major</div>
+                        <div id="devMajorText" class="version-num">4</div>
+                    </div>
+                    <div class="version-box">
+                        <div class="version-label">Minor</div>
+                        <div id="devMinorText" class="version-num">1</div>
+                    </div>
+                    <div class="version-box">
+                        <div class="version-label">Revision</div>
+                        <div id="devRevisionText" class="version-num">5</div>
+                    </div>
+                </div>
+                <div class="btn-row" style="margin-top: 5px;">
+                    <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: 1; padding: 8px;">Major Version</button>
+                    <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: 1; padding: 8px;">Minor Version</button>
+                    <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: 1; padding: 8px;">Revision</button>
+                </div>
+            </div>
+
             <div class="switch-container danger-toggle">
                 <div>
                     <strong style="color: var(--danger); display: flex; align-items: center; gap: 8px;">
                         <svg viewBox="0 0 64 64" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
-                            <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2-1.5 4-3 5" />
+                            <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2 1.5 4 3 5" />
                             <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6-16-5-6-3-12-2-16 2" />
                             <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
                             <path d="M32 10v44M26 24c1.5 3 4 5 6 5s4.5-2 6-5M18 19c-4-2-10-2-14 1 5-2 11-1 14 1M46 19c4-2 10-2 14 1-5-2-11-1-14 1" />
@@ -1297,6 +1370,7 @@
     const menuOverlay = document.getElementById('menuOverlay');
     const themeSelect = document.getElementById('themeSelect');
     const sidebarModOptions = document.getElementById('sidebarModOptions');
+    const sidebarAboutBtn = document.getElementById('sidebarAboutBtn');
 
     let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 
@@ -1307,7 +1381,6 @@
             document.documentElement.setAttribute('data-theme', currentTheme);
         }
         
-        // Safety check to ensure the select element updates properly
         if(themeSelect) {
             themeSelect.value = currentTheme;
         }
@@ -1352,7 +1425,7 @@
             const btnCancel = document.getElementById('customModalCancel');
             const btnOk = document.getElementById('customModalOk');
 
-            msgEl.textContent = message;
+            msgEl.innerHTML = message;
             inputEl.value = defaultVal;
 
             if(type === 'alert') {
@@ -1375,8 +1448,9 @@
             };
 
             btnOk.onclick = () => {
+                const val = inputEl.value;
                 cleanup();
-                if(type === 'prompt') resolve(inputEl.value);
+                if(type === 'prompt') resolve(val);
                 else if(type === 'confirm') resolve(true);
                 else resolve(true);
             };
@@ -1439,6 +1513,18 @@
     const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
     const previewBtn = document.getElementById('previewBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+
+    // Dashboard Fast-Track Add Elements
+    const dashboardNewStoryInput = document.getElementById('dashboardNewStoryInput');
+    const dashboardUpdateStoryBtn = document.getElementById('dashboardUpdateStoryBtn');
+
+    // Version Controller UI Hooks
+    const devMajorText = document.getElementById('devMajorText');
+    const devMinorText = document.getElementById('devMinorText');
+    const devRevisionText = document.getElementById('devRevisionText');
+    const btnUpdateMajor = document.getElementById('btnUpdateMajor');
+    const btnUpdateMinor = document.getElementById('btnUpdateMinor');
+    const btnUpdateRevision = document.getElementById('btnUpdateRevision');
 
     const deleteStoryBtn = document.getElementById('deleteStoryBtn');
 
@@ -1506,8 +1592,10 @@
 
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
+
+    // Realtime Version Control Local Cache Variables
+    let currentVersionState = { major: 4, minor: 1, revision: 5, changesMade: [] };
     
-    // Set initial date for Dashboard heading
     modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     navBtnReviewer.addEventListener('click', () => {
@@ -1727,6 +1815,25 @@
         }
     });
 
+    // Realtime Listener Sync for Cloud Version Control Node
+    onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            currentVersionState.major = data.major !== undefined ? Number(data.major) : 4;
+            currentVersionState.minor = data.minor !== undefined ? Number(data.minor) : 1;
+            currentVersionState.revision = data.revision !== undefined ? Number(data.revision) : 5;
+            currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
+        } else {
+            // Seed base defaults if firestore config path node is blank
+            currentVersionState = { major: 4, minor: 1, revision: 5, changesMade: [] };
+        }
+        
+        // Update DOM targets dynamically
+        devMajorText.textContent = currentVersionState.major;
+        devMinorText.textContent = currentVersionState.minor;
+        devRevisionText.textContent = currentVersionState.revision;
+    });
+
     function updateUserFormFieldsVisibility() {
         if (isAuthorGuessEnabled) {
             userAuthorGuessGroup.classList.remove('hidden');
@@ -1775,10 +1882,12 @@
     function evaluateSystemFreezeState() {
         const elements = [
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
-            newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
-            inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
+            newStoryInput, updateStoryBtn, dashboardNewStoryInput, dashboardUpdateStoryBtn,
+            deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, saveGlobalMetaBtn, 
+            readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn,
-            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput
+            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
+            btnUpdateMajor, btnUpdateMinor, btnUpdateRevision
         ];
 
         if (isSystemPaused) {
@@ -2154,20 +2263,85 @@
         } catch(e) { customAlert("Database error saving variables."); }
     });
 
-    updateStoryBtn.addEventListener('click', async () => {
+    // Central core function handling standard story creation
+    async function handleStoryAddition(inputElement, actionButton) {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
-        const title = newStoryInput.value.trim();
+        const title = inputElement.value.trim();
         if (!title) { customAlert("Enter a valid story title."); return; }
         try {
-            updateStoryBtn.disabled = true;
+            actionButton.disabled = true;
             await setDoc(doc(db, "competitions", title), { created: Date.now() }, { merge: true });
             newStoryInput.value = '';
-            updateStoryBtn.disabled = false;
+            dashboardNewStoryInput.value = '';
+            actionButton.disabled = false;
             customAlert(`Added: "${title}"`);
         } catch (err) {
             customAlert("Error writing story.");
-            updateStoryBtn.disabled = false;
+            actionButton.disabled = false;
         }
+    }
+
+    updateStoryBtn.addEventListener('click', () => handleStoryAddition(newStoryInput, updateStoryBtn));
+    dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
+
+    // Functional Pipeline Processing App Version Version Upgrades
+    async function processVersionUpgrade(targetField) {
+        if (isSystemPaused && !isDeveloperModeUnlocked) return;
+        
+        // Throw an verification constraint prompt when targeting structural fields
+        if (targetField === 'major' || targetField === 'minor') {
+            const check = await customConfirm(`Confirm Upgrade Alert!<br><br>Are you absolutely sure you want to increment the <b>${targetField}</b> build version metrics value?`);
+            if (!check) return;
+        }
+        
+        const changelogSummary = await customPrompt(`📝 Version Release Changelog Entry Query<br><br>Please input or state the changes made for this build update deployment:`);
+        if (changelogSummary === null) return; 
+        
+        const validatedLogString = changelogSummary.trim() || "General performance optimizations and maintenance update patches.";
+        const nextValue = currentVersionState[targetField] + 1;
+        
+        try {
+            await setDoc(doc(db, "app_state", "version_control"), {
+                [targetField]: nextValue,
+                changesMade: arrayUnion(validatedLogString)
+            }, { merge: true });
+            
+            customAlert(`🚀 Application platform version target pipeline built and deployed successfully.`);
+        } catch (err) {
+            console.error(err);
+            customAlert("Error syncing version deployment metrics to Firestore storage collections.");
+        }
+    }
+
+    btnUpdateMajor.addEventListener('click', () => processVersionUpgrade('major'));
+    btnUpdateMinor.addEventListener('click', () => processVersionUpgrade('minor'));
+    btnUpdateRevision.addEventListener('click', () => processVersionUpgrade('revision'));
+
+    // About App Panel Dialog Processing Engine
+    sidebarAboutBtn.addEventListener('click', () => {
+        let bulletsHtml = "";
+        if (currentVersionState.changesMade.length > 0) {
+            // Read stack backwards to prioritize showcasing newest update modifications on top
+            const mirroredArray = [...currentVersionState.changesMade].reverse();
+            mirroredArray.forEach(log => {
+                bulletsHtml += `<li>${sanitizeText(log)}</li>`;
+            });
+        } else {
+            bulletsHtml = `<li>Initial base system framework architecture initialized.</li>`;
+        }
+
+        const viewTemplate = `
+            <div style="text-align: left;">
+                <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Build Stamp</span>
+                <div style="font-size: 26px; font-weight: 900; margin-bottom: 15px; color: var(--primary);">V ${currentVersionState.major}.${currentVersionState.minor}.${currentVersionState.revision}</div>
+                <hr style="border:0; border-top: 1px dashed var(--border); margin: 10px 0;">
+                <label style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: var(--h3-color);">What's new</label>
+                <ul class="about-list">${bulletsHtml}</ul>
+            </div>
+        `;
+        
+        toggleMenu(false);
+        customAlert(viewTemplate);
     });
 
     deleteStoryBtn.addEventListener('click', async () => {
@@ -2386,7 +2560,6 @@
 
             toggleMenu(false); 
 
-            // Scroll down to preview section automatically
             setTimeout(() => {
                 previewSection.scrollIntoView({ behavior: 'smooth' });
             }, 100);
