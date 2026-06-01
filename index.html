@@ -604,20 +604,6 @@
         .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
         .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
-        .preview-output-box {
-            background-color: var(--input-bg);
-            border: 1px dashed var(--admin-color);
-            padding: 12px;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 14px;
-            color: var(--h3-color);
-            max-height: 180px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            margin-top: 10px;
-        }
-
         .winners-tags-container {
             display: flex;
             flex-wrap: wrap;
@@ -799,36 +785,6 @@
             background-color: var(--webview-row-alt);
         }
 
-        /* --- Custom Suggestion Items --- */
-        .suggestion-item {
-            display: grid;
-            grid-template-columns: 85px 1fr 28px; /* Fixed Name width | Flexible Title space | Fixed Button width */
-            gap: 12px;
-            align-items: start; /* Keeps items anchored to top when text wraps */
-            padding-bottom: 10px;
-            border-bottom: 1px dashed var(--border);
-        }
-        .suggestion-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        .sugg-name {
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--text-muted);
-            word-break: break-word;
-            padding-top: 4px;
-        }
-        .sugg-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--h3-color);
-            word-break: break-word;
-            border-left: 1px solid var(--border); /* Creates the separator line */
-            padding-left: 12px;
-            padding-top: 3px;
-            line-height: 1.4;
-        }
         .btn-copy-small {
             background-color: var(--primary);
             color: white;
@@ -843,6 +799,7 @@
             cursor: pointer;
             box-shadow: var(--btn-shadow);
             transition: all 0.2s;
+            margin: 0 auto;
         }
         .btn-copy-small:hover {
             filter: brightness(1.1);
@@ -1312,7 +1269,7 @@
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
-                <label for="deleteStorySelect">Select Story (For notes & deletion)</label>
+                <label for="deleteStorySelect">Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <select id="deleteStorySelect" style="flex: 1; margin: 0;"></select>
                     <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
@@ -1321,11 +1278,6 @@
                         </svg>
                     </button>
                 </div>
-            </div>
-
-            <div class="form-group" style="margin-top: 15px; background: var(--input-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border);">
-                <label style="margin-bottom: 8px; font-size: 13px; color: var(--text-color);">Reader Suggested Headings</label>
-                <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 180px; display: flex; flex-direction: column; gap: 8px;">Select Story to populate recommendations buffer...</div>
             </div>
 
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
@@ -1339,10 +1291,11 @@
                             <th><b>Rating</b></th>
                             <th><b>Suggested Title</b></th>
                             <th><b>Author Guess</b></th>
+                            <th style="width: 40px; text-align: center;"><b>Copy</b></th>
                         </tr>
                     </thead>
                     <tbody id="dailyReviewsTableBody">
-                        <tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
+                        <tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1365,7 +1318,7 @@
                     <select id="readerSuggestions"></select>
                 </div>
                 <div style="flex: 1;">
-                    <label for="headingSuggesterInput">Name</label>
+                    <label for="headingSuggesterInput">Reviewer</label>
                     <select id="headingSuggesterInput"></select>
                 </div>
             </div>
@@ -1637,8 +1590,6 @@
     const headerModNameDisplay = document.getElementById('headerModNameDisplay');
     const storyDropdown = document.getElementById('storyDropdown');
     const deleteStorySelect = document.getElementById('deleteStorySelect');
-
-    const titleSuggestionClipboardOutput = document.getElementById('titleSuggestionClipboardOutput');
 
     const localEmailInput = document.getElementById('localEmailInput');
     const localPassInput = document.getElementById('localPassInput');
@@ -2220,10 +2171,23 @@
             loadCurrentStoryNotes();
             autoFillPreviousUserInputs();
         } else {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
             modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
         evaluateLocalStorageRestrictions();
+    });
+
+    // Handle Table copy event delegation
+    dailyReviewsTableBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-copy-row');
+        if (btn && !btn.disabled) {
+            const reviewer = btn.getAttribute('data-reviewer');
+            const title = btn.getAttribute('data-title');
+            const copyStr = `${reviewer}, ${title}`;
+            navigator.clipboard.writeText(copyStr)
+                .then(() => customAlert(`📋 Copied:\n${copyStr}`))
+                .catch(() => customAlert("Clipboard write blocked by browser."));
+        }
     });
 
     // Auto-fill interface logic when user queries a story selection
@@ -2345,7 +2309,7 @@
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
             modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             return;
         }
@@ -2354,7 +2318,6 @@
             storyDropdown.value = targetSelected;
         }
 
-        titleSuggestionClipboardOutput.innerHTML = "⏳ Synchronizing stream buffer...";
         modDailyHeading.textContent = `📖 Story: ${targetSelected}`;
 
         try {
@@ -2365,7 +2328,6 @@
             correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
-            titleSuggestionClipboardOutput.innerHTML = "";
             headingToReviewerMap = {};
             let hasSuggestions = false;
             let dailyHtml = "";
@@ -2413,29 +2375,6 @@
                                 personOpt.value = reviewerKey;
                                 personOpt.textContent = reviewerKey; 
                                 headingSuggesterInput.appendChild(personOpt);
-
-                                // Create individual suggestion visual block with copy button
-                                const itemDiv = document.createElement('div');
-                                itemDiv.className = 'suggestion-item';
-                                itemDiv.innerHTML = `
-                                    <div class="sugg-name">${reviewerKey}</div>
-                                    <div class="sugg-title">"${currentSuggestedTitle}"</div>
-                                    <button type="button" class="btn-copy-small" title="Copy to clipboard">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                    </button>
-                                `;
-                                
-                                itemDiv.querySelector('.btn-copy-small').addEventListener('click', () => {
-                                    const copyStr = `${reviewerKey}, ${currentSuggestedTitle}`;
-                                    navigator.clipboard.writeText(copyStr)
-                                        .then(() => customAlert(`📋 Copied:\n${copyStr}`))
-                                        .catch(() => customAlert("Clipboard write blocked by browser."));
-                                });
-                                
-                                titleSuggestionClipboardOutput.appendChild(itemDiv);
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
@@ -2454,6 +2393,14 @@
                             <td>${score}/10</td>
                             <td>${title}</td>
                             <td>${guess}</td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : ''}>
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>`;
                     }
                 });
@@ -2462,13 +2409,9 @@
                 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 
                 renderAccumulatedWinnersChips();
-
-                if(!hasSuggestions) {
-                    titleSuggestionClipboardOutput.textContent = "No title suggestions logged for this story path yet.";
-                }
                 
                 if(reviewCount === 0) {
-                    dailyHtml = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
+                    dailyHtml = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
                 }
                 dailyReviewsTableBody.innerHTML = dailyHtml;
 
@@ -2476,13 +2419,11 @@
                 activeStorySnapshotDataCache = null;
                 renderAccumulatedWinnersChips();
                 authorGivenHeadingInput.value = "";
-                titleSuggestionClipboardOutput.textContent = "Story target index empty inside cache.";
-                dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
+                dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
             }
         } catch(err) {
             console.error(err);
-            titleSuggestionClipboardOutput.textContent = "Error parsing cloud configurations.";
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
         }
     }
 
@@ -2638,7 +2579,7 @@
                         <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
                         <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
                         <tr><td>Title (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
-                        <tr><td>Name (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
+                        <tr><td>Reviewer (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
                         <tr><td>Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
                         <tr><td>Save (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
                         <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
