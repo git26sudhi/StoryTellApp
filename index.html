@@ -772,14 +772,15 @@
             color: var(--webview-th-text);
             padding: 10px;
             border: 1px solid var(--border);
-            text-align: left;
+            text-align: center;
             font-weight: bold;
         }
         .webview-table td {
             padding: 10px;
             border: 1px solid var(--border);
             color: var(--webview-td-text);
-            vertical-align: top;
+            vertical-align: middle;
+            text-align: center;
         }
         .webview-table tr:nth-child(even) {
             background-color: var(--webview-row-alt);
@@ -902,12 +903,6 @@
             padding: 8px;
             border-radius: 6px;
             text-align: center;
-        }
-        .version-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: bold;
         }
         .version-num {
             font-size: 20px;
@@ -1356,15 +1351,12 @@
                 <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
                 <div class="version-grid">
                     <div class="version-box">
-                        <div class="version-label">Major</div>
                         <div id="devMajorText" class="version-num">4</div>
                     </div>
                     <div class="version-box">
-                        <div class="version-label">Minor</div>
                         <div id="devMinorText" class="version-num">1</div>
                     </div>
                     <div class="version-box">
-                        <div class="version-label">Revision</div>
                         <div id="devRevisionText" class="version-num">7</div>
                     </div>
                 </div>
@@ -1789,12 +1781,12 @@
                 cachedMaxCols = maxCols;
                 devDownloadFeedbackBtn.classList.remove('hidden');
 
-                let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white;"><b>Reviewer Name</b></th>`;
+                let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Reviewer Name</b></th>`;
                 for(let i = 1; i <= maxCols; i++) {
-                    theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>Feedback Entry ${i}</b></th>`;
+                    theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
                 }
-                theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>My Comments</b></th>`;
-                theadHtml += `<th style="background-color: var(--dev-color); color: white;"><b>Status</b></th>`;
+                theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>My Comments</b></th>`;
+                theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Status</b></th>`;
                 theadHtml += `</tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
@@ -1837,25 +1829,25 @@
     devDownloadFeedbackBtn.addEventListener('click', () => {
         if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
 
-        let theadHtml = `<tr><th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc;"><b>Reviewer Name</b></th>`;
+        let theadHtml = `<tr><th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
         for(let i = 1; i <= cachedMaxCols; i++) {
-            theadHtml += `<th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc;"><b>Feedback Entry ${i}</b></th>`;
+            theadHtml += `<th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
         }
         theadHtml += `</tr>`;
 
         let tbodyHtml = "";
         Object.keys(cachedFeedbackData).forEach(user => {
-            tbodyHtml += `<tr><td style="border: 1px solid #ccc;"><strong>${sanitizeText(user)}</strong></td>`;
+            tbodyHtml += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
             const userFeedbacks = data[user] || [];
             for(let i = 0; i < cachedMaxCols; i++) {
-                tbodyHtml += `<td style="border: 1px solid #ccc;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
+                tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
             }
             tbodyHtml += `</tr>`;
         });
 
         const htmlString = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: left; }</style></head>
+            <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head>
             <body>
                 <table>
                     <thead>${theadHtml}</thead>
@@ -1924,24 +1916,22 @@
         }
     });
     
-    // Auto-save time locks on edit loss of focus so data doesn't get lost
-    authorGuessLockTime.addEventListener('change', async () => {
+    // Centralized robust auto-save mechanism for lock times straight to database
+    async function syncTimeLocksToFirebase() {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
-                authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59"
-            }, { merge: true });
-        } catch(e) { console.error("Error saving time.", e); }
-    });
-
-    titleSuggestionLockTime.addEventListener('change', async () => {
-        if (isSystemPaused && !isDeveloperModeUnlocked) return;
-        try {
-            await setDoc(doc(db, "app_state", "global_config"), {
+                authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59",
                 titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
         } catch(e) { console.error("Error saving time.", e); }
-    });
+    }
+
+    // Guarantees persistence upon losing focus or input change without risking resets on code push
+    authorGuessLockTime.addEventListener('change', syncTimeLocksToFirebase);
+    titleSuggestionLockTime.addEventListener('change', syncTimeLocksToFirebase);
+    authorGuessLockTime.addEventListener('blur', syncTimeLocksToFirebase);
+    titleSuggestionLockTime.addEventListener('blur', syncTimeLocksToFirebase);
 
     // Realtime Sync Listener Mapping for cloud version tracking parameters
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
@@ -2378,10 +2368,10 @@
                         
                         dailyHtml += `<tr>
                             <td>${sanitizeText(reviewerKey)}</td>
-                            <td>${score}/10</td>
+                            <td>${score}</td>
                             <td>${guess}</td>
                             <td>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                                     <span style="word-break: break-word;">${title}</span>
                                     <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : 'style="flex-shrink: 0;"'}>
                                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2550,8 +2540,8 @@
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 45%;">Feature</th>
-                            <th>Description</th>
+                            <th style="width: 45%; text-align: center;">Feature</th>
+                            <th style="text-align: center;">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2588,8 +2578,8 @@
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 45%;">Feature</th>
-                            <th>Description</th>
+                            <th style="width: 45%; text-align: center;">Feature</th>
+                            <th style="text-align: center;">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2771,9 +2761,9 @@
                 <meta charset="UTF-8">
                 <style>
                     table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: left; padding: 10px; }
-                    td { border: 1px solid #ccc; text-align: left; vertical-align: top; padding: 10px; }
-                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: left; padding: 12px; }
+                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }
+                    td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }
+                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }
                 </style>
             </head>
             <body>
@@ -2805,16 +2795,16 @@
 
             tempTableBodyContent += `
                 <tr>
-                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: left; padding: 12px; border: 1px solid var(--border);">
+                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border);">
                         📖 Story: ${storyTitle}
                     </th>
                 </tr>
                 <tr>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Date</b></th>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Reviewer Name</b></th>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Rating</b></th>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Author Guess</b></th>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Suggested Title</b></th>
+                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th>
+                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th>
+                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th>
+                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th>
+                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th>
                 </tr>
             `;
 
@@ -2849,7 +2839,7 @@
                         <tr>
                             <td>${currentDateStr}</td>
                             <td>${review.reviewer}</td>
-                            <td>${review.score}/10</td>
+                            <td>${review.score}</td>
                             <td>${review.guess}</td>
                             <td>${review.title}</td>
                         </tr>
