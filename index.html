@@ -798,6 +798,37 @@
             background-color: var(--webview-row-alt);
         }
 
+        /* --- Custom Suggestion Items --- */
+        .suggestion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .suggestion-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .btn-copy-small {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--btn-shadow);
+            transition: all 0.2s;
+        }
+        .btn-copy-small:hover {
+            filter: brightness(1.1);
+        }
+        .btn-copy-small:active {
+            transform: translateY(1px);
+        }
+
         /* --- Custom Modal Styles --- */
         #customModalOverlay {
             position: fixed; 
@@ -880,14 +911,12 @@
 </head>
 <body>
 
-<!-- SIDEBAR OVERLAY & MENU -->
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
     <div class="side-menu-header">
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
     <div class="side-menu-content">
-        <!-- GLOBAL OPTIONS (VISIBLE TO ALL) -->
         <div class="form-group">
             <label style="color: var(--text-color); margin-bottom: 8px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
                 <span style="font-size: 16px;">🖌️</span> Theme
@@ -901,7 +930,6 @@
             </select>
         </div>
 
-        <!-- MODERATOR OPTIONS (HIDDEN UNTIL AUTHENTICATED) -->
         <div id="sidebarModOptions" class="hidden" style="margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
             
             <div class="form-group">
@@ -980,7 +1008,6 @@
 
 <div class="container">
     <div class="metadata-opposite-row">
-        <!-- MENU OPEN BUTTON WITH HAMBURGER SVG ICON -->
         <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -1080,7 +1107,6 @@
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
                 <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">🛠️ Moderator Dashboard</h2>
                 
-                <!-- GRADIENT EXIT/LOGOUT ICON BUTTON -->
                 <button type="button" id="logoutBtn" style="background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 6px 12px; font-size: 13px; margin: 0; display: flex; align-items: center; gap: 6px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -1105,11 +1131,10 @@
             </div>
 
             <div class="form-group" style="margin-top: 15px; background: var(--input-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border);">
-                <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 140px;">Select Story to populate recommendations buffer...</div>
-                <button type="button" id="copySuggestionsBtn" class="btn-mod-action" style="margin-top: 10px; width: 100%; font-size: 13px; padding: 8px 12px;">Copy Title suggestions list</button>
+                <label style="margin-bottom: 8px; font-size: 13px; color: var(--text-color);">Reader Suggested Headings</label>
+                <div id="titleSuggestionClipboardOutput" class="preview-output-box" style="margin-top: 0; max-height: 180px; display: flex; flex-direction: column; gap: 8px;">Select Story to populate recommendations buffer...</div>
             </div>
 
-            <!-- DEFAULT LIVE DAILY TABLE -->
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
             <h3 id="modDailyHeading" style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);"></h3>
             
@@ -1376,7 +1401,6 @@
     const deleteStorySelect = document.getElementById('deleteStorySelect');
 
     const titleSuggestionClipboardOutput = document.getElementById('titleSuggestionClipboardOutput');
-    const copySuggestionsBtn = document.getElementById('copySuggestionsBtn');
 
     const localEmailInput = document.getElementById('localEmailInput');
     const localPassInput = document.getElementById('localPassInput');
@@ -1456,6 +1480,8 @@
 
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
+
+    let headingToReviewerMap = {};
 
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
@@ -1730,7 +1756,7 @@
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             newStoryInput, updateStoryBtn, deleteStorySelect, deleteStoryBtn,
             inputMonth, inputTopic, saveGlobalMetaBtn, readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
-            headingSuggesterInput, correctGuesses, saveNotesBtn, copySuggestionsBtn, clearWinnersBtn,
+            headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn,
             previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput
         ];
 
@@ -1846,6 +1872,16 @@
     deleteStorySelect.addEventListener('change', () => {
         loadCurrentStoryNotes();
     });
+    
+    // Auto-select suggester when heading is chosen
+    readerSuggestions.addEventListener('change', () => {
+        const selectedHeading = readerSuggestions.value;
+        if (selectedHeading && headingToReviewerMap[selectedHeading]) {
+            headingSuggesterInput.value = headingToReviewerMap[selectedHeading];
+        } else {
+            headingSuggesterInput.value = "";
+        }
+    });
 
     submitLoginBtn.addEventListener('click', async () => {
         const email = localEmailInput.value.trim();
@@ -1935,7 +1971,7 @@
             storyDropdown.value = targetSelected;
         }
 
-        titleSuggestionClipboardOutput.textContent = "⏳ Synchronizing clipboard stream buffer...";
+        titleSuggestionClipboardOutput.innerHTML = "⏳ Synchronizing stream buffer...";
         modDailyHeading.textContent = `📖 Story: ${targetSelected}`;
 
         try {
@@ -1946,6 +1982,9 @@
             correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
+            titleSuggestionClipboardOutput.innerHTML = "";
+            headingToReviewerMap = {};
+            let hasSuggestions = false;
             let dailyHtml = "";
             let reviewCount = 0;
 
@@ -1953,7 +1992,6 @@
                 const data = docSnap.data();
                 activeStorySnapshotDataCache = data;
 
-                let clipboardLinesArray = [];
                 let rawSavedHeadingMatchValue = data._suggestions || "";
                 let rawSavedSuggesterMatchValue = data._suggesterName || "";
                 let rawSavedAuthorGivenHeading = data._authorGivenHeading || "";
@@ -1980,15 +2018,38 @@
                             const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
 
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
-                                clipboardLinesArray.push(`• "${currentSuggestedTitle}" — suggested by ${reviewerKey}`);
+                                hasSuggestions = true;
+                                headingToReviewerMap[currentSuggestedTitle] = reviewerKey;
+
                                 const headingOpt = document.createElement('option');
                                 headingOpt.value = currentSuggestedTitle;
                                 headingOpt.textContent = currentSuggestedTitle; 
                                 readerSuggestions.appendChild(headingOpt);
+                                
                                 const personOpt = document.createElement('option');
                                 personOpt.value = reviewerKey;
                                 personOpt.textContent = reviewerKey; 
                                 headingSuggesterInput.appendChild(personOpt);
+
+                                // Create individual suggestion visual block with copy button
+                                const itemDiv = document.createElement('div');
+                                itemDiv.className = 'suggestion-item';
+                                itemDiv.innerHTML = `
+                                    <span style="flex:1; margin-right: 10px; font-size: 13px; line-height: 1.4;">
+                                        <strong>"${currentSuggestedTitle}"</strong><br>
+                                        <span style="color: var(--text-muted); font-size: 11px;">by ${reviewerKey}</span>
+                                    </span>
+                                    <button type="button" class="btn-copy-small">Copy</button>
+                                `;
+                                
+                                itemDiv.querySelector('.btn-copy-small').addEventListener('click', () => {
+                                    const copyStr = `${reviewerKey}, ${currentSuggestedTitle}`;
+                                    navigator.clipboard.writeText(copyStr)
+                                        .then(() => customAlert(`📋 Copied:\n${copyStr}`))
+                                        .catch(() => customAlert("Clipboard write blocked by browser."));
+                                });
+                                
+                                titleSuggestionClipboardOutput.appendChild(itemDiv);
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
@@ -2016,9 +2077,7 @@
 
                 renderAccumulatedWinnersChips();
 
-                if(clipboardLinesArray.length > 0) {
-                    titleSuggestionClipboardOutput.textContent = clipboardLinesArray.join("\n");
-                } else {
+                if(!hasSuggestions) {
                     titleSuggestionClipboardOutput.textContent = "No title suggestions logged for this story path yet.";
                 }
                 
@@ -2040,17 +2099,6 @@
             dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
         }
     }
-
-    copySuggestionsBtn.addEventListener('click', () => {
-        const textToCopy = titleSuggestionClipboardOutput.textContent;
-        if(!textToCopy || textToCopy.startsWith("No ") || textToCopy.startsWith("Select ") || textToCopy.startsWith("⏳")) {
-            customAlert("Nothing substantial to copy inside current selection buffer.");
-            return;
-        }
-        navigator.clipboard.writeText(textToCopy)
-            .then(() => customAlert("📋 Title suggestions successfully copied to your device clipboard!"))
-            .catch(() => customAlert("Clipboard write permission blocked by browser parameters."));
-    });
 
     saveModNameBtn.addEventListener('click', async () => {
         if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
