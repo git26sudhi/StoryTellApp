@@ -1354,14 +1354,15 @@
                 <input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading">
             </div>
 
-            <div class="form-group">
-                <label for="readerSuggestions">Author's Favorite Heading</label>
-                <select id="readerSuggestions"></select>
-            </div>
-
-            <div class="form-group">
-                <label for="headingSuggesterInput">Suggested Person</label>
-                <select id="headingSuggesterInput"></select>
+            <div class="form-group" style="display: flex; gap: 10px;">
+                <div style="flex: 1.5;">
+                    <label for="readerSuggestions">Title</label>
+                    <select id="readerSuggestions"></select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="headingSuggesterInput">Reviewer</label>
+                    <select id="headingSuggesterInput"></select>
+                </div>
             </div>
 
             <div class="form-group">
@@ -1946,8 +1947,14 @@
             
             cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
             cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
-            authorGuessLockTime.value = cachedAuthorGuessLockTime;
-            titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
+            
+            // Smart update: Prevent overwriting time fields if the user is actively typing in them
+            if (document.activeElement !== authorGuessLockTime) {
+                authorGuessLockTime.value = cachedAuthorGuessLockTime;
+            }
+            if (document.activeElement !== titleSuggestionLockTime) {
+                titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
+            }
             
             updateUserFormFieldsVisibility();
 
@@ -1960,6 +1967,25 @@
         } catch(e) {
             console.error("Error reading global config:", e);
         }
+    });
+    
+    // Auto-save time locks on edit loss of focus so data doesn't get lost
+    authorGuessLockTime.addEventListener('change', async () => {
+        if (isSystemPaused && !isDeveloperModeUnlocked) return;
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59"
+            }, { merge: true });
+        } catch(e) { console.error("Error saving time.", e); }
+    });
+
+    titleSuggestionLockTime.addEventListener('change', async () => {
+        if (isSystemPaused && !isDeveloperModeUnlocked) return;
+        try {
+            await setDoc(doc(db, "app_state", "global_config"), {
+                titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
+            }, { merge: true });
+        } catch(e) { console.error("Error saving time.", e); }
     });
 
     // Realtime Sync Listener Mapping for cloud version tracking parameters
@@ -1999,7 +2025,8 @@
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
-                enableAuthorGuess: toggleAuthorGuessBtn.checked
+                enableAuthorGuess: toggleAuthorGuessBtn.checked,
+                authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59"
             }, { merge: true });
         } catch(e) { customAlert("Error syncing configuration."); }
     });
@@ -2008,7 +2035,8 @@
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
-                enableTitleSuggestion: toggleTitleSuggestionBtn.checked
+                enableTitleSuggestion: toggleTitleSuggestionBtn.checked,
+                titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
         } catch(e) { customAlert("Error syncing configuration."); }
     });
@@ -2320,8 +2348,8 @@
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
 
-            readerSuggestions.innerHTML = '<option value="">-- Choose Heading --</option>';
-            headingSuggesterInput.innerHTML = '<option value="">-- Choose Person --</option>';
+            readerSuggestions.innerHTML = '<option value="">-- Choose Title --</option>';
+            headingSuggesterInput.innerHTML = '<option value="">-- Choose Reviewer --</option>';
             correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
@@ -2597,8 +2625,8 @@
                         <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
                         <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
                         <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
-                        <tr><td>Author's Favorite Heading (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
-                        <tr><td>Suggested Person (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
+                        <tr><td>Title (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
+                        <tr><td>Reviewer (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
                         <tr><td>Won-Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
                         <tr><td>Save End of Day Notes (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
                         <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
