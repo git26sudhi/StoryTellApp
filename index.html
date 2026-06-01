@@ -411,7 +411,7 @@
 
         .side-menu-header {
             display: flex; 
-            justify-content: flex-end; 
+            justify-content: space-between; 
             align-items: center;
             padding: 20px; 
             padding-bottom: 5px;
@@ -1000,9 +1000,8 @@
         }
 
         #sidebarAboutBtn, #sidebarManualBtn {
-            width: max-content !important;
-            padding: 11px 2ch !important;
-            margin: 15px 0 0 0 !important; 
+            width: max-content;
+            padding: 11px 2ch;
         }
         
         .time-lock-input {
@@ -1022,6 +1021,7 @@
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
     <div class="side-menu-header">
+        <div id="sidebarSeasonDisplay" style="font-weight: bold; color: var(--primary); font-size: 16px;">Season: ---</div>
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
     <div class="side-menu-content" style="display: flex; flex-direction: column;">
@@ -1040,47 +1040,19 @@
 
         <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 20px;">
             
-            <div class="form-group">
-                <label for="newStoryInput">Add New Story</label>
-                <input type="text" id="newStoryInput" placeholder="Story name">
-                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 8px; width: 100%;">Add Story</button>
-            </div>
-
-            <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
-                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                        <input type="checkbox" id="toggleAuthorGuessBtn">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
-                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
-                    <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
+            <div class="form-group" id="modNameSetupGroup">
+                <label for="inputModName">Moderator Name</label>
+                <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 8px;">
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action" style="width: max-content;">Save Profile</button>
                 </div>
             </div>
 
-            <div class="switch-container" style="padding: 10px; flex-wrap: wrap; gap: 6px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
-                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                        <input type="checkbox" id="toggleTitleSuggestionBtn">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
-                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
-                    <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
-                </div>
-            </div>
-            
-            <div class="form-group" style="margin-top: 15px;">
+            <div class="form-group" id="seasonSetupGroup" style="margin-top: 15px;">
                 <label for="inputTopic">Subject</label>
-                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi">
-            </div>
-
-            <div class="form-group">
-                <select id="inputMonth" style="cursor: pointer; border-radius: 6px;">
+                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" style="margin-bottom: 8px;">
+                
+                <select id="inputMonth" style="cursor: pointer; border-radius: 6px; margin-bottom: 8px;">
                     <option value="">-- Select Month --</option>
                     <option value="January">January</option>
                     <option value="February">February</option>
@@ -1095,26 +1067,61 @@
                     <option value="November">November</option>
                     <option value="December">December</option>
                 </select>
+                
+                <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 15px;">
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action" style="width: max-content;">Start Season</button>
+                </div>
             </div>
 
-            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-bottom: 15px; width: 100%;">Save Config</button>
+            <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border); padding-top: 15px;">
+                
+                <div class="form-group">
+                    <label for="newStoryInput">Add New Story</label>
+                    <input type="text" id="newStoryInput" placeholder="Story name" style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: flex-end; width: 100%;">
+                        <button type="button" id="updateStoryBtn" class="btn-mod-action" style="width: max-content;">Add Story</button>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label for="inputModName">Moderator Name</label>
-                <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 8px;">
-                <button type="button" id="saveModNameBtn" class="btn-mod-action" style="width: 100%;">Save Profile</button>
-            </div>
+                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleAuthorGuessBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
 
-            <div class="form-group" style="margin-top: 25px;">
-                <label style="color: var(--text-color);">System Data</label>
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
-                    <button id="previewBtn" class="btn-preview">Preview Entire Season</button>
-                    <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
+                <div class="switch-container" style="padding: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleTitleSuggestionBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="color: var(--text-color);">System Data</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px; align-items: flex-end;">
+                        <button id="previewBtn" class="btn-preview" style="width: max-content; padding: 10px 15px;">Preview Entire Season</button>
+                        <button id="downloadBtn" class="btn-download" style="width: max-content; padding: 10px 15px; background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; text-align: left;">
+        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
             <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; background-color: var(--admin-color); color: white;">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -1448,12 +1455,14 @@
     const menuOverlay = document.getElementById('menuOverlay');
     const themeSelect = document.getElementById('themeSelect');
     const sidebarModOptions = document.getElementById('sidebarModOptions');
+    const advancedModOptions = document.getElementById('advancedModOptions');
     const sidebarAboutBtn = document.getElementById('sidebarAboutBtn');
     const sidebarManualBtn = document.getElementById('sidebarManualBtn');
     const fullscreenManualOverlay = document.getElementById('fullscreenManualOverlay');
     const manualCloseBtn = document.getElementById('manualCloseBtn');
     const manualHeadingTarget = document.getElementById('manualHeadingTarget');
     const manualContentContainer = document.getElementById('manualContentContainer');
+    const sidebarSeasonDisplay = document.getElementById('sidebarSeasonDisplay');
 
     let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 
@@ -1589,7 +1598,7 @@
     const saveModNameBtn = document.getElementById('saveModNameBtn');
     const inputMonth = document.getElementById('inputMonth');
     const inputTopic = document.getElementById('inputTopic');
-    const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
+    const startSeasonBtn = document.getElementById('startSeasonBtn');
     const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
     const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
     const authorGuessLockTime = document.getElementById('authorGuessLockTime');
@@ -1659,6 +1668,7 @@
 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
+    let isSeasonStarted = false;
     let arrayedStoriesList = [];
     let isSystemPaused = false;
     let isDeveloperModeUnlocked = false;
@@ -1838,7 +1848,7 @@
         let tbodyHtml = "";
         Object.keys(cachedFeedbackData).forEach(user => {
             tbodyHtml += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
-            const userFeedbacks = data[user] || [];
+            const userFeedbacks = cachedFeedbackData[user] || [];
             for(let i = 0; i < cachedMaxCols; i++) {
                 tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
             }
@@ -1871,6 +1881,41 @@
         customAlert("📥 Feedback table exported successfully.");
     });
 
+    function evaluateSetupFlow() {
+        if (isSystemPaused && !isDeveloperModeUnlocked) return; 
+
+        if (!isNameLockedByMod) {
+            inputModName.disabled = false;
+            saveModNameBtn.disabled = false;
+
+            inputTopic.disabled = true;
+            inputMonth.disabled = true;
+            startSeasonBtn.disabled = true;
+
+            advancedModOptions.classList.add('hidden');
+        } else if (isNameLockedByMod && !isSeasonStarted) {
+            inputModName.disabled = true;
+            saveModNameBtn.disabled = true;
+
+            inputTopic.disabled = false;
+            inputMonth.disabled = false;
+            startSeasonBtn.disabled = false;
+            startSeasonBtn.textContent = "Start Season";
+
+            advancedModOptions.classList.add('hidden');
+        } else {
+            inputModName.disabled = true;
+            saveModNameBtn.disabled = true;
+
+            inputTopic.disabled = false;
+            inputMonth.disabled = false;
+            startSeasonBtn.disabled = false;
+            startSeasonBtn.textContent = "Update Season";
+
+            advancedModOptions.classList.remove('hidden');
+        }
+    }
+
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
             let data = {};
@@ -1882,6 +1927,9 @@
             monthDisplay.textContent = data.month || "*****";
             inputMonth.value = data.month || "";
             inputTopic.value = data.topic || "";
+
+            const currentSeasonName = data.seasonName || "---";
+            sidebarSeasonDisplay.textContent = `Season: ${currentSeasonName}`;
 
             currentModName = data.modName || "Mod";
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
@@ -1895,7 +1943,6 @@
             cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
             cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
             
-            // Smart update: Prevent overwriting time fields if the user is actively typing in them
             if (document.activeElement !== authorGuessLockTime) {
                 authorGuessLockTime.value = cachedAuthorGuessLockTime;
             }
@@ -1906,17 +1953,19 @@
             updateUserFormFieldsVisibility();
 
             isNameLockedByMod = !!data.isNameLocked;
+            isSeasonStarted = !!data.seasonStarted;
             
             isSystemPaused = !!data.systemPaused;
             devPauseToggle.checked = isSystemPaused;
+            
             evaluateSystemFreezeState();
+            evaluateSetupFlow(); 
 
         } catch(e) {
             console.error("Error reading global config:", e);
         }
     });
     
-    // Centralized robust auto-save mechanism for lock times straight to database
     async function syncTimeLocksToFirebase() {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
@@ -1927,13 +1976,11 @@
         } catch(e) { console.error("Error saving time.", e); }
     }
 
-    // Guarantees persistence upon losing focus or input change without risking resets on code push
     authorGuessLockTime.addEventListener('change', syncTimeLocksToFirebase);
     titleSuggestionLockTime.addEventListener('change', syncTimeLocksToFirebase);
     authorGuessLockTime.addEventListener('blur', syncTimeLocksToFirebase);
     titleSuggestionLockTime.addEventListener('blur', syncTimeLocksToFirebase);
 
-    // Realtime Sync Listener Mapping for cloud version tracking parameters
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
@@ -2001,7 +2048,7 @@
         const elements = [
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             newStoryInput, updateStoryBtn, dashboardNewStoryInput, dashboardUpdateStoryBtn,
-            deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, saveGlobalMetaBtn, 
+            deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, startSeasonBtn, 
             readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn,
             previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
@@ -2010,7 +2057,6 @@
 
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
-            
             submitRatingBtn.disabled = true;
             submitRatingBtn.textContent = "System Paused";
             
@@ -2026,14 +2072,7 @@
         } else {
             pausedBanner.classList.add('hidden');
             elements.forEach(el => el.disabled = false);
-
-            if (isNameLockedByMod) {
-                inputModName.disabled = true;
-                saveModNameBtn.disabled = true;
-            } else {
-                inputModName.disabled = false;
-                saveModNameBtn.disabled = false;
-            }
+            evaluateSetupFlow();
             evaluateLocalStorageRestrictions();
         }
     }
@@ -2087,17 +2126,12 @@
                 }
             }
 
-            // Name & Rating are unlocked anytime until the user actually submits them
             friendNameInput.disabled = hasRated;
             ratingValueInput.disabled = hasRated;
 
-            // Restrict Author Guess
             authorGuessInput.disabled = !isAuthorGuessEnabled || alreadyGuessedAuthor || isPreviousDay || pastAuthorGuessTime;
-
-            // Restrict Title Suggestion
             titleSuggestionInput.disabled = !isTitleSuggestionEnabled || alreadySuggestedTitle || isPreviousDay || pastTitleSuggestionTime;
 
-            // Determine Submit Button State dynamically based on available fields
             if (friendNameInput.disabled && authorGuessInput.disabled && titleSuggestionInput.disabled) {
                 submitRatingBtn.disabled = true;
                 if (isPreviousDay && hasRated) {
@@ -2115,7 +2149,6 @@
                     submitRatingBtn.textContent = "Submit Review";
                 }
             }
-
         } catch (e) {
             console.error("Local storage initialization error.", e);
             submitRatingBtn.disabled = false;
@@ -2158,7 +2191,6 @@
         evaluateLocalStorageRestrictions();
     });
 
-    // Handle Table copy event delegation
     dailyReviewsTableBody.addEventListener('click', (e) => {
         const btn = e.target.closest('.btn-copy-row');
         if (btn && !btn.disabled) {
@@ -2171,7 +2203,6 @@
         }
     });
 
-    // Auto-fill interface logic when user queries a story selection
     function autoFillPreviousUserInputs() {
         const targetStory = storyDropdown.value;
         if (!targetStory) return;
@@ -2184,9 +2215,7 @@
                 ratingValueInput.value = parsedData.score || "";
                 authorGuessInput.value = parsedData.authorGuess !== "None" ? parsedData.authorGuess : "";
                 titleSuggestionInput.value = parsedData.suggestedTitle !== "None" ? parsedData.suggestedTitle : "";
-            } catch (e) {
-                console.error("Error parsing user cached payloads.", e);
-            }
+            } catch (e) {}
         } else {
             ratingForm.reset();
         }
@@ -2201,7 +2230,6 @@
         loadCurrentStoryNotes();
     });
     
-    // Auto-select suggester when heading is chosen
     readerSuggestions.addEventListener('change', () => {
         const selectedHeading = readerSuggestions.value;
         if (selectedHeading && headingToReviewerMap[selectedHeading]) {
@@ -2426,24 +2454,32 @@
         }
     });
 
-    saveGlobalMetaBtn.addEventListener('click', async () => {
+    startSeasonBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         
+        const monthVal = inputMonth.value;
+        if(!monthVal) { customAlert("Please select a month to generate the season string."); return; }
+        
+        const shortMonth = monthVal.substring(0, 3);
+        const yearSuffix = new Date().getFullYear().toString().slice(-2);
+        const generatedSeasonName = shortMonth + yearSuffix;
+
         const guessTime = authorGuessLockTime.value.trim() || "23:59";
         const titleTime = titleSuggestionLockTime.value.trim() || "23:59";
         
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
-                month: inputMonth.value.trim() || "*****",
+                month: monthVal,
                 topic: inputTopic.value.trim() || "*****",
+                seasonName: generatedSeasonName,
+                seasonStarted: true,
                 authorGuessLockTime: guessTime,
                 titleSuggestionLockTime: titleTime
             }, { merge: true });
-            customAlert("Configurations saved securely.");
+            customAlert(`Season Configuration Saved.\nCurrent Season: ${generatedSeasonName}`);
         } catch(e) { customAlert("Database error saving variables."); }
     });
 
-    // Central core function handling standard story creation
     async function handleStoryAddition(inputElement, actionButton) {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         const title = inputElement.value.trim();
@@ -2464,7 +2500,6 @@
     updateStoryBtn.addEventListener('click', () => handleStoryAddition(newStoryInput, updateStoryBtn));
     dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
 
-    // Functional Pipeline Processing App Version Upgrades
     async function processVersionUpgrade(targetField) {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         
@@ -2502,7 +2537,6 @@
     btnUpdateMinor.addEventListener('click', () => processVersionUpgrade('minor'));
     btnUpdateRevision.addEventListener('click', () => processVersionUpgrade('revision'));
 
-    // About App Panel Dialog Processing Engine
     sidebarAboutBtn.addEventListener('click', () => {
         let bulletsHtml = "";
         if (currentVersionState.changesMade.length > 0) {
@@ -2528,7 +2562,6 @@
         customAlert(viewTemplate);
     });
 
-    // Dedicated Fullscreen Multi-Role Manual Engine Processing Pipeline
     sidebarManualBtn.addEventListener('click', () => {
         toggleMenu(false);
         manualContentContainer.innerHTML = "";
@@ -2551,8 +2584,8 @@
                         <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr>
                         <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
                         <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
-                        <tr><td>Save Config (Button)</td><td class="one-sentence-def">Commits the active subject text properties, locking timestamp criteria, and seasonal selections onto the server.</td></tr>
-                        <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr>
+                        <tr><td>Start Season (Button)</td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr>
+                        <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout, required before starting a season.</td></tr>
                         <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
                         <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
                         <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
@@ -2563,7 +2596,7 @@
                         <tr><td>Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
                         <tr><td>Save (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
                         <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
-                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores baseline identity names and configurations to initial production initialization environments.</td></tr>
+                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td></tr>
                         <tr><td>User feedback preview (Button)</td><td class="one-sentence-def">Loads customer feedback submittals into a clear metric visualization dashboard panel.</td></tr>
                         <tr><td>Download Feedback Table (Button)</td><td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td></tr>
                         <tr><td>Major Version / Minor Version / Revision (Buttons)</td><td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td></tr>
@@ -2571,7 +2604,6 @@
                 </table>
             `;
         } else {
-            // Render simplified interface instructions restricted solely to basic user endpoints
             manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
             manualContentContainer.innerHTML = `
                 <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p>
@@ -2601,7 +2633,7 @@
         }
 
         fullscreenManualOverlay.classList.remove('hidden');
-        document.body.style.overflow = "hidden"; // Prevent background double-scrolling bugs
+        document.body.style.overflow = "hidden"; 
     });
 
     manualCloseBtn.addEventListener('click', () => {
@@ -2635,7 +2667,6 @@
         let name = friendNameInput.value.trim();
         let score = parseInt(ratingValueInput.value);
         
-        // Grab values only if the fields are accessible, otherwise default to "None"
         let guess = isAuthorGuessEnabled && !authorGuessInput.disabled ? (authorGuessInput.value.trim() || "None") : "None";
         let customTitle = isTitleSuggestionEnabled && !titleSuggestionInput.disabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
@@ -2647,14 +2678,12 @@
             try {
                 storedUserData = JSON.parse(localStorage.getItem(`userdata_${activeStorySelection}`) || "{}");
                 
-                // Keep preserved values if the user is only updating suggestions
                 name = storedUserData.name || name;
                 score = storedUserData.score || score;
                 if (storedUserData.authorGuess && storedUserData.authorGuess !== "None") guess = storedUserData.authorGuess;
                 if (storedUserData.suggestedTitle && storedUserData.suggestedTitle !== "None") customTitle = storedUserData.suggestedTitle;
             } catch(e) {}
         } else {
-            // First time submit validations for primary data
             if (!name) { customAlert("Please enter your name."); return; }
             if (score < 1 || score > 10 || isNaN(score)) {
                 customAlert("Rating must be an Integer from 1 to 10");
@@ -2663,7 +2692,6 @@
             }
         }
 
-        // Advanced Constraints Check for Validation Bypasses
         const activeStoryObject = arrayedStoriesList.find(s => s.id === activeStorySelection);
         if (activeStoryObject && !isDeveloperModeUnlocked) {
             const createdDateStr = new Date(activeStoryObject.created).toDateString();
@@ -2702,7 +2730,6 @@
                 suggestedTitle: customTitle
             };
 
-            // Will merge partially inputted fields into existing entries flawlessly
             await setDoc(doc(db, "competitions", activeStorySelection), { 
                 [name]: submissionPayload 
             }, { merge: true });
@@ -2717,7 +2744,6 @@
 
             customAlert(hasRated ? `Saved suggestion updates for ${name}` : `Saved submission from ${name}`);
             
-            // Re-eval restrictions natively instead of wiping the form text
             autoFillPreviousUserInputs();
             evaluateLocalStorageRestrictions();
             
@@ -2922,13 +2948,15 @@
     });
 
     devSeasonResetBtn.addEventListener('click', async () => {
-        if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, and clear the Subject.")) {
+        if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, clear the Subject, and set Season to Jan00.")) {
             try {
                 await setDoc(doc(db, "app_state", "global_config"), { 
                     modName: "Mod",
                     isNameLocked: false,
                     month: "January",
-                    topic: ""
+                    topic: "",
+                    seasonName: "Jan00",
+                    seasonStarted: false
                 }, { merge: true });
                 customAlert("Season reset successfully.");
             } catch(e) {
