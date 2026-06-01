@@ -1039,11 +1039,29 @@
             line-height: 1.4;
             color: var(--text-color);
         }
+        .manual-condition-text {
+            font-size: 12px;
+            color: var(--danger);
+            font-style: italic;
+            margin-top: 4px;
+            display: block;
+        }
 
         #sidebarAboutBtn, #sidebarManualBtn {
             width: max-content !important;
             padding: 11px 2ch !important;
             margin: 15px 0 0 0 !important; 
+        }
+        
+        .time-lock-input {
+            width: 75px !important;
+            padding: 4px !important;
+            font-size: 13px !important;
+            border-radius: 4px !important;
+            border: 1px solid var(--border) !important;
+            background: var(--input-bg) !important;
+            color: var(--input-text) !important;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -1076,20 +1094,32 @@
                 <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 8px; width: 100%;">Add Story</button>
             </div>
 
-            <div class="switch-container" style="padding: 10px; margin-bottom: 10px;">
-                <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
-                <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                    <input type="checkbox" id="toggleAuthorGuessBtn">
-                    <span class="slider"></span>
-                </label>
+            <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
+                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                        <input type="checkbox" id="toggleAuthorGuessBtn">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                    <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
+                </div>
             </div>
 
-            <div class="switch-container" style="padding: 10px;">
-                <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
-                <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                    <input type="checkbox" id="toggleTitleSuggestionBtn">
-                    <span class="slider"></span>
-                </label>
+            <div class="switch-container" style="padding: 10px; flex-wrap: wrap; gap: 6px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
+                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                        <input type="checkbox" id="toggleTitleSuggestionBtn">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                    <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
+                </div>
             </div>
             
             <div class="form-group" style="margin-top: 15px;">
@@ -1617,6 +1647,8 @@
     const saveGlobalMetaBtn = document.getElementById('saveGlobalMetaBtn');
     const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
     const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
+    const authorGuessLockTime = document.getElementById('authorGuessLockTime');
+    const titleSuggestionLockTime = document.getElementById('titleSuggestionLockTime');
     const previewBtn = document.getElementById('previewBtn');
     const downloadBtn = document.getElementById('downloadBtn');
 
@@ -1693,13 +1725,15 @@
 
     let isAuthorGuessEnabled = false;
     let isTitleSuggestionEnabled = false;
+    let cachedAuthorGuessLockTime = "23:59";
+    let cachedTitleSuggestionLockTime = "23:59";
 
     let headingToReviewerMap = {};
 
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    // Realtime Version Control Local Cache Properties Configuration
+    // Realtime Version Control Local Cache Config Initialization
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
     modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1908,6 +1942,12 @@
             isTitleSuggestionEnabled = !!data.enableTitleSuggestion;
             toggleAuthorGuessBtn.checked = isAuthorGuessEnabled;
             toggleTitleSuggestionBtn.checked = isTitleSuggestionEnabled;
+            
+            cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
+            cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
+            authorGuessLockTime.value = cachedAuthorGuessLockTime;
+            titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
+            
             updateUserFormFieldsVisibility();
 
             isNameLockedByMod = !!data.isNameLocked;
@@ -1988,7 +2028,7 @@
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             newStoryInput, updateStoryBtn, dashboardNewStoryInput, dashboardUpdateStoryBtn,
             deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, saveGlobalMetaBtn, 
-            readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn,
+            readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn,
             previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
             btnUpdateMajor, btnUpdateMinor, btnUpdateRevision
@@ -2041,6 +2081,32 @@
                 return;
             }
 
+            // Check if story is a previous day's selection or post-18:00 cutoff window
+            const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
+            if (activeStoryObject) {
+                const createdDateStr = new Date(activeStoryObject.created).toDateString();
+                const currentDateStr = new Date().toDateString();
+                const currentHour = new Date().getHours();
+                
+                if (createdDateStr !== currentDateStr) {
+                    friendNameInput.disabled = true;
+                    ratingValueInput.disabled = true;
+                    authorGuessInput.disabled = true;
+                    titleSuggestionInput.disabled = true;
+                    submitRatingBtn.disabled = true;
+                    submitRatingBtn.textContent = "Ratings locked for previous days' stories";
+                    return;
+                } else if (currentHour >= 18) {
+                    friendNameInput.disabled = true;
+                    ratingValueInput.disabled = true;
+                    authorGuessInput.disabled = true;
+                    titleSuggestionInput.disabled = true;
+                    submitRatingBtn.disabled = true;
+                    submitRatingBtn.textContent = "Ratings locked after 18:00 IST cutoff";
+                    return;
+                }
+            }
+
             const storageMarkerKey = `rated_${targetStory}`;
             if (localStorage.getItem(storageMarkerKey) === "true") {
                 friendNameInput.disabled = true;
@@ -2058,7 +2124,7 @@
                 submitRatingBtn.textContent = "Submit Review";
             }
         } catch (e) {
-            console.error("Local storage error (likely blocked by strict mode).", e);
+            console.error("Local storage initialization error.", e);
             submitRatingBtn.disabled = false;
             submitRatingBtn.textContent = "Submit Review";
         }
@@ -2092,6 +2158,7 @@
             if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
             if(!deleteStorySelect.value) deleteStorySelect.selectedIndex = 0;
             loadCurrentStoryNotes();
+            autoFillPreviousUserInputs();
         } else {
             dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
             modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -2099,8 +2166,30 @@
         evaluateLocalStorageRestrictions();
     });
 
+    // Auto-fill interface logic when user queries a story selection
+    function autoFillPreviousUserInputs() {
+        const targetStory = storyDropdown.value;
+        if (!targetStory) return;
+
+        const storedUserData = localStorage.getItem(`userdata_${targetStory}`);
+        if (storedUserData) {
+            try {
+                const parsedData = JSON.parse(storedUserData);
+                friendNameInput.value = parsedData.name || "";
+                ratingValueInput.value = parsedData.score || "";
+                authorGuessInput.value = parsedData.authorGuess !== "None" ? parsedData.authorGuess : "";
+                titleSuggestionInput.value = parsedData.suggestedTitle !== "None" ? parsedData.suggestedTitle : "";
+            } catch (e) {
+                console.error("Error parsing user cached payloads.", e);
+            }
+        } else {
+            ratingForm.reset();
+        }
+    }
+
     storyDropdown.addEventListener('change', () => {
         evaluateLocalStorageRestrictions();
+        autoFillPreviousUserInputs();
     });
 
     deleteStorySelect.addEventListener('change', () => {
@@ -2358,12 +2447,18 @@
 
     saveGlobalMetaBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
+        
+        const guessTime = authorGuessLockTime.value.trim() || "23:59";
+        const titleTime = titleSuggestionLockTime.value.trim() || "23:59";
+        
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
                 month: inputMonth.value.trim() || "*****",
-                topic: inputTopic.value.trim() || "*****"
+                topic: inputTopic.value.trim() || "*****",
+                authorGuessLockTime: guessTime,
+                titleSuggestionLockTime: titleTime
             }, { merge: true });
-            customAlert("Configurations saved.");
+            customAlert("Configurations saved securely.");
         } catch(e) { customAlert("Database error saving variables."); }
     });
 
@@ -2458,7 +2553,6 @@
         manualContentContainer.innerHTML = "";
 
         if (isModeratorAuthenticated) {
-            // Render extended technical documentation manual for authenticated moderators/developers
             manualHeadingTarget.innerHTML = "🛠️ Moderator & Developer Manual";
             manualContentContainer.innerHTML = `
                 <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p>
@@ -2472,11 +2566,11 @@
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
                         <tr><td>Add New Story (Input) + Add Story (Button)</td><td class="one-sentence-def">Generates a fresh structural contest document route entry directly into the root storage database.</td></tr>
-                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.</td></tr>
-                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.</td></tr>
+                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr>
+                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr>
                         <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
                         <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
-                        <tr><td>Save Config (Button)</td><td class="one-sentence-def">Commits the active subject text properties and seasonal tracking period selections permanently onto the server.</td></tr>
+                        <tr><td>Save Config (Button)</td><td class="one-sentence-def">Commits the active subject text properties, locking timestamp criteria, and seasonal selections onto the server.</td></tr>
                         <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr>
                         <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
                         <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
@@ -2509,11 +2603,11 @@
                     </thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr>
-                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.</td></tr>
+                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr>
                         <tr><td>Your Name (Input)</td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr>
-                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.</td></tr>
-                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.</td></tr>
-                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.</td></tr>
+                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td></tr>
+                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.<span class="manual-condition-text">Condition: Submissions cannot be modified after the end of the day or after the moderator-defined deadline constraint.</span></td></tr>
+                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.<span class="manual-condition-text">Condition: Locked automatically once the moderator's specified hour cutoff passes.</span></td></tr>
                         <tr><td>Submit Review (Button)</td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr>
                         <tr><td>Give App Feedback (Button)</td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr>
                         <tr><td>Your Name (Input) & Feedback / Suggestions (Textarea) [Feedback Interface]</td><td class="one-sentence-def">Accepts text reviews to outline application ideas or submit optimization bug logs to developers.</td></tr>
@@ -2563,6 +2657,41 @@
 
         if(!activeStorySelection) { customAlert("Select a story to Rate"); return; }
 
+        // Core Timestamp Checking Block for Validation Constraints
+        const activeStoryObject = arrayedStoriesList.find(s => s.id === activeStorySelection);
+        if (activeStoryObject && !isDeveloperModeUnlocked) {
+            const createdDateStr = new Date(activeStoryObject.created).toDateString();
+            const currentDateStr = new Date().toDateString();
+            
+            // Format current localized time metrics
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const timeStringFormatted = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+
+            // 1. Enforce Previous Days Constraints
+            if (createdDateStr !== currentDateStr) {
+                customAlert("Submission Failure: Rating updates for stories published on previous days are strictly locked.");
+                return;
+            }
+            
+            // 2. Enforce Hard 18:00 IST Cutoff Constraint
+            if (currentHour >= 18) {
+                customAlert("Submission Failure: The 18:00 IST cutoff time for current-day story reviews has expired.");
+                return;
+            }
+
+            // 3. Enforce Moderator-Defined Custom Lock Deadlines
+            if (isAuthorGuessEnabled && guess !== "None" && timeStringFormatted > cachedAuthorGuessLockTime) {
+                customAlert(`Submission Failure: The timeline to log author guesses expired at ${cachedAuthorGuessLockTime}.`);
+                return;
+            }
+            if (isTitleSuggestionEnabled && customTitle !== "None" && timeStringFormatted > cachedTitleSuggestionLockTime) {
+                customAlert(`Submission Failure: The timeframe to suggest custom headings expired at ${cachedTitleSuggestionLockTime}.`);
+                return;
+            }
+        }
+
         const storageMarkerKey = `rated_${activeStorySelection}`;
         if (localStorage.getItem(storageMarkerKey) === "true" && !isDeveloperModeUnlocked) {
             customAlert("You have already submitted review");
@@ -2571,13 +2700,13 @@
         }
 
         if (score < 1 || score > 10 || isNaN(score)) {
-            customAlert("Rating must be an Integer");
+            customAlert("Rating must be an Integer from 1 to 10");
             ratingValueInput.focus();
             return;
         }
 
         try {
-            submitRatingBtn.disabled = true;
+            submitSubmitBtn.disabled = true;
 
             const submissionPayload = {
                 score: score,
@@ -2590,7 +2719,12 @@
             }, { merge: true });
 
             if (!isDeveloperModeUnlocked) {
-                try { localStorage.setItem(storageMarkerKey, "true"); } catch(e){}
+                try { 
+                    localStorage.setItem(storageMarkerKey, "true"); 
+                    // Write inputs data payload map back locally to cache autofills
+                    const cacheObject = { name, score, authorGuess: guess, suggestedTitle: customTitle };
+                    localStorage.setItem(`userdata_${activeStorySelection}`, JSON.stringify(cacheObject));
+                } catch(e){}
             }
 
             customAlert(`Saved submission from ${name}`);
