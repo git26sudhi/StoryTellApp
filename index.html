@@ -731,9 +731,12 @@
         input:checked + .slider {
             background-color: var(--primary);
         }
-        .switch-container.danger-toggle input:checked + .slider {
-            background-color: var(--danger);
+        
+        /* Updated toggle class for Royal Blue active state */
+        .switch-container.royal-toggle input:checked + .slider {
+            background-color: royalblue;
         }
+        
         input:checked + .slider:before {
             transform: translateX(22px);
         }
@@ -1259,7 +1262,16 @@
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
-                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">🛠️ Moderator Dashboard</h2>
+                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <rect x="6" y="6" width="5" height="7" />
+                        <rect x="13" y="6" width="5" height="4" />
+                        <rect x="6" y="15" width="5" height="4" />
+                        <rect x="13" y="12" width="5" height="7" />
+                    </svg>
+                    Moderator Dashboard
+                </h2>
                 
                 <button type="button" id="logoutBtn" style="background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 6px 12px; font-size: 13px; margin: 0; display: flex; align-items: center; gap: 6px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1358,12 +1370,7 @@
 
             <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
                 <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="9" r="2"></circle>
-                        <path d="M9 4V3M9 15v-1M4 9H3M15 9h-1M5.5 5.5l-.7-.7M13.2 13.2l-.7-.7M5.5 12.5l-.7.7M13.2 4.8l-.7.7"></path>
-                        <circle cx="17" cy="17" r="2"></circle>
-                        <path d="M17 12v-1M17 22v-1M12 17h-1M22 17h-1M14.2 14.2l-.7-.7M19.8 19.8l-.7-.7M14.2 19.8l-.7.7M19.8 14.2l-.7.7"></path>
-                    </svg>
+                    <span style="font-size: 20px; line-height: 1;">📐</span>
                     Version Configuration
                 </label>
                 <div class="version-grid">
@@ -1377,21 +1384,22 @@
                         <div id="devRevisionText" class="version-num">7</div>
                     </div>
                 </div>
-                <div class="btn-row" style="margin-top: 5px; gap: 8px;">
-                    <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: none; width: max-content; padding: 8px 15px;">Major</button>
-                    <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: none; width: max-content; padding: 8px 15px;">Minor</button>
-                    <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: none; width: max-content; padding: 8px 15px;">Revision</button>
+                <div class="btn-row" style="margin-top: 5px; gap: 8px; width: 100%;">
+                    <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Major</button>
+                    <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Minor</button>
+                    <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Revision</button>
                 </div>
             </div>
 
-            <div class="switch-container danger-toggle">
+            <div class="switch-container royal-toggle">
                 <div>
-                    <strong style="color: var(--danger); display: flex; align-items: center; gap: 8px;">
-                        <svg viewBox="0 0 64 64" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
-                            <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2 1.5 4 3 5" />
-                            <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6-16-5-6-3-12-2-16 2" />
-                            <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
-                            <path d="M32 10v44M26 24c1.5 3 4 5 6 5s4.5-2 6-5M18 19c-4-2-10-2-14 1 5-2 11-1 14 1M46 19c4-2 10-2 14 1-5-2-11-1-14 1" />
+                    <strong style="color: royalblue; display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
+                            <path d="M4 19h16v2H4z" />
+                            <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
+                            <circle cx="12" cy="4" r="1" />
+                            <circle cx="7" cy="8" r="1" />
+                            <circle cx="17" cy="8" r="1" />
                         </svg>
                         Exclusive Mode
                     </strong>
