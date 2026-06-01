@@ -921,14 +921,13 @@
             filter: brightness(0.9);
         }
         
-        /* Modal OK button style rules adjusted to track the text word boundary precisely */
         #customModalOk {
             background: var(--modal-btn-ok-bg); 
             color: var(--modal-btn-ok-text);
             border: var(--modal-btn-ok-border);
             flex: none !important;
             width: max-content !important;
-            padding: 10px 2ch !important; /* Enforces 2 characters of space around the text */
+            padding: 10px 2ch !important;
         }
         #customModalOk:hover {
             filter: brightness(1.1);
@@ -970,11 +969,11 @@
             margin-bottom: 4px;
         }
         
-        /* Spacing constraint parameters mapping to character metrics */
+        /* Enforce left-alignment and character-padded dimensions */
         #sidebarAboutBtn {
             width: max-content !important;
-            padding: 11px 2ch !important; /* Spacing metric buffer mapped to 2 character counts */
-            margin: 0 auto;
+            padding: 11px 2ch !important;
+            margin: 15px 0 0 0 !important; /* Forces left layout assignment inside vertical menus */
         }
     </style>
 </head>
@@ -997,20 +996,6 @@
                 <option value="emerald">Forest Green</option>
                 <option value="mono">Black & Gray</option>
             </select>
-        </div>
-
-        <!-- Sidebar About Section Feature Trigger Element -->
-        <div class="form-group" style="margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 15px; text-align: center;">
-            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <!-- White lowercase 'i' letter layered inside a dark navy blue circle baseline element -->
-                <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
-                    <circle cx="12" cy="12" r="11" fill="#1d3557" />
-                    <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
-                    <path d="M11 10h2v7h-2z" fill="#ffffff" />
-                    <path d="M10 17h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
-                </svg>
-                About
-            </button>
         </div>
 
         <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 20px;">
@@ -1075,6 +1060,18 @@
                     <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
                 </div>
             </div>
+        </div>
+        
+        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; text-align: left;">
+            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
+                    <circle cx="12" cy="12" r="11" fill="#1d3557" />
+                    <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
+                    <path d="M11 10h2v7h-2z" fill="#ffffff" />
+                    <path d="M10 17h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                About
+            </button>
         </div>
     </div>
 </div>
@@ -1200,14 +1197,9 @@
                 </button>
             </div>
 
-            <!-- Native Integrated Fast-Track Add Story Mechanism -->
-            <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
-                <label for="dashboardNewStoryInput" style="color: var(--admin-color); font-size: 14px; font-weight: bold;">✨ Fast-Track Add Story Pathway</label>
-                <p style="font-size: 12px; margin: 2px 0 10px 0; color: var(--text-muted);">Creates a standard structural document node inside the target Firebase collection database schema.</p>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story path title description..." style="flex: 1;">
-                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap;">Create Path</button>
-                </div>
+            <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." style="flex: 1; margin: 0;">
+                <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap; margin: 0;">Add Story</button>
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
@@ -1259,7 +1251,7 @@
             </div>
 
             <div class="form-group">
-                <label pour="headingSuggesterInput">Suggested Person</label>
+                <label for="headingSuggesterInput">Suggested Person</label>
                 <select id="headingSuggesterInput"></select>
             </div>
 
@@ -1269,7 +1261,7 @@
                     <select id="correctGuesses" style="flex: 1; margin: 0;"></select>
                     <button type="button" id="clearWinnersBtn" class="btn-clear-inline" title="Clear All Selections">
                         <svg viewBox="0 0 24 24">
-                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89(1.59).89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
                         </svg>
                     </button>
                 </div>
@@ -1297,7 +1289,6 @@
         <div class="plain-section dev-header">
             <h2>💻 Developer options</h2>
 
-            <!-- Version Control & Dynamic Tracking Interface Block -->
             <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
                 <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
                 <div class="version-grid">
@@ -1311,7 +1302,7 @@
                     </div>
                     <div class="version-box">
                         <div class="version-label">Revision</div>
-                        <div id="devRevisionText" class="version-num">5</div>
+                        <div id="devRevisionText" class="version-num">7</div>
                     </div>
                 </div>
                 <div class="btn-row" style="margin-top: 5px;">
@@ -1615,7 +1606,7 @@
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    // Realtime Version Control Local Cache Properties Configuration
+    // Realtime Version Control Local Cache Config Initialization
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
     modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1837,7 +1828,7 @@
         }
     });
 
-    // Realtime Sync Listener Mapping for cloud version tracking parameters
+    // Realtime Listener Sync for Cloud Version Control Target Node
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
@@ -1846,11 +1837,9 @@
             currentVersionState.revision = data.revision !== undefined ? Number(data.revision) : 7;
             currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
         } else {
-            // Re-seed programmatic baseline definitions if database value maps empty
             currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
         }
         
-        // Populate standard visual components inside Developer configuration matrix
         devMajorText.textContent = currentVersionState.major;
         devMinorText.textContent = currentVersionState.minor;
         devRevisionText.textContent = currentVersionState.revision;
@@ -2192,7 +2181,7 @@
                                     <button type="button" class="btn-copy-small" title="Copy to clipboard">
                                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                         </svg>
                                     </button>
                                 `;
@@ -2310,7 +2299,7 @@
     async function processVersionUpgrade(targetField) {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         
-        // Throw confirmation modal alerts for major and minor target variables
+        // Throw verification modals for major and minor target variables
         if (targetField === 'major' || targetField === 'minor') {
             const check = await customConfirm(`Confirm Upgrade Alert!<br><br>Are you absolutely sure you want to increment the <b>${targetField}</b> build version metrics value?`);
             if (!check) return;
@@ -2320,14 +2309,21 @@
         if (changelogSummary === null) return; 
         
         const validatedLogString = changelogSummary.trim() || "General performance optimizations and maintenance update patches.";
-        const nextValue = currentVersionState[targetField] + 1;
+        
+        let updatePayload = {
+            changesMade: arrayUnion(validatedLogString)
+        };
+        
+        // Calculate counter values and execute contextual revision reset to zero if minor version shifts
+        if (targetField === 'minor') {
+            updatePayload.minor = currentVersionState.minor + 1;
+            updatePayload.revision = 0; // Forces tracking patch code state baseline reset
+        } else {
+            updatePayload[targetField] = currentVersionState[targetField] + 1;
+        }
         
         try {
-            await setDoc(doc(db, "app_state", "version_control"), {
-                [targetField]: nextValue,
-                changesMade: arrayUnion(validatedLogString)
-            }, { merge: true });
-            
+            await setDoc(doc(db, "app_state", "version_control"), updatePayload, { merge: true });
             customAlert(`🚀 Application platform version target pipeline built and deployed successfully.`);
         } catch (err) {
             console.error(err);
@@ -2339,7 +2335,7 @@
     btnUpdateMinor.addEventListener('click', () => processVersionUpgrade('minor'));
     btnUpdateRevision.addEventListener('click', () => processVersionUpgrade('revision'));
 
-    // About App Panel Modal Canvas Dialog Trigger
+    // About App Panel Dialog Processing Engine
     sidebarAboutBtn.addEventListener('click', () => {
         let bulletsHtml = "";
         if (currentVersionState.changesMade.length > 0) {
@@ -2351,7 +2347,6 @@
             bulletsHtml = `<li>Initial base system framework architecture initialized.</li>`;
         }
 
-        // Display format compiled as requested: v<major>.<minor> r<revision>
         const viewTemplate = `
             <div style="text-align: left;">
                 <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Build Stamp</span>
