@@ -791,15 +791,14 @@
             border: none;
             border-radius: 4px;
             padding: 0;
-            height: 28px;
-            width: 28px;
+            height: 26px;
+            width: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             box-shadow: var(--btn-shadow);
             transition: all 0.2s;
-            margin: 0 auto;
         }
         .btn-copy-small:hover {
             filter: brightness(1.1);
@@ -1268,10 +1267,10 @@
                 <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap; margin: 0;">Add Story</button>
             </div>
 
-            <div class="form-group" style="margin-top: 15px;">
-                <label for="deleteStorySelect">Select Story</label>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
+                <label for="deleteStorySelect" style="font-size: 16px; color: var(--admin-color); margin: 0; font-weight: bold;">📖 Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <select id="deleteStorySelect" style="flex: 1; margin: 0;"></select>
+                    <select id="deleteStorySelect" style="flex: 1; margin: 0; padding: 10px; font-size: 15px; border: 2px solid var(--admin-color);"></select>
                     <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
                         <svg viewBox="0 0 24 24">
                             <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
@@ -1279,9 +1278,6 @@
                     </button>
                 </div>
             </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
-            <h3 id="modDailyHeading" style="margin-top: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; color: var(--admin-color);"></h3>
             
             <div class="webview-scroll-frame" style="margin-bottom: 25px; border: 1px solid var(--border); border-radius: 6px;">
                 <table class="webview-table" style="margin: 0;">
@@ -1289,13 +1285,12 @@
                         <tr>
                             <th><b>Reviewer</b></th>
                             <th><b>Rating</b></th>
-                            <th><b>Suggested Title</b></th>
                             <th><b>Author Guess</b></th>
-                            <th style="width: 40px; text-align: center;"><b>Copy</b></th>
+                            <th><b>Suggested Title</b></th>
                         </tr>
                     </thead>
                     <tbody id="dailyReviewsTableBody">
-                        <tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
+                        <tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1645,7 +1640,6 @@
     const saveNotesBtn = document.getElementById('saveNotesBtn');
     
     // Live Dashboard Table Elements
-    const modDailyHeading = document.getElementById('modDailyHeading');
     const dailyReviewsTableBody = document.getElementById('dailyReviewsTableBody');
 
     const webviewWrapper = document.getElementById('webviewWrapper');
@@ -1693,8 +1687,6 @@
 
     // Realtime Version Control Local Cache Config Initialization
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
-    
-    modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     
     // Initialize Dashboard Header Date Format
     const initToday = new Date();
@@ -2171,8 +2163,7 @@
             loadCurrentStoryNotes();
             autoFillPreviousUserInputs();
         } else {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
-            modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
         }
         evaluateLocalStorageRestrictions();
     });
@@ -2309,16 +2300,13 @@
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
-            modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
             return;
         }
 
         if(storyDropdown.value !== targetSelected) {
             storyDropdown.value = targetSelected;
         }
-
-        modDailyHeading.textContent = `📖 Story: ${targetSelected}`;
 
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
@@ -2391,15 +2379,17 @@
                         dailyHtml += `<tr>
                             <td>${sanitizeText(reviewerKey)}</td>
                             <td>${score}/10</td>
-                            <td>${title}</td>
                             <td>${guess}</td>
-                            <td style="text-align: center;">
-                                <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : ''}>
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </button>
+                            <td>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                                    <span style="word-break: break-word;">${title}</span>
+                                    <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : 'style="flex-shrink: 0;"'}>
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </td>
                         </tr>`;
                     }
@@ -2411,7 +2401,7 @@
                 renderAccumulatedWinnersChips();
                 
                 if(reviewCount === 0) {
-                    dailyHtml = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
+                    dailyHtml = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
                 }
                 dailyReviewsTableBody.innerHTML = dailyHtml;
 
@@ -2419,11 +2409,11 @@
                 activeStorySnapshotDataCache = null;
                 renderAccumulatedWinnersChips();
                 authorGivenHeadingInput.value = "";
-                dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
+                dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
             }
         } catch(err) {
             console.error(err);
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
         }
     }
 
@@ -2808,8 +2798,8 @@
                     <th><b>Date</b></th>
                     <th><b>Reviewer Name</b></th>
                     <th><b>Rating</b></th>
-                    <th><b>Suggested Title</b></th>
                     <th><b>Author Guess</b></th>
+                    <th><b>Suggested Title</b></th>
                 </tr>
             `;
 
@@ -2823,8 +2813,8 @@
                     <th style="background-color: var(--admin-color); color: #000;"><b>Date</b></th>
                     <th style="background-color: var(--admin-color); color: #000;"><b>Reviewer Name</b></th>
                     <th style="background-color: var(--admin-color); color: #000;"><b>Rating</b></th>
-                    <th style="background-color: var(--admin-color); color: #000;"><b>Suggested Title</b></th>
                     <th style="background-color: var(--admin-color); color: #000;"><b>Author Guess</b></th>
+                    <th style="background-color: var(--admin-color); color: #000;"><b>Suggested Title</b></th>
                 </tr>
             `;
 
@@ -2860,8 +2850,8 @@
                             <td>${currentDateStr}</td>
                             <td>${review.reviewer}</td>
                             <td>${review.score}/10</td>
-                            <td>${review.title}</td>
                             <td>${review.guess}</td>
+                            <td>${review.title}</td>
                         </tr>
                     `;
                     spreadsheetStringTemplate += rowHtml;
