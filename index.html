@@ -1034,12 +1034,10 @@
             border: 1px solid var(--border);
             vertical-align: top;
         }
-        .one-word-def {
-            font-weight: bold;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
+        .one-sentence-def {
+            font-size: 13px;
+            line-height: 1.4;
+            color: var(--text-color);
         }
 
         #sidebarAboutBtn, #sidebarManualBtn {
@@ -1134,7 +1132,6 @@
             </div>
         </div>
         
-        <!-- User Manual Accessor Mounted Above the System About Control -->
         <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; text-align: left;">
             <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; background-color: var(--admin-color); color: white;">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
@@ -1278,7 +1275,6 @@
                 </button>
             </div>
 
-            <!-- Simplified Direct Inline Add Story Pathway Field Block -->
             <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." style="flex: 1; margin: 0;">
                 <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap; margin: 0;">Add Story</button>
@@ -1371,7 +1367,6 @@
         <div class="plain-section dev-header">
             <h2>💻 Developer options</h2>
 
-            <!-- Version Control & Dynamic Tracking Interface Block -->
             <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
                 <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
                 <div class="version-grid">
@@ -1454,7 +1449,6 @@
     </div>
 </div>
 
-<!-- FULL SCREEN DYNAMIC USER MANUAL TEMPLATE CONTAINER -->
 <div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
     <div class="manual-wrapper-box">
         <div class="manual-header-row">
@@ -1705,7 +1699,7 @@
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    // Realtime Version Control Local Cache Config Properties Configuration
+    // Realtime Version Control Local Cache Properties Configuration
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
     modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -2280,7 +2274,7 @@
                                     <button type="button" class="btn-copy-small" title="Copy to clipboard">
                                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                         </svg>
                                     </button>
                                 `;
@@ -2467,37 +2461,37 @@
             // Render extended technical documentation manual for authenticated moderators/developers
             manualHeadingTarget.innerHTML = "🛠️ Moderator & Developer Manual";
             manualContentContainer.innerHTML = `
-                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">High-density single-word mapping definition framework for administrative modules:</p>
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p>
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 35%;">Control Element</th>
-                            <th>One-Word Definition Details</th>
+                            <th style="width: 45%;">Feature</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><b>Theme Selection Dropdown</b></td><td><span class="one-word-def">Styling</span></td></tr>
-                        <tr><td><b>Sidebar Add Story Input</b></td><td><span class="one-word-def">Indexing</span></td></tr>
-                        <tr><td><b>Guess Author Toggle Switch</b></td><td><span class="one-word-def">Visibility</span></td></tr>
-                        <tr><td><b>Title Suggestion Toggle Switch</b></td><td><span class="one-word-def">Parameters</span></td></tr>
-                        <tr><td><b>Subject Metadata Text Field</b></td><td><span class="one-word-def">Genre</span></td></tr>
-                        <tr><td><b>Month Picker Dropdown</b></td><td><span class="one-word-def">Timeline</span></td></tr>
-                        <tr><td><b>Save Config Button</b></td><td><span class="one-word-def">Commit</span></td></tr>
-                        <tr><td><b>Moderator Name Input</b></td><td><span class="one-word-def">Signature</span></td></tr>
-                        <tr><td><b>Save Profile Button</b></td><td><span class="one-word-def">Lock</span></td></tr>
-                        <tr><td><b>Preview Entire Season Button</b></td><td><span class="one-word-def">Compilation</span></td></tr>
-                        <tr><td><b>Download HTML Button</b></td><td><span class="one-word-def">Export</span></td></tr>
-                        <tr><td><b>Fast-Track Add Story Field</b></td><td><span class="one-word-def">Creation</span></td></tr>
-                        <tr><td><b>Select Story Deletion Dropdown</b></td><td><span class="one-word-def">Targeting</span></td></tr>
-                        <tr><td><b>Delete Trash Icon Button</b></td><td><span class="one-word-def">Purge</span></td></tr>
-                        <tr><td><b>Author Given Heading Field</b></td><td><span class="one-word-def">Title</span></td></tr>
-                        <tr><td><b>Author's Favorite Heading List</b></td><td><span class="one-word-def">Selection</span></td></tr>
-                        <tr><td><b>Won-Guess the Author Picker</b></td><td><span class="one-word-def">Scoring</span></td></tr>
-                        <tr><td><b>Save End of Day Notes Button</b></td><td><span class="one-word-def">Archiving</span></td></tr>
-                        <tr><td><b>Exclusive Mode Switch (Dev)</b></td><td><span class="one-word-def">Freezing</span></td></tr>
-                        <tr><td><b>Season Reset Button (Dev)</b></td><td><span class="one-word-def">Wiping</span></td></tr>
-                        <tr><td><b>User Feedback Preview Button (Dev)</b></td><td><span class="one-word-def">Metrics</span></td></tr>
-                        <tr><td><b>Major / Minor / Revision Increments</b></td><td><span class="one-word-def">Versioning</span></td></tr>
+                        <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
+                        <tr><td>Add New Story (Input) + Add Story (Button)</td><td class="one-sentence-def">Generates a fresh structural contest document route entry directly into the root storage database.</td></tr>
+                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.</td></tr>
+                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.</td></tr>
+                        <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
+                        <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
+                        <tr><td>Save Config (Button)</td><td class="one-sentence-def">Commits the active subject text properties and seasonal tracking period selections permanently onto the server.</td></tr>
+                        <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr>
+                        <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
+                        <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
+                        <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
+                        <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
+                        <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
+                        <tr><td>Author's Favorite Heading (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
+                        <tr><td>Suggested Person (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
+                        <tr><td>Won-Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
+                        <tr><td>Save End of Day Notes (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
+                        <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
+                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores baseline identity names and configurations to initial production initialization environments.</td></tr>
+                        <tr><td>User feedback preview (Button)</td><td class="one-sentence-def">Loads customer feedback submittals into a clear metric visualization dashboard panel.</td></tr>
+                        <tr><td>Download Feedback Table (Button)</td><td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td></tr>
+                        <tr><td>Major Version / Minor Version / Revision (Buttons)</td><td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td></tr>
                     </tbody>
                 </table>
             `;
@@ -2505,25 +2499,27 @@
             // Render simplified interface instructions restricted solely to basic user endpoints
             manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
             manualContentContainer.innerHTML = `
-                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">High-density single-word mapping definition framework for reviewer elements:</p>
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p>
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 35%;">Control Element</th>
-                            <th>One-Word Definition Details</th>
+                            <th style="width: 45%;">Feature</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><b>Theme Selection Dropdown</b></td><td><span class="one-word-def">Appearance</span></td></tr>
-                        <tr><td><b>Choose Story Dropdown</b></td><td><span class="one-word-def">Target</span></td></tr>
-                        <tr><td><b>Your Name Input Field</b></td><td><span class="one-word-def">Identity</span></td></tr>
-                        <tr><td><b>Rating Value Number Field</b></td><td><span class="one-word-def">Evaluation</span></td></tr>
-                        <tr><td><b>Guess the Author Input Field</b></td><td><span class="one-word-def">Speculation</span></td></tr>
-                        <tr><td><b>Suggest a Title Input Field</b></td><td><span class="one-word-def">Creativity</span></td></tr>
-                        <tr><td><b>Submit Review Action Button</b></td><td><span class="one-word-def">Dispatch</span></td></tr>
-                        <tr><td><b>Give App Feedback Button</b></td><td><span class="one-word-def">Critique</span></td></tr>
-                        <tr><td><b>Feedback Submissions Inputs</b></td><td><span class="one-word-def">Suggestions</span></td></tr>
-                        <tr><td><b>Reviewer/Moderator Panels Navigation</b></td><td><span class="one-word-def">Routing</span></td></tr>
+                        <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr>
+                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.</td></tr>
+                        <tr><td>Your Name (Input)</td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr>
+                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.</td></tr>
+                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.</td></tr>
+                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.</td></tr>
+                        <tr><td>Submit Review (Button)</td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr>
+                        <tr><td>Give App Feedback (Button)</td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr>
+                        <tr><td>Your Name (Input) & Feedback / Suggestions (Textarea) [Feedback Interface]</td><td class="one-sentence-def">Accepts text reviews to outline application ideas or submit optimization bug logs to developers.</td></tr>
+                        <tr><td>Submit Feedback (Button) [Feedback Interface]</td><td class="one-sentence-def">Transmits your platform optimization recommendations onto administrative database structures.</td></tr>
+                        <tr><td>Cancel / Back (Button) [Feedback Interface]</td><td class="one-sentence-def">Wipes active feedback input data text changes and returns directly to the primary selector panel view.</td></tr>
+                        <tr><td>Reviewer / Moderator Panel (Buttons)</td><td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td></tr>
                     </tbody>
                 </table>
             `;
