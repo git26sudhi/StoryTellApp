@@ -596,14 +596,6 @@
             fill: currentColor;
         }
 
-        .export-btn-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
-        .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
-
         .winners-tags-container {
             display: flex;
             flex-wrap: wrap;
@@ -809,7 +801,7 @@
         }
 
         /* --- Custom Modal Styles --- */
-        #customModalOverlay {
+        #customModalOverlay, #downloadSeasonModal {
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh;
@@ -870,16 +862,16 @@
             box-shadow: none;
             text-shadow: none;
         }
-        #customModalCancel {
+        #customModalCancel, #cancelDownloadBtn {
             background: var(--modal-btn-cancel-bg); 
             color: var(--modal-btn-cancel-text);
             border: var(--modal-btn-cancel-border);
         }
-        #customModalCancel:hover {
+        #customModalCancel:hover, #cancelDownloadBtn:hover {
             filter: brightness(0.9);
         }
         
-        #customModalOk {
+        #customModalOk, #confirmDownloadBtn {
             background: var(--modal-btn-ok-bg); 
             color: var(--modal-btn-ok-text);
             border: var(--modal-btn-ok-border);
@@ -887,7 +879,7 @@
             width: max-content !important;
             padding: 10px 2ch !important;
         }
-        #customModalOk:hover {
+        #customModalOk:hover, #confirmDownloadBtn:hover {
             filter: brightness(1.1);
         }
         
@@ -1108,14 +1100,28 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 15px;">
-                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action" style="width: max-content; padding: 6px 12px; font-size: 13px;">Update Times</button>
+                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action" style="width: max-content; padding: 6px 12px; font-size: 13px;">Update</button>
                 </div>
 
                 <div class="form-group" style="margin-top: 25px;">
                     <label style="color: var(--text-color);">System Data</label>
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px; align-items: flex-end;">
-                        <button id="previewBtn" class="btn-preview" style="width: max-content; padding: 10px 15px;">Preview Entire Season</button>
-                        <button id="downloadBtn" class="btn-download" style="width: max-content; padding: 10px 15px; background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
+                    <div style="display: flex; flex-direction: row; gap: 8px; margin-top: 5px; width: 100%;">
+                        <button id="previewBtn" class="btn-preview" style="flex: 1; padding: 10px; font-size: 13px;">Preview</button>
+                        <button id="downloadBtn" class="btn-download" style="flex: 1.5; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--admin-color); color: var(--btn-admin-text);">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download
+                        </button>
+                        <button id="downloadIconBtn" class="btn-download" style="width: 40px; padding: 10px 0; display: flex; align-items: center; justify-content: center; background-color: var(--admin-color); color: var(--btn-admin-text);">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1334,20 +1340,6 @@
             </div>
             <button type="button" id="saveNotesBtn" class="btn-mod-action" style="width: max-content; padding: 10px 40px;">Save</button>
         </div>
-
-        <div id="previewSection" class="plain-section hidden">
-            <h2>Season Preview Canvas</h2>
-            <div id="webviewWrapper" class="webview-container">
-                <div class="webview-header">
-                    <span id="webviewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Compiling Buffer Data...</span>
-                </div>
-                <div class="webview-scroll-frame" style="max-height: 600px;">
-                    <table class="webview-table">
-                        <tbody id="webviewTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div id="devInterface" class="hidden">
@@ -1433,6 +1425,41 @@
     </div>
 </div>
 
+<div id="downloadSeasonModal" class="hidden">
+    <div class="custom-modal-box">
+        <h3 style="margin-top: 0;">Select Season to Download</h3>
+        <select id="downloadSeasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: 1px solid var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
+            <option value="All">All Seasons</option>
+        </select>
+        <div class="custom-modal-btn-row">
+            <button id="cancelDownloadBtn">Cancel</button>
+            <button id="confirmDownloadBtn" style="background: var(--primary); color: white;">Download</button>
+        </div>
+    </div>
+</div>
+
+<div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
+    <div class="manual-wrapper-box" style="max-width: 900px;">
+        <div class="manual-header-row" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <h2 class="manual-title" style="border: none; margin: 0; padding: 0;">Season Preview</h2>
+                <select id="previewSeasonSelect" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-color); font-size: 14px;">
+                    <option value="All">All Seasons</option>
+                </select>
+                <span id="previewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Loading...</span>
+            </div>
+            <button type="button" id="previewCloseBtn" class="manual-close-trigger">✕ Close</button>
+        </div>
+        <div class="webview-container" style="margin-top: 0;">
+            <div class="webview-scroll-frame" style="max-height: 70vh;">
+                <table class="webview-table">
+                    <tbody id="previewTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
     <div class="manual-wrapper-box">
         <div class="manual-header-row">
@@ -1458,6 +1485,7 @@
     const advancedModOptions = document.getElementById('advancedModOptions');
     const sidebarAboutBtn = document.getElementById('sidebarAboutBtn');
     const sidebarManualBtn = document.getElementById('sidebarManualBtn');
+    
     const fullscreenManualOverlay = document.getElementById('fullscreenManualOverlay');
     const manualCloseBtn = document.getElementById('manualCloseBtn');
     const manualHeadingTarget = document.getElementById('manualHeadingTarget');
@@ -1579,7 +1607,6 @@
     const devInterface = document.getElementById('devInterface');
     const loginInterface = document.getElementById('loginInterface');
     const pausedBanner = document.getElementById('pausedBanner');
-    const previewSection = document.getElementById('previewSection');
 
     const topicDisplay = document.getElementById('topicDisplay');
     const monthDisplay = document.getElementById('monthDisplay');
@@ -1602,8 +1629,11 @@
     const authorGuessLockTime = document.getElementById('authorGuessLockTime');
     const titleSuggestionLockTime = document.getElementById('titleSuggestionLockTime');
     const updateLockTimesBtn = document.getElementById('updateLockTimesBtn');
+    
+    // System Data Buttons
     const previewBtn = document.getElementById('previewBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const downloadIconBtn = document.getElementById('downloadIconBtn');
 
     // Dashboard Fast-Track Add Stories Elements
     const dashboardNewStoryInput = document.getElementById('dashboardNewStoryInput');
@@ -1642,10 +1672,6 @@
     // Live Dashboard Table Elements
     const dailyReviewsTableBody = document.getElementById('dailyReviewsTableBody');
 
-    const webviewWrapper = document.getElementById('webviewWrapper');
-    const webviewTableBody = document.getElementById('webviewTableBody');
-    const webviewLoadingBadge = document.getElementById('webviewLoadingBadge');
-
     const devSeasonResetBtn = document.getElementById('devSeasonResetBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
     
@@ -1680,16 +1706,14 @@
     let isTitleSuggestionEnabled = false;
     let cachedAuthorGuessLockTime = "23:59";
     let cachedTitleSuggestionLockTime = "23:59";
+    let globalSeasonCache = "Jan00";
 
     let headingToReviewerMap = {};
-
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    // Realtime Version Control Local Cache Config Initialization
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
-    // Initialize Dashboard Header Date Format
     const initToday = new Date();
     const initDd = String(initToday.getDate()).padStart(2, '0');
     const initMm = String(initToday.getMonth() + 1).padStart(2, '0');
@@ -1705,7 +1729,6 @@
             loginInterface.classList.add('hidden');
             modInterface.classList.add('hidden');
             devInterface.classList.add('hidden');
-            previewSection.classList.add('hidden');
         } catch (e) {}
     });
 
@@ -1723,7 +1746,6 @@
                 loginInterface.classList.remove('hidden');
                 modInterface.classList.add('hidden');
                 devInterface.classList.add('hidden');
-                previewSection.classList.add('hidden');
             }
         } catch (e) {}
     });
@@ -1890,6 +1912,7 @@
             inputTopic.disabled = true;
             inputMonth.disabled = true;
             startSeasonBtn.disabled = true;
+            startSeasonBtn.textContent = "Start Season";
 
             advancedModOptions.classList.add('hidden');
         } else if (isNameLockedByMod && !isSeasonStarted) {
@@ -1908,8 +1931,8 @@
 
             inputTopic.disabled = false;
             inputMonth.disabled = false;
-            startSeasonBtn.disabled = false;
-            startSeasonBtn.textContent = "Update Season";
+            startSeasonBtn.disabled = true; 
+            startSeasonBtn.textContent = "Start Season"; 
 
             advancedModOptions.classList.remove('hidden');
         }
@@ -1928,6 +1951,7 @@
             inputTopic.value = data.topic || "";
 
             const currentSeasonName = data.seasonName || "---";
+            globalSeasonCache = currentSeasonName;
             sidebarSeasonDisplay.textContent = currentSeasonName;
 
             currentModName = data.modName || "Mod";
@@ -2047,7 +2071,7 @@
             deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, startSeasonBtn, 
             readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn, updateLockTimesBtn,
-            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
+            previewBtn, downloadBtn, downloadIconBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
             btnUpdateMajor, btnUpdateMinor, btnUpdateRevision
         ];
 
@@ -2152,12 +2176,39 @@
         }
     }
 
+    function updateSeasonDropdowns(seasonsSet) {
+        const pSelect = document.getElementById('previewSeasonSelect');
+        const dSelect = document.getElementById('downloadSeasonSelect');
+        const pVal = pSelect.value;
+        const dVal = dSelect.value;
+
+        let optionsHtml = '<option value="All">All Seasons</option>';
+        if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSet.has(globalSeasonCache)) {
+            optionsHtml += `<option value="${globalSeasonCache}">${globalSeasonCache}</option>`;
+        }
+        
+        seasonsSet.forEach(s => {
+            if(s && s !== "Legacy" && s !== "All") optionsHtml += `<option value="${s}">${s}</option>`;
+        });
+
+        pSelect.innerHTML = optionsHtml;
+        dSelect.innerHTML = optionsHtml;
+
+        if ([...seasonsSet, "All", globalSeasonCache].includes(pVal)) pSelect.value = pVal;
+        if ([...seasonsSet, "All", globalSeasonCache].includes(dVal)) dSelect.value = dVal;
+    }
+
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
+        let uniqueSeasons = new Set();
+
         snapshot.forEach(doc => {
             const d = doc.data();
-            arrayedStoriesList.push({ id: doc.id, created: d.created || 0 });
+            arrayedStoriesList.push({ id: doc.id, created: d.created || 0, season: d.season || "Legacy" });
+            if (d.season) uniqueSeasons.add(d.season);
         });
+
+        updateSeasonDropdowns(uniqueSeasons);
 
         arrayedStoriesList.sort((a, b) => b.created - a.created);
 
@@ -2350,7 +2401,7 @@
                 }
 
                 Object.keys(data).forEach(reviewerKey => {
-                    if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses' && reviewerKey !== '_authorGivenHeading') {
+                    if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses' && reviewerKey !== '_authorGivenHeading' && reviewerKey !== 'season') {
                         reviewCount++;
                         let score = "N/A";
                         let title = "None";
@@ -2482,8 +2533,8 @@
         if (!title) { customAlert("Enter a valid story title."); return; }
         try {
             actionButton.disabled = true;
-            await setDoc(doc(db, "competitions", title), { created: Date.now() }, { merge: true });
-            newStoryInput.value = '';
+            // Now silently associates newly added stories with the currently running season block 
+            await setDoc(doc(db, "competitions", title), { created: Date.now(), season: globalSeasonCache }, { merge: true });
             dashboardNewStoryInput.value = '';
             actionButton.disabled = false;
             customAlert(`Added: "${title}"`);
@@ -2579,10 +2630,10 @@
                         <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
                         <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
                         <tr><td>Start Season (Button)</td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr>
-                        <tr><td>Update Times (Button)</td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr>
+                        <tr><td>Update (Button)</td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr>
                         <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout, required before starting a season.</td></tr>
-                        <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
-                        <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
+                        <tr><td>Preview (Button)</td><td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td></tr>
+                        <tr><td>Download (Buttons)</td><td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
                         <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
                         <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
                         <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
@@ -2636,143 +2687,8 @@
         document.body.style.overflow = "";
     });
 
-    deleteStoryBtn.addEventListener('click', async () => {
-        if(isSystemPaused && !isDeveloperModeUnlocked) return;
-        const targetStory = deleteStorySelect.value;
-        if(!targetStory) { customAlert("Select a story to clear."); return; }
-        if(!(await customConfirm(`Delete permanently: "${targetStory}"?`))) return;
-        try {
-            deleteStoryBtn.disabled = true;
-            await deleteDoc(doc(db, "competitions", targetStory));
-            customAlert("Story successfully wiped.");
-            deleteStoryBtn.disabled = false;
-        } catch(e) {
-            customAlert("Error deleting entry.");
-            deleteStoryBtn.disabled = false;
-        }
-    });
-
-    ratingForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System Maintenance"); return; }
-
-        const activeStorySelection = storyDropdown.value;
-        if(!activeStorySelection) { customAlert("Select a story to Rate"); return; }
-
-        let name = friendNameInput.value.trim();
-        let score = parseInt(ratingValueInput.value);
-        
-        let guess = isAuthorGuessEnabled && !authorGuessInput.disabled ? (authorGuessInput.value.trim() || "None") : "None";
-        let customTitle = isTitleSuggestionEnabled && !titleSuggestionInput.disabled ? (titleSuggestionInput.value.trim() || "None") : "None";
-
-        const storageMarkerKey = `rated_${activeStorySelection}`;
-        const hasRated = localStorage.getItem(storageMarkerKey) === "true";
-        
-        let storedUserData = {};
-        if (hasRated && !isDeveloperModeUnlocked) {
-            try {
-                storedUserData = JSON.parse(localStorage.getItem(`userdata_${activeStorySelection}`) || "{}");
-                
-                name = storedUserData.name || name;
-                score = storedUserData.score || score;
-                if (storedUserData.authorGuess && storedUserData.authorGuess !== "None") guess = storedUserData.authorGuess;
-                if (storedUserData.suggestedTitle && storedUserData.suggestedTitle !== "None") customTitle = storedUserData.suggestedTitle;
-            } catch(e) {}
-        } else {
-            if (!name) { customAlert("Please enter your name."); return; }
-            if (score < 1 || score > 10 || isNaN(score)) {
-                customAlert("Rating must be an Integer from 1 to 10");
-                ratingValueInput.focus();
-                return;
-            }
-        }
-
-        const activeStoryObject = arrayedStoriesList.find(s => s.id === activeStorySelection);
-        if (activeStoryObject && !isDeveloperModeUnlocked) {
-            const createdDateStr = new Date(activeStoryObject.created).toDateString();
-            const currentDateStr = new Date().toDateString();
-            const isPreviousDay = createdDateStr !== currentDateStr;
-            
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const timeStringFormatted = `${currentHour}:${currentMinute}`;
-
-            if (isPreviousDay) {
-                if ((guess !== "None" && guess !== storedUserData.authorGuess) || 
-                    (customTitle !== "None" && customTitle !== storedUserData.suggestedTitle)) {
-                    customAlert("Submission Failure: Title and Author suggestions are strictly locked for previous days.");
-                    return;
-                }
-            } else {
-                if (guess !== "None" && guess !== storedUserData.authorGuess && timeStringFormatted > cachedAuthorGuessLockTime) {
-                    customAlert(`Submission Failure: The timeline to log author guesses expired at ${cachedAuthorGuessLockTime}.`);
-                    return;
-                }
-                if (customTitle !== "None" && customTitle !== storedUserData.suggestedTitle && timeStringFormatted > cachedTitleSuggestionLockTime) {
-                    customAlert(`Submission Failure: The timeframe to suggest custom headings expired at ${cachedTitleSuggestionLockTime}.`);
-                    return;
-                }
-            }
-        }
-
-        try {
-            submitRatingBtn.disabled = true;
-
-            const submissionPayload = {
-                score: score,
-                authorGuess: guess,
-                suggestedTitle: customTitle
-            };
-
-            await setDoc(doc(db, "competitions", activeStorySelection), { 
-                [name]: submissionPayload 
-            }, { merge: true });
-
-            if (!isDeveloperModeUnlocked) {
-                try { 
-                    localStorage.setItem(storageMarkerKey, "true"); 
-                    const cacheObject = { name, score, authorGuess: guess, suggestedTitle: customTitle };
-                    localStorage.setItem(`userdata_${activeStorySelection}`, JSON.stringify(cacheObject));
-                } catch(e){}
-            }
-
-            customAlert(hasRated ? `Saved suggestion updates for ${name}` : `Saved submission from ${name}`);
-            
-            autoFillPreviousUserInputs();
-            evaluateLocalStorageRestrictions();
-            
-            if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
-        } catch (err) {
-            customAlert("Error saving Entry");
-            submitRatingBtn.disabled = false;
-        }
-    });
-
-    saveNotesBtn.addEventListener('click', async () => {
-        if(isSystemPaused && !isDeveloperModeUnlocked) return;
-        const tgt = deleteStorySelect.value;
-        if (!tgt) { customAlert("Select a story path first."); return; }
-
-        const packedWinnersString = accumulatedWinnersStateArray.length > 0 ? accumulatedWinnersStateArray.join(', ') : "*****";
-
-        try {
-            saveNotesBtn.disabled = true;
-            await setDoc(doc(db, "competitions", tgt), {
-                _suggestions: readerSuggestions.value || "*****",
-                _suggesterName: headingSuggesterInput.value || "*****",
-                _guesses: packedWinnersString,
-                _authorGivenHeading: authorGivenHeadingInput.value.trim() || "*****"
-            }, { merge: true });
-            customAlert("Notes saved successfully.");
-            saveNotesBtn.disabled = false;
-        } catch(err) {
-            customAlert("Error saving notes.");
-            saveNotesBtn.disabled = false;
-        }
-    });
-
-    async function compileMasterDataMatrix() {
+    // --- Dynamic Season Compilation Logic ---
+    async function compileMasterDataMatrix(seasonFilter = "All") {
         const querySnapshot = await getDocs(collection(db, "competitions"));
         const currentDateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -2794,8 +2710,22 @@
         let tempTableBodyContent = "";
 
         let stories = [];
-        querySnapshot.forEach(doc => stories.push({ id: doc.id, data: doc.data() }));
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            const storedSeason = data.season || "Legacy";
+            
+            // Standardize matching algorithm bypasses unneeded parsing
+            if (seasonFilter === "All" || seasonFilter === storedSeason) {
+                stories.push({ id: doc.id, data: data });
+            }
+        });
+        
         stories.sort((a, b) => (b.data.created || 0) - (a.data.created || 0));
+
+        if (stories.length === 0) {
+            const emptyMsg = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilter}</td></tr>`;
+            return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, tableBodyRows: emptyMsg };
+        }
 
         stories.forEach((story) => {
             const data = story.data;
@@ -2831,7 +2761,7 @@
 
             let reviewRows = [];
             Object.keys(data).forEach(key => {
-                if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses' && key !== '_authorGivenHeading') {
+                if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses' && key !== '_authorGivenHeading' && key !== 'season') {
                     if (typeof data[key] === 'object' && data[key] !== null) {
                         reviewRows.push({
                             reviewer: sanitizeText(key),
@@ -2883,62 +2813,78 @@
         };
     }
 
-    previewBtn.addEventListener('click', async () => {
+    async function loadPreviewTable() {
+        const badge = document.getElementById('previewLoadingBadge');
+        const tbody = document.getElementById('previewTableBody');
+        badge.style.display = "inline";
+        
         try {
-            previewBtn.disabled = true;
-            webviewLoadingBadge.style.display = "inline";
-
-            const matrixData = await compileMasterDataMatrix();
-
-            webviewTableBody.innerHTML = matrixData.tableBodyRows;
-            previewSection.classList.remove('hidden');
-            webviewWrapper.classList.remove('hidden');
-
-            toggleMenu(false); 
-
-            setTimeout(() => {
-                previewSection.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-
-            customAlert("📊 Live preview canvas rendering synchronised successfully in the main view.");
-        } catch (err) {
-            console.error(err);
-            customAlert("Error parsing data records.");
+            const tgtSeason = document.getElementById('previewSeasonSelect').value;
+            const matrixData = await compileMasterDataMatrix(tgtSeason);
+            tbody.innerHTML = matrixData.tableBodyRows;
+        } catch (e) {
+            console.error(e);
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Error compiling data.</td></tr>`;
         } finally {
-            previewBtn.disabled = false;
-            webviewLoadingBadge.style.display = "none";
+            badge.style.display = "none";
         }
+    }
+
+    previewBtn.addEventListener('click', async () => {
+        toggleMenu(false);
+        document.getElementById('fullscreenPreviewOverlay').classList.remove('hidden');
+        document.body.style.overflow = "hidden";
+        await loadPreviewTable(); 
     });
 
-    downloadBtn.addEventListener('click', async () => {
+    document.getElementById('previewCloseBtn').addEventListener('click', () => {
+        document.getElementById('fullscreenPreviewOverlay').classList.add('hidden');
+        document.body.style.overflow = "";
+    });
+
+    document.getElementById('previewSeasonSelect').addEventListener('change', loadPreviewTable);
+
+    // Dynamic Download Flow Routing Controller
+    const triggerDownloadModalFlow = () => {
+        toggleMenu(false);
+        document.getElementById('downloadSeasonModal').classList.remove('hidden');
+    };
+
+    downloadBtn.addEventListener('click', triggerDownloadModalFlow);
+    downloadIconBtn.addEventListener('click', triggerDownloadModalFlow);
+
+    document.getElementById('cancelDownloadBtn').addEventListener('click', () => {
+        document.getElementById('downloadSeasonModal').classList.add('hidden');
+    });
+
+    document.getElementById('confirmDownloadBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('confirmDownloadBtn');
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
         try {
-            downloadBtn.disabled = true;
-
-            const matrixData = await compileMasterDataMatrix();
-
-            webviewTableBody.innerHTML = matrixData.tableBodyRows;
-            previewSection.classList.remove('hidden');
-            webviewWrapper.classList.remove('hidden');
+            const tgtSeason = document.getElementById('downloadSeasonSelect').value;
+            const matrixData = await compileMasterDataMatrix(tgtSeason);
 
             const blob = new Blob([matrixData.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
             const downloadUrl = URL.createObjectURL(blob);
 
             const clientLink = document.createElement("a");
             clientLink.href = downloadUrl;
-            clientLink.download = `Competition_Master_Data_${new Date().toISOString().split('T')[0]}.html`;
+            clientLink.download = `Competition_Master_Data_${tgtSeason}_${new Date().toISOString().split('T')[0]}.html`;
 
             document.body.appendChild(clientLink);
             clientLink.click();
             document.body.removeChild(clientLink);
 
-            toggleMenu(false); 
-            
-            customAlert("📊 Data payload compressed and compiled to secure HTML format spreadsheet document.");
+            document.getElementById('downloadSeasonModal').classList.add('hidden');
+            customAlert("📊 Data payload compressed and exported securely.");
         } catch (err) {
             console.error(err);
             customAlert("Error exporting document file streams.");
         } finally {
-            downloadBtn.disabled = false;
+            btn.disabled = false;
+            btn.textContent = "Download";
         }
     });
 
@@ -2996,7 +2942,6 @@
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
             sidebarModOptions.classList.add('hidden'); 
-            previewSection.classList.add('hidden');
             
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
