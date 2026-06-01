@@ -693,10 +693,8 @@
             align-items: center;
             justify-content: space-between;
             background: var(--switch-bg);
-            padding: 15px;
             border-radius: 8px;
             border: var(--switch-border);
-            margin-bottom: 20px;
         }
         .switch {
             position: relative;
@@ -732,9 +730,8 @@
             background-color: var(--primary);
         }
         
-        /* Updated toggle class for Royal Blue active state */
-        .switch-container.royal-toggle input:checked + .slider {
-            background-color: royalblue;
+        .switch-container.danger-toggle input:checked + .slider {
+            background-color: var(--danger);
         }
         
         input:checked + .slider:before {
@@ -1263,12 +1260,19 @@
         <div class="plain-section admin-header">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
                 <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0; display: flex; align-items: center; gap: 8px;">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                        <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="6" y="6" width="5" height="7" />
-                        <rect x="13" y="6" width="5" height="4" />
-                        <rect x="6" y="15" width="5" height="4" />
-                        <rect x="13" y="12" width="5" height="7" />
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <defs>
+                            <linearGradient id="modDashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFA500"/>
+                                <stop offset="50%" stop-color="#FFFF00"/>
+                                <stop offset="100%" stop-color="#0000FF"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="12" cy="12" r="11" fill="none" stroke="url(#modDashGrad)" stroke-width="2"/>
+                        <rect x="6" y="6" width="5" height="7" fill="url(#modDashGrad)" />
+                        <rect x="13" y="6" width="5" height="4" fill="url(#modDashGrad)" />
+                        <rect x="6" y="15" width="5" height="4" fill="url(#modDashGrad)" />
+                        <rect x="13" y="12" width="5" height="7" fill="url(#modDashGrad)" />
                     </svg>
                     Moderator Dashboard
                 </h2>
@@ -1384,33 +1388,47 @@
                         <div id="devRevisionText" class="version-num">7</div>
                     </div>
                 </div>
-                <div class="btn-row" style="margin-top: 5px; gap: 8px; width: 100%;">
+                <div class="btn-row" style="margin-top: 5px; gap: 10px; width: 100%;">
                     <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Major</button>
                     <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Minor</button>
                     <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Revision</button>
                 </div>
             </div>
 
-            <div class="switch-container royal-toggle">
+            <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px;">
                 <div>
-                    <strong style="color: royalblue; display: flex; align-items: center; gap: 8px;">
-                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
-                            <path d="M4 19h16v2H4z" />
-                            <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
-                            <circle cx="12" cy="4" r="1" />
-                            <circle cx="7" cy="8" r="1" />
-                            <circle cx="17" cy="8" r="1" />
+                    <strong id="exclusiveModeText" style="color: white; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
+                        <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
+                            <defs>
+                                <linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#80Aaff" />
+                                    <stop offset="30%" stop-color="#4169E1" />
+                                    <stop offset="70%" stop-color="#223b82" />
+                                    <stop offset="100%" stop-color="#0d1b42" />
+                                </linearGradient>
+                                <linearGradient id="glossyQueenStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffffff" />
+                                    <stop offset="100%" stop-color="#4169E1" />
+                                </linearGradient>
+                            </defs>
+                            <g fill="url(#glossyQueen)" stroke="url(#glossyQueenStroke)" stroke-width="1.2" stroke-linejoin="round">
+                                <path d="M4 19h16v2H4z" />
+                                <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
+                                <circle cx="12" cy="4" r="1.5" />
+                                <circle cx="7" cy="8" r="1.5" />
+                                <circle cx="17" cy="8" r="1.5" />
+                            </g>
                         </svg>
                         Exclusive Mode
                     </strong>
                 </div>
-                <label class="switch">
+                <label class="switch" style="transform: scale(0.9); margin-right: -4px;">
                     <input type="checkbox" id="devPauseToggle">
                     <span class="slider"></span>
                 </label>
             </div>
 
-            <div class="btn-row" style="margin-top: 20px; align-items: center;">
+            <div class="btn-row" style="margin-top: 20px; align-items: center; gap: 10px;">
                 <button type="button" id="devSeasonResetBtn" class="btn-dev-action" style="width: max-content; padding: 10px 15px;">Season Reset</button>
                 <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action" style="width: max-content; padding: 10px 15px;">User feedback preview</button>
                 <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: var(--input-bg); box-shadow:none; width: max-content; padding: 10px 15px;">Download Feedback Table</button>
@@ -1697,6 +1715,7 @@
 
     const devSeasonResetBtn = document.getElementById('devSeasonResetBtn');
     const devPauseToggle = document.getElementById('devPauseToggle');
+    const exclusiveModeText = document.getElementById('exclusiveModeText');
     
     const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
     const feedbackNameInput = document.getElementById('feedbackNameInput');
@@ -2102,6 +2121,7 @@
             pausedBanner.classList.remove('hidden');
             submitRatingBtn.disabled = true;
             submitRatingBtn.textContent = "System Paused";
+            if (exclusiveModeText) exclusiveModeText.style.color = "var(--danger)";
             
             if (isDeveloperModeUnlocked) {
                 elements.forEach(el => el.disabled = false);
@@ -2114,6 +2134,7 @@
             }
         } else {
             pausedBanner.classList.add('hidden');
+            if (exclusiveModeText) exclusiveModeText.style.color = "#ffffff";
             elements.forEach(el => el.disabled = false);
             evaluateSetupFlow();
             evaluateLocalStorageRestrictions();
