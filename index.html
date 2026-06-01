@@ -588,6 +588,7 @@
         .btn-clear-inline:hover {
             background-color: var(--nav-btn-hover-bg);
             color: var(--nav-btn-hover-text);
+            transform: none;
         }
         .btn-clear-inline svg {
             width: 18px;
@@ -1235,11 +1236,11 @@
             <form id="ratingForm">
                 <div class="form-group">
                     <label for="friendName">Your Name *</label>
-                    <input type="text" id="friendName" placeholder="Enter your name precisely" required>
+                    <input type="text" id="friendName" placeholder="Enter your name precisely">
                 </div>
                 <div class="form-group">
                     <label for="ratingValue">Rating (1 to 10) *</label>
-                    <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9" required>
+                    <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9">
                 </div>
                 <div class="form-group hidden" id="userAuthorGuessGroup">
                     <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
@@ -2081,48 +2082,67 @@
                 return;
             }
 
-            // Check if story is a previous day's selection or post-18:00 cutoff window
             const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
-            if (activeStoryObject) {
-                const createdDateStr = new Date(activeStoryObject.created).toDateString();
-                const currentDateStr = new Date().toDateString();
-                const currentHour = new Date().getHours();
-                
-                if (createdDateStr !== currentDateStr) {
-                    friendNameInput.disabled = true;
-                    ratingValueInput.disabled = true;
-                    authorGuessInput.disabled = true;
-                    titleSuggestionInput.disabled = true;
-                    submitRatingBtn.disabled = true;
-                    submitRatingBtn.textContent = "Ratings locked for previous days' stories";
-                    return;
-                } else if (currentHour >= 18) {
-                    friendNameInput.disabled = true;
-                    ratingValueInput.disabled = true;
-                    authorGuessInput.disabled = true;
-                    titleSuggestionInput.disabled = true;
-                    submitRatingBtn.disabled = true;
-                    submitRatingBtn.textContent = "Ratings locked after 18:00 IST cutoff";
-                    return;
+            if (!activeStoryObject) return;
+
+            const createdDateStr = new Date(activeStoryObject.created).toDateString();
+            const currentDateStr = new Date().toDateString();
+            const isPreviousDay = createdDateStr !== currentDateStr;
+            
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const timeStringFormatted = `${currentHour}:${currentMinute}`;
+
+            const pastAuthorGuessTime = timeStringFormatted > cachedAuthorGuessLockTime;
+            const pastTitleSuggestionTime = timeStringFormatted > cachedTitleSuggestionLockTime;
+
+            const storageMarkerKey = `rated_${targetStory}`;
+            const hasRated = localStorage.getItem(storageMarkerKey) === "true";
+            
+            let alreadyGuessedAuthor = false;
+            let alreadySuggestedTitle = false;
+
+            if (hasRated) {
+                const storedUserData = localStorage.getItem(`userdata_${targetStory}`);
+                if (storedUserData) {
+                    try {
+                        const parsedData = JSON.parse(storedUserData);
+                        alreadyGuessedAuthor = parsedData.authorGuess && parsedData.authorGuess !== "None";
+                        alreadySuggestedTitle = parsedData.suggestedTitle && parsedData.suggestedTitle !== "None";
+                    } catch(e) {}
                 }
             }
 
-            const storageMarkerKey = `rated_${targetStory}`;
-            if (localStorage.getItem(storageMarkerKey) === "true") {
-                friendNameInput.disabled = true;
-                ratingValueInput.disabled = true;
-                authorGuessInput.disabled = true;
-                titleSuggestionInput.disabled = true;
+            // Name & Rating are unlocked anytime until the user actually submits them
+            friendNameInput.disabled = hasRated;
+            ratingValueInput.disabled = hasRated;
+
+            // Restrict Author Guess
+            authorGuessInput.disabled = !isAuthorGuessEnabled || alreadyGuessedAuthor || isPreviousDay || pastAuthorGuessTime;
+
+            // Restrict Title Suggestion
+            titleSuggestionInput.disabled = !isTitleSuggestionEnabled || alreadySuggestedTitle || isPreviousDay || pastTitleSuggestionTime;
+
+            // Determine Submit Button State dynamically based on available fields
+            if (friendNameInput.disabled && authorGuessInput.disabled && titleSuggestionInput.disabled) {
                 submitRatingBtn.disabled = true;
-                submitRatingBtn.textContent = "You have already rated this story";
+                if (isPreviousDay && hasRated) {
+                    submitRatingBtn.textContent = "Ratings locked (Already Submitted)";
+                } else if (hasRated && (pastAuthorGuessTime || pastTitleSuggestionTime)) {
+                    submitRatingBtn.textContent = "Time expired for suggestions";
+                } else if (hasRated) {
+                    submitRatingBtn.textContent = "Review Submitted";
+                }
             } else {
-                friendNameInput.disabled = false;
-                ratingValueInput.disabled = false;
-                authorGuessInput.disabled = !isAuthorGuessEnabled;
-                titleSuggestionInput.disabled = !isTitleSuggestionEnabled;
                 submitRatingBtn.disabled = false;
-                submitRatingBtn.textContent = "Submit Review";
+                if (hasRated) {
+                    submitRatingBtn.textContent = "Update Suggestions";
+                } else {
+                    submitRatingBtn.textContent = "Submit Review";
+                }
             }
+
         } catch (e) {
             console.error("Local storage initialization error.", e);
             submitRatingBtn.disabled = false;
@@ -2649,64 +2669,71 @@
         if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System Maintenance"); return; }
 
         const activeStorySelection = storyDropdown.value;
-        const name = friendNameInput.value.trim();
-        const score = parseInt(ratingValueInput.value);
-
-        const guess = isAuthorGuessEnabled ? (authorGuessInput.value.trim() || "None") : "None";
-        const customTitle = isTitleSuggestionEnabled ? (titleSuggestionInput.value.trim() || "None") : "None";
-
         if(!activeStorySelection) { customAlert("Select a story to Rate"); return; }
 
-        // Core Timestamp Checking Block for Validation Constraints
+        let name = friendNameInput.value.trim();
+        let score = parseInt(ratingValueInput.value);
+        
+        // Grab values only if the fields are accessible, otherwise default to "None"
+        let guess = isAuthorGuessEnabled && !authorGuessInput.disabled ? (authorGuessInput.value.trim() || "None") : "None";
+        let customTitle = isTitleSuggestionEnabled && !titleSuggestionInput.disabled ? (titleSuggestionInput.value.trim() || "None") : "None";
+
+        const storageMarkerKey = `rated_${activeStorySelection}`;
+        const hasRated = localStorage.getItem(storageMarkerKey) === "true";
+        
+        let storedUserData = {};
+        if (hasRated && !isDeveloperModeUnlocked) {
+            try {
+                storedUserData = JSON.parse(localStorage.getItem(`userdata_${activeStorySelection}`) || "{}");
+                
+                // Keep preserved values if the user is only updating suggestions
+                name = storedUserData.name || name;
+                score = storedUserData.score || score;
+                if (storedUserData.authorGuess && storedUserData.authorGuess !== "None") guess = storedUserData.authorGuess;
+                if (storedUserData.suggestedTitle && storedUserData.suggestedTitle !== "None") customTitle = storedUserData.suggestedTitle;
+            } catch(e) {}
+        } else {
+            // First time submit validations for primary data
+            if (!name) { customAlert("Please enter your name."); return; }
+            if (score < 1 || score > 10 || isNaN(score)) {
+                customAlert("Rating must be an Integer from 1 to 10");
+                ratingValueInput.focus();
+                return;
+            }
+        }
+
+        // Advanced Constraints Check for Validation Bypasses
         const activeStoryObject = arrayedStoriesList.find(s => s.id === activeStorySelection);
         if (activeStoryObject && !isDeveloperModeUnlocked) {
             const createdDateStr = new Date(activeStoryObject.created).toDateString();
             const currentDateStr = new Date().toDateString();
+            const isPreviousDay = createdDateStr !== currentDateStr;
             
-            // Format current localized time metrics
             const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-            const timeStringFormatted = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const timeStringFormatted = `${currentHour}:${currentMinute}`;
 
-            // 1. Enforce Previous Days Constraints
-            if (createdDateStr !== currentDateStr) {
-                customAlert("Submission Failure: Rating updates for stories published on previous days are strictly locked.");
-                return;
+            if (isPreviousDay) {
+                if ((guess !== "None" && guess !== storedUserData.authorGuess) || 
+                    (customTitle !== "None" && customTitle !== storedUserData.suggestedTitle)) {
+                    customAlert("Submission Failure: Title and Author suggestions are strictly locked for previous days.");
+                    return;
+                }
+            } else {
+                if (guess !== "None" && guess !== storedUserData.authorGuess && timeStringFormatted > cachedAuthorGuessLockTime) {
+                    customAlert(`Submission Failure: The timeline to log author guesses expired at ${cachedAuthorGuessLockTime}.`);
+                    return;
+                }
+                if (customTitle !== "None" && customTitle !== storedUserData.suggestedTitle && timeStringFormatted > cachedTitleSuggestionLockTime) {
+                    customAlert(`Submission Failure: The timeframe to suggest custom headings expired at ${cachedTitleSuggestionLockTime}.`);
+                    return;
+                }
             }
-            
-            // 2. Enforce Hard 18:00 IST Cutoff Constraint
-            if (currentHour >= 18) {
-                customAlert("Submission Failure: The 18:00 IST cutoff time for current-day story reviews has expired.");
-                return;
-            }
-
-            // 3. Enforce Moderator-Defined Custom Lock Deadlines
-            if (isAuthorGuessEnabled && guess !== "None" && timeStringFormatted > cachedAuthorGuessLockTime) {
-                customAlert(`Submission Failure: The timeline to log author guesses expired at ${cachedAuthorGuessLockTime}.`);
-                return;
-            }
-            if (isTitleSuggestionEnabled && customTitle !== "None" && timeStringFormatted > cachedTitleSuggestionLockTime) {
-                customAlert(`Submission Failure: The timeframe to suggest custom headings expired at ${cachedTitleSuggestionLockTime}.`);
-                return;
-            }
-        }
-
-        const storageMarkerKey = `rated_${activeStorySelection}`;
-        if (localStorage.getItem(storageMarkerKey) === "true" && !isDeveloperModeUnlocked) {
-            customAlert("You have already submitted review");
-            evaluateLocalStorageRestrictions();
-            return;
-        }
-
-        if (score < 1 || score > 10 || isNaN(score)) {
-            customAlert("Rating must be an Integer from 1 to 10");
-            ratingValueInput.focus();
-            return;
         }
 
         try {
-            submitSubmitBtn.disabled = true;
+            submitRatingBtn.disabled = true;
 
             const submissionPayload = {
                 score: score,
@@ -2714,6 +2741,7 @@
                 suggestedTitle: customTitle
             };
 
+            // Will merge partially inputted fields into existing entries flawlessly
             await setDoc(doc(db, "competitions", activeStorySelection), { 
                 [name]: submissionPayload 
             }, { merge: true });
@@ -2721,15 +2749,17 @@
             if (!isDeveloperModeUnlocked) {
                 try { 
                     localStorage.setItem(storageMarkerKey, "true"); 
-                    // Write inputs data payload map back locally to cache autofills
                     const cacheObject = { name, score, authorGuess: guess, suggestedTitle: customTitle };
                     localStorage.setItem(`userdata_${activeStorySelection}`, JSON.stringify(cacheObject));
                 } catch(e){}
             }
 
-            customAlert(`Saved submission from ${name}`);
-            ratingForm.reset();
+            customAlert(hasRated ? `Saved suggestion updates for ${name}` : `Saved submission from ${name}`);
+            
+            // Re-eval restrictions natively instead of wiping the form text
+            autoFillPreviousUserInputs();
             evaluateLocalStorageRestrictions();
+            
             if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
         } catch (err) {
             customAlert("Error saving Entry");
