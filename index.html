@@ -375,97 +375,6 @@
             text-align: right;
         }
 
-        /* --- SIDEBAR MENU STYLES --- */
-        .menu-overlay {
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh;
-            background: var(--modal-overlay);
-            z-index: 999998;
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(2px);
-        }
-        .menu-overlay.visible {
-            opacity: 1; 
-            pointer-events: auto;
-        }
-
-        .side-menu {
-            position: fixed; 
-            top: 0; left: -300px; 
-            width: 280px; height: 100vh;
-            background: var(--modal-bg); 
-            color: var(--modal-text);
-            z-index: 999999; 
-            box-shadow: 2px 0 15px rgba(0,0,0,0.5);
-            transition: left 0.3s ease; 
-            display: flex; 
-            flex-direction: column;
-            border-right: var(--modal-border);
-        }
-        .side-menu.open {
-            left: 0;
-        }
-
-        .side-menu-header {
-            display: flex; 
-            justify-content: flex-end; 
-            align-items: center;
-            padding: 20px; 
-            padding-bottom: 5px;
-            border-bottom: none;
-        }
-        
-        .side-menu-close {
-            background: transparent;
-            border: none;
-            color: var(--modal-text);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
-            box-shadow: none;
-            transition: color 0.2s;
-        }
-        .side-menu-close:hover {
-            color: var(--danger);
-        }
-
-        .side-menu-content {
-            padding: 20px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        
-        .side-menu-content label { font-size: 13px; }
-        .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
-        .side-menu-content button { padding: 8px 12px; font-size: 13px; }
-
-        /* --- PREMIUM MAINTENANCE BANNER --- */
-        .status-alert {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            background: var(--status-bg);
-            backdrop-filter: blur(8px);
-            padding: 20px;
-            border-radius: 20px;
-            border-left: 6px solid var(--danger);
-            margin-bottom: 25px;
-            box-shadow: var(--status-shadow);
-        }
-        .status-icon-box {
-            background: var(--status-icon-bg);
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-        }
-        .status-content h4 { margin: 0; color: var(--danger); font-size: 16px; font-weight: 700; }
-        .status-content p { margin: 4px 0 0 0; color: var(--status-text); font-size: 14px; font-weight: 500; }
-        .hidden { display: none !important; }
-
         .plain-section {
             background: var(--card-bg);
             padding: var(--card-padding);
@@ -595,14 +504,6 @@
             height: 18px;
             fill: currentColor;
         }
-
-        .export-btn-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
-        .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
         .winners-tags-container {
             display: flex;
@@ -772,14 +673,15 @@
             color: var(--webview-th-text);
             padding: 10px;
             border: 1px solid var(--border);
-            text-align: left;
+            text-align: center;
             font-weight: bold;
         }
         .webview-table td {
             padding: 10px;
             border: 1px solid var(--border);
             color: var(--webview-td-text);
-            vertical-align: top;
+            vertical-align: middle;
+            text-align: center;
         }
         .webview-table tr:nth-child(even) {
             background-color: var(--webview-row-alt);
@@ -793,7 +695,7 @@
             padding: 0;
             height: 26px;
             width: 26px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -890,42 +792,6 @@
             filter: brightness(1.1);
         }
         
-        .version-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .version-box {
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-        }
-        .version-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: bold;
-        }
-        .version-num {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .about-list {
-            text-align: left;
-            margin: 10px 0 0 0;
-            padding-left: 20px;
-            max-height: 120px;
-            overflow-y: auto;
-        }
-        .about-list li {
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-        
         /* --- FULL SCREEN USER MANUAL OVERLAY --- */
         .fullscreen-manual-view {
             position: fixed;
@@ -1003,12 +869,6 @@
             margin-top: 4px;
             display: block;
         }
-
-        #sidebarAboutBtn, #sidebarManualBtn {
-            width: max-content !important;
-            padding: 11px 2ch !important;
-            margin: 15px 0 0 0 !important; 
-        }
         
         .time-lock-input {
             width: 75px !important;
@@ -1020,16 +880,33 @@
             color: var(--input-text) !important;
             margin-left: 8px;
         }
+
+        /* Sidebar compaction modifications */
+        .sidebar-right-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .sidebar-right-btn-wrap button {
+            width: max-content !important;
+            padding: 8px 14px !important;
+            font-size: 13px !important;
+        }
     </style>
 </head>
 <body>
 
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
-    <div class="side-menu-header">
+    <div class="side-menu-header" style="justify-content: space-between; padding: 20px; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 12px; font-weight: bold; text-transform: uppercase; opacity: 0.7;">Season:</span>
+            <span id="sidebarSeasonBadge" style="font-size: 15px; font-weight: 800; color: var(--primary);">Jan00</span>
+        </div>
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
-    <div class="side-menu-content" style="display: flex; flex-direction: column;">
+    <div class="side-menu-content" style="display: flex; flex-direction: column; padding: 0 20px 20px 20px;">
         <div class="form-group">
             <label style="color: var(--text-color); margin-bottom: 8px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
                 <span style="font-size: 16px;">🖌️</span> Theme
@@ -1046,46 +923,16 @@
         <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 20px;">
             
             <div class="form-group">
-                <label for="newStoryInput">Add New Story</label>
-                <input type="text" id="newStoryInput" placeholder="Story name">
-                <button type="button" id="updateStoryBtn" class="btn-mod-action" style="margin-top: 8px; width: 100%;">Add Story</button>
-            </div>
-
-            <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
-                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                        <input type="checkbox" id="toggleAuthorGuessBtn">
-                        <span class="slider"></span>
-                    </label>
+                <label for="inputModName">Moderator Name</label>
+                <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 2px;">
+                <div class="sidebar-right-btn-wrap">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action">Save Profile</button>
                 </div>
-                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
-                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
-                    <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
-                </div>
-            </div>
-
-            <div class="switch-container" style="padding: 10px; flex-wrap: wrap; gap: 6px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
-                    <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                        <input type="checkbox" id="toggleTitleSuggestionBtn">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
-                    <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
-                    <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
-                </div>
-            </div>
-            
-            <div class="form-group" style="margin-top: 15px;">
-                <label for="inputTopic">Subject</label>
-                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi">
             </div>
 
             <div class="form-group">
-                <select id="inputMonth" style="cursor: pointer; border-radius: 6px;">
+                <label for="inputMonth">Month Configuration</label>
+                <select id="inputMonth" style="cursor: pointer; border-radius: 6px;" disabled>
                     <option value="">-- Select Month --</option>
                     <option value="January">January</option>
                     <option value="February">February</option>
@@ -1102,25 +949,63 @@
                 </select>
             </div>
 
-            <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-bottom: 15px; width: 100%;">Save Config</button>
-
             <div class="form-group">
-                <label for="inputModName">Moderator Name</label>
-                <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 8px;">
-                <button type="button" id="saveModNameBtn" class="btn-mod-action" style="width: 100%;">Save Profile</button>
+                <label for="inputTopic">Subject</label>
+                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" disabled>
+                <div class="sidebar-right-btn-wrap">
+                    <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" disabled>Start Season</button>
+                </div>
             </div>
 
-            <div class="form-group" style="margin-top: 25px;">
-                <label style="color: var(--text-color);">System Data</label>
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
-                    <button id="previewBtn" class="btn-preview">Preview Entire Season</button>
-                    <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text);">Download HTML</button>
+            <div id="modRestrictedGroup" style="opacity: 0.5; pointer-events: none;">
+                <div class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <label for="newStoryInput">Add New Story</label>
+                    <input type="text" id="newStoryInput" placeholder="Story name">
+                    <div class="sidebar-right-btn-wrap">
+                        <button type="button" id="updateStoryBtn" class="btn-mod-action">Add Story</button>
+                    </div>
+                </div>
+
+                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleAuthorGuessBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
+
+                <div class="switch-container" style="padding: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleTitleSuggestionBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="color: var(--text-color);">System Data</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px; align-items: flex-end;">
+                        <button id="previewBtn" class="btn-preview" style="width: max-content !important; padding: 8px 14px; font-size: 13px;">Preview Entire Season</button>
+                        <button id="downloadBtn" class="btn-download" style="background-color: var(--admin-color); color: var(--btn-admin-text); width: max-content !important; padding: 8px 14px; font-size: 13px;">Download HTML</button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; text-align: left;">
-            <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; background-color: var(--admin-color); color: white;">
+        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+            <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; background-color: var(--admin-color); color: white; width: max-content !important; padding: 8px 14px; font-size: 13px;">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -1128,7 +1013,7 @@
                 Manual
             </button>
             
-            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px;">
+            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; width: max-content !important; padding: 8px 14px; font-size: 13px;">
                 <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
                     <circle cx="12" cy="12" r="11" fill="#1d3557" />
                     <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
@@ -1349,41 +1234,20 @@
     </div>
 
     <div id="devInterface" class="hidden">
-        <div class="plain-section dev-header">
-            <h2>💻 Developer options</h2>
-
-            <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
-                <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
-                <div class="version-grid">
-                    <div class="version-box">
-                        <div class="version-label">Major</div>
-                        <div id="devMajorText" class="version-num">4</div>
-                    </div>
-                    <div class="version-box">
-                        <div class="version-label">Minor</div>
-                        <div id="devMinorText" class="version-num">1</div>
-                    </div>
-                    <div class="version-box">
-                        <div class="version-label">Revision</div>
-                        <div id="devRevisionText" class="version-num">7</div>
-                    </div>
-                </div>
-                <div class="btn-row" style="margin-top: 5px;">
-                    <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: 1; padding: 8px;">Major Version</button>
-                    <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: 1; padding: 8px;">Minor Version</button>
-                    <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: 1; padding: 8px;">Revision</button>
-                </div>
+        <div class="plain-section dev-header" style="position: relative;">
+            <div style="display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
+                <svg viewBox="0 0 64 64" style="width: 32px; height: 32px; fill: none; stroke: var(--dev-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; display: block; margin: 0; padding: 0; line-height: 1;">
+                    <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2 1.5 4 3 5" />
+                    <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6-16-5-6-3-12-2-16 2" />
+                    <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
+                    <path d="M32 10v44M26 24c1.5 3 4 5 6 5s4.5-2 6-5M18 19c-4-2-10-2-14 1 5-2 11-1 14 1M46 19c4-2 10-2 14 1-5-2-11-1-14 1" />
+                </svg>
+                <h2 style="border-bottom: none; padding-bottom: 0; margin: 0; line-height: 1;">Developer options</h2>
             </div>
 
             <div class="switch-container danger-toggle">
                 <div>
                     <strong style="color: var(--danger); display: flex; align-items: center; gap: 8px;">
-                        <svg viewBox="0 0 64 64" style="width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
-                            <path d="M32 54c-2-4-5-8-10-10-4-2-8-1-12-1 4-3 9-4 12-8 .5 2 1.5 4 3 5M32 54c2-4 5-8 10-10 4-2 8-1 12-1-4-3-9-4-12-8-.5 2 1.5 4 3 5" />
-                            <path d="M22 44c-4-4-10-6-16-5 6-3 12-2 16 2M42 44c4-4 10-6-16-5-6-3-12-2-16 2" />
-                            <path d="M32 10c-3 4-8 8-14 9 4-6 10-11 14-11M32 10c3 4 8 8 14 9-4-6-10-11-14-11" />
-                            <path d="M32 10v44M26 24c1.5 3 4 5 6 5s4.5-2 6-5M18 19c-4-2-10-2-14 1 5-2 11-1 14 1M46 19c4-2 10-2 14 1-5-2-11-1-14 1" />
-                        </svg>
                         Exclusive Mode
                     </strong>
                 </div>
@@ -1462,6 +1326,7 @@
     const manualCloseBtn = document.getElementById('manualCloseBtn');
     const manualHeadingTarget = document.getElementById('manualHeadingTarget');
     const manualContentContainer = document.getElementById('manualContentContainer');
+    const sidebarSeasonBadge = document.getElementById('sidebarSeasonBadge');
 
     let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 
@@ -1604,18 +1469,11 @@
     const titleSuggestionLockTime = document.getElementById('titleSuggestionLockTime');
     const previewBtn = document.getElementById('previewBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const modRestrictedGroup = document.getElementById('modRestrictedGroup');
 
     // Dashboard Fast-Track Add Stories Elements
     const dashboardNewStoryInput = document.getElementById('dashboardNewStoryInput');
     const dashboardUpdateStoryBtn = document.getElementById('dashboardUpdateStoryBtn');
-
-    // Version Controller UI Elements
-    const devMajorText = document.getElementById('devMajorText');
-    const devMinorText = document.getElementById('devMinorText');
-    const devRevisionText = document.getElementById('devRevisionText');
-    const btnUpdateMajor = document.getElementById('btnUpdateMajor');
-    const btnUpdateMinor = document.getElementById('btnUpdateMinor');
-    const btnUpdateRevision = document.getElementById('btnUpdateRevision');
 
     const deleteStoryBtn = document.getElementById('deleteStoryBtn');
 
@@ -1667,6 +1525,7 @@
 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
+    let isSeasonActive = false;
     let arrayedStoriesList = [];
     let isSystemPaused = false;
     let isDeveloperModeUnlocked = false;
@@ -1879,6 +1738,29 @@
         customAlert("📥 Feedback table exported successfully.");
     });
 
+    // Auto-calculate season text based on Month selection
+    function calculateSeasonValue() {
+        const monthVal = inputMonth.value;
+        if (!monthVal) return "Jan00";
+        const shortMonth = monthVal.slice(0, 3);
+        const shortYear = String(new Date().getFullYear()).slice(-2);
+        return `${shortMonth}${shortYear}`;
+    }
+
+    function updateSidebarSeasonUI(overrideValue) {
+        if (overrideValue) {
+            sidebarSeasonBadge.textContent = overrideValue;
+        } else {
+            sidebarSeasonBadge.textContent = calculateSeasonValue();
+        }
+    }
+
+    inputMonth.addEventListener('change', () => {
+        if (isNameLockedByMod && !isSeasonActive) {
+            updateSidebarSeasonUI();
+        }
+    });
+
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
             let data = {};
@@ -1903,7 +1785,6 @@
             cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
             cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
             
-            // Smart update: Prevent overwriting time fields if the user is actively typing in them
             if (document.activeElement !== authorGuessLockTime) {
                 authorGuessLockTime.value = cachedAuthorGuessLockTime;
             }
@@ -1914,7 +1795,18 @@
             updateUserFormFieldsVisibility();
 
             isNameLockedByMod = !!data.isNameLocked;
+            isSeasonActive = !!data.isSeasonActive;
             
+            // Sync Season value from Firebase
+            if (data.seasonName) {
+                updateSidebarSeasonUI(data.seasonName);
+            } else {
+                updateSidebarSeasonUI("Jan00");
+            }
+
+            // Progression Lock evaluation states
+            evaluateModeratorControlPermissions();
+
             isSystemPaused = !!data.systemPaused;
             devPauseToggle.checked = isSystemPaused;
             evaluateSystemFreezeState();
@@ -1923,6 +1815,41 @@
             console.error("Error reading global config:", e);
         }
     });
+
+    function evaluateModeratorControlPermissions() {
+        // Step 1: Lock everything except name input if profile isn't saved
+        if (!isNameLockedByMod) {
+            inputModName.disabled = false;
+            saveModNameBtn.disabled = false;
+            inputMonth.disabled = true;
+            inputTopic.disabled = true;
+            saveGlobalMetaBtn.disabled = true;
+            modRestrictedGroup.style.opacity = "0.5";
+            modRestrictedGroup.style.pointerEvents = "none";
+        } 
+        // Step 2: Enable meta setup config blocks once name is registered
+        else if (isNameLockedByMod && !isSeasonActive) {
+            inputModName.disabled = true;
+            saveModNameBtn.disabled = true;
+            inputMonth.disabled = false;
+            inputTopic.disabled = false;
+            saveGlobalMetaBtn.disabled = false;
+            saveGlobalMetaBtn.textContent = "Start Season";
+            modRestrictedGroup.style.opacity = "0.5";
+            modRestrictedGroup.style.pointerEvents = "none";
+        } 
+        // Step 3: Fully open dashboard after Season activation trigger
+        else if (isNameLockedByMod && isSeasonActive) {
+            inputModName.disabled = true;
+            saveModNameBtn.disabled = true;
+            inputMonth.disabled = true;
+            inputTopic.disabled = true;
+            saveGlobalMetaBtn.disabled = true;
+            saveGlobalMetaBtn.textContent = "Season Active";
+            modRestrictedGroup.style.opacity = "1";
+            modRestrictedGroup.style.pointerEvents = "auto";
+        }
+    }
     
     // Auto-save time locks on edit loss of focus so data doesn't get lost
     authorGuessLockTime.addEventListener('change', async () => {
@@ -1941,23 +1868,6 @@
                 titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
         } catch(e) { console.error("Error saving time.", e); }
-    });
-
-    // Realtime Sync Listener Mapping for cloud version tracking parameters
-    onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            currentVersionState.major = data.major !== undefined ? Number(data.major) : 4;
-            currentVersionState.minor = data.minor !== undefined ? Number(data.minor) : 1;
-            currentVersionState.revision = data.revision !== undefined ? Number(data.revision) : 7;
-            currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
-        } else {
-            currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
-        }
-        
-        devMajorText.textContent = currentVersionState.major;
-        devMinorText.textContent = currentVersionState.minor;
-        devRevisionText.textContent = currentVersionState.revision;
     });
 
     function updateUserFormFieldsVisibility() {
@@ -2015,35 +1925,24 @@
             readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn,
             previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
-            btnUpdateMajor, btnUpdateMinor, btnUpdateRevision
+            devPauseToggle, devSeasonResetBtn, devLoadFeedbackBtn
         ];
 
         if (isSystemPaused) {
             pausedBanner.classList.remove('hidden');
-            
             submitRatingBtn.disabled = true;
             submitRatingBtn.textContent = "System Paused";
             
             if (isDeveloperModeUnlocked) {
                 elements.forEach(el => el.disabled = false);
-                inputModName.disabled = isNameLockedByMod;
-                saveModNameBtn.disabled = isNameLockedByMod;
+                evaluateModeratorControlPermissions();
             } else {
                 elements.forEach(el => el.disabled = true);
-                inputModName.disabled = true;
-                saveModNameBtn.disabled = true;
             }
         } else {
             pausedBanner.classList.add('hidden');
             elements.forEach(el => el.disabled = false);
-
-            if (isNameLockedByMod) {
-                inputModName.disabled = true;
-                saveModNameBtn.disabled = true;
-            } else {
-                inputModName.disabled = false;
-                saveModNameBtn.disabled = false;
-            }
+            evaluateModeratorControlPermissions();
             evaluateLocalStorageRestrictions();
         }
     }
@@ -2097,17 +1996,12 @@
                 }
             }
 
-            // Name & Rating are unlocked anytime until the user actually submits them
             friendNameInput.disabled = hasRated;
             ratingValueInput.disabled = hasRated;
 
-            // Restrict Author Guess
             authorGuessInput.disabled = !isAuthorGuessEnabled || alreadyGuessedAuthor || isPreviousDay || pastAuthorGuessTime;
-
-            // Restrict Title Suggestion
             titleSuggestionInput.disabled = !isTitleSuggestionEnabled || alreadySuggestedTitle || isPreviousDay || pastTitleSuggestionTime;
 
-            // Determine Submit Button State dynamically based on available fields
             if (friendNameInput.disabled && authorGuessInput.disabled && titleSuggestionInput.disabled) {
                 submitRatingBtn.disabled = true;
                 if (isPreviousDay && hasRated) {
@@ -2348,7 +2242,6 @@
                             guess = sanitizeText(data[reviewerKey].authorGuess || "None");
                             
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
-                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
 
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
                                 hasSuggestions = true;
@@ -2364,13 +2257,6 @@
                                 personOpt.textContent = reviewerKey; 
                                 headingSuggesterInput.appendChild(personOpt);
                             }
-
-                            if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-                                const winnerOpt = document.createElement('option');
-                                winnerOpt.value = reviewerKey;
-                                winnerOpt.textContent = reviewerKey; 
-                                correctGuesses.appendChild(winnerOpt);
-                            }
                         } else {
                             score = sanitizeText(data[reviewerKey]);
                             title = "Legacy";
@@ -2378,10 +2264,10 @@
                         
                         dailyHtml += `<tr>
                             <td>${sanitizeText(reviewerKey)}</td>
-                            <td>${score}/10</td>
+                            <td>${score}</td>
                             <td>${guess}</td>
                             <td>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                                     <span style="word-break: break-word;">${title}</span>
                                     <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : 'style="flex-shrink: 0;"'}>
                                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2436,21 +2322,27 @@
         }
     });
 
+    // Start Season operational setup activation routine
     saveGlobalMetaBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
+        if(!inputMonth.value) { customAlert("Please choose a valid month before starting the season."); return; }
         
-        const guessTime = authorGuessLockTime.value.trim() || "23:59";
-        const titleTime = titleSuggestionLockTime.value.trim() || "23:59";
+        const calculatedSeason = calculateSeasonValue();
+        if(!(await customConfirm(`Are you sure you want to initialize the season <b>${calculatedSeason}</b> with the subject "${inputTopic.value.trim() || 'General'}"?`))) return;
         
         try {
+            saveGlobalMetaBtn.disabled = true;
             await setDoc(doc(db, "app_state", "global_config"), {
                 month: inputMonth.value.trim() || "*****",
                 topic: inputTopic.value.trim() || "*****",
-                authorGuessLockTime: guessTime,
-                titleSuggestionLockTime: titleTime
+                seasonName: calculatedSeason,
+                isSeasonActive: true
             }, { merge: true });
-            customAlert("Configurations saved securely.");
-        } catch(e) { customAlert("Database error saving variables."); }
+            customAlert(`🚀 Season ${calculatedSeason} has been officially started!`);
+        } catch(e) { 
+            customAlert("Database error initializing season variables."); 
+            saveGlobalMetaBtn.disabled = false;
+        }
     });
 
     // Central core function handling standard story creation
@@ -2474,44 +2366,6 @@
     updateStoryBtn.addEventListener('click', () => handleStoryAddition(newStoryInput, updateStoryBtn));
     dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
 
-    // Functional Pipeline Processing App Version Upgrades
-    async function processVersionUpgrade(targetField) {
-        if (isSystemPaused && !isDeveloperModeUnlocked) return;
-        
-        if (targetField === 'major' || targetField === 'minor') {
-            const check = await customConfirm(`Confirm Upgrade Alert!<br><br>Are you absolutely sure you want to increment the <b>${targetField}</b> build version metrics value?`);
-            if (!check) return;
-        }
-        
-        const changelogSummary = await customPrompt(`📝 Version Release Changelog Entry Query<br><br>Please input or state the changes made for this build update deployment:`);
-        if (changelogSummary === null) return; 
-        
-        const validatedLogString = changelogSummary.trim() || "General performance optimizations and maintenance update patches.";
-        
-        let updatePayload = {
-            changesMade: arrayUnion(validatedLogString)
-        };
-        
-        if (targetField === 'minor') {
-            updatePayload.minor = currentVersionState.minor + 1;
-            updatePayload.revision = 0; 
-        } else {
-            updatePayload[targetField] = currentVersionState[targetField] + 1;
-        }
-        
-        try {
-            await setDoc(doc(db, "app_state", "version_control"), updatePayload, { merge: true });
-            customAlert("🚀 Application platform version target pipeline built and deployed successfully.");
-        } catch (err) {
-            console.error(err);
-            customAlert("Error syncing version deployment metrics to Firestore storage collections.");
-        }
-    }
-
-    btnUpdateMajor.addEventListener('click', () => processVersionUpgrade('major'));
-    btnUpdateMinor.addEventListener('click', () => processVersionUpgrade('minor'));
-    btnUpdateRevision.addEventListener('click', () => processVersionUpgrade('revision'));
-
     // About App Panel Dialog Processing Engine
     sidebarAboutBtn.addEventListener('click', () => {
         let bulletsHtml = "";
@@ -2527,7 +2381,7 @@
         const viewTemplate = `
             <div style="text-align: left;">
                 <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Build Stamp</span>
-                <div style="font-size: 26px; font-weight: 900; margin-bottom: 15px; color: var(--primary);">v${currentVersionState.major}.${currentVersionState.minor} r${currentVersionState.revision}</div>
+                <div style="font-size: 26px; font-weight: 900; margin-bottom: 15px; color: var(--primary);">v4.1 r7</div>
                 <hr style="border:0; border-top: 1px dashed var(--border); margin: 10px 0;">
                 <label style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: var(--h3-color);">What's new</label>
                 <ul class="about-list">${bulletsHtml}</ul>
@@ -2556,32 +2410,25 @@
                     </thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
-                        <tr><td>Add New Story (Input) + Add Story (Button)</td><td class="one-sentence-def">Generates a fresh structural contest document route entry directly into the root storage database.</td></tr>
-                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr>
-                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr>
-                        <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
-                        <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
-                        <tr><td>Save Config (Button)</td><td class="one-sentence-def">Commits the active subject text properties, locking timestamp criteria, and seasonal selections onto the server.</td></tr>
-                        <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr>
-                        <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
-                        <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
-                        <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
-                        <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
-                        <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
-                        <tr><td>Title (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
-                        <tr><td>Reviewer (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
-                        <tr><td>Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
-                        <tr><td>Save (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
-                        <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
-                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores baseline identity names and configurations to initial production initialization environments.</td></tr>
-                        <tr><td>User feedback preview (Button)</td><td class="one-sentence-def">Loads customer feedback submittals into a clear metric visualization dashboard panel.</td></tr>
-                        <tr><td>Download Feedback Table (Button)</td><td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td></tr>
-                        <tr><td>Major Version / Minor Version / Revision (Buttons)</td><td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td></tr>
+                        <tr><td>Moderator Name (Input)</td><td class="one-sentence-def">Locks an immutable signature identity handle to initiate the multi-stage administrative setup.</td></tr>
+                        <tr><td>Month / Subject (Inputs)</td><td class="one-sentence-def">Configures meta parameters. Becomes editable only after the Moderator Profile handle has been initialized.</td></tr>
+                        <tr><td>Start Season (Button)</td><td class="one-sentence-def">Locks month data, automatically builds seasonal stamps, and opens access to story generation and evaluation ledgers globally.</td></tr>
+                        <tr><td>Add New Story (Input)</td><td class="one-sentence-def">Generates a fresh structural contest document route entry directly into the database.</td></tr>
+                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or removes author speculative input blocks across reader visibility panels.</td></tr>
+                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls custom alternative heading suggestions availability on public form blocks.</td></tr>
+                        <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all structural seasonal data entries into a responsive scrollable review canvas.</td></tr>
+                        <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses metrics datasets into an immutable local offline document table spreadsheet format.</td></tr>
+                        <tr><td>Delete Story (Select dropdown + Trash icon)</td><td class="one-sentence-def">Wipes out targeted contest narrative maps completely from servers.</td></tr>
+                        <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records final official publication titles chosen by writers for permanent data archiving.</td></tr>
+                        <tr><td>Title / Reviewer (Dropdowns)</td><td class="one-sentence-def">Maps back reader suggested heading metrics to pinpoint rewarding recognition highlights.</td></tr>
+                        <tr><td>Guess the Author (Chip array Compiler)</td><td class="one-sentence-def">Compiles winners labels for users who successfully deduced hidden narrative authors.</td></tr>
+                        <tr><td>Save (Button)</td><td class="one-sentence-def">Saves winning chips, final headings, and reward structures down into the database documents.</td></tr>
+                        <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Halts review pathways to carry out system administration optimizations safely.</td></tr>
+                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores application initialization baselines and falls tracking identifiers back to initial production defaults.</td></tr>
                     </tbody>
                 </table>
             `;
         } else {
-            // Render simplified interface instructions restricted solely to basic user endpoints
             manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
             manualContentContainer.innerHTML = `
                 <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p>
@@ -2594,24 +2441,20 @@
                     </thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr>
-                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr>
+                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.</td></tr>
                         <tr><td>Your Name (Input)</td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr>
-                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td></tr>
-                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.<span class="manual-condition-text">Condition: Submissions cannot be modified after the end of the day or after the moderator-defined deadline constraint.</span></td></tr>
-                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.<span class="manual-condition-text">Condition: Locked automatically once the moderator's specified hour cutoff passes.</span></td></tr>
+                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs. Can be sent anytime if Name/Rating are not yet on the server. Locked daily after 18:00 IST or across previous days'narrative structures.</td></tr>
+                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active. Subject to moderator lock deadlines.</td></tr>
+                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles. Completely disabled for yesterday's entries.</td></tr>
                         <tr><td>Submit Review (Button)</td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr>
                         <tr><td>Give App Feedback (Button)</td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr>
-                        <tr><td>Your Name (Input) & Feedback / Suggestions (Textarea) [Feedback Interface]</td><td class="one-sentence-def">Accepts text reviews to outline application ideas or submit optimization bug logs to developers.</td></tr>
-                        <tr><td>Submit Feedback (Button) [Feedback Interface]</td><td class="one-sentence-def">Transmits your platform optimization recommendations onto administrative database structures.</td></tr>
-                        <tr><td>Cancel / Back (Button) [Feedback Interface]</td><td class="one-sentence-def">Wipes active feedback input data text changes and returns directly to the primary selector panel view.</td></tr>
-                        <tr><td>Reviewer / Moderator Panel (Buttons)</td><td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td></tr>
                     </tbody>
                 </table>
             `;
         }
 
         fullscreenManualOverlay.classList.remove('hidden');
-        document.body.style.overflow = "hidden"; // Prevent background double-scrolling bugs
+        document.body.style.overflow = "hidden"; 
     });
 
     manualCloseBtn.addEventListener('click', () => {
@@ -2645,7 +2488,6 @@
         let name = friendNameInput.value.trim();
         let score = parseInt(ratingValueInput.value);
         
-        // Grab values only if the fields are accessible, otherwise default to "None"
         let guess = isAuthorGuessEnabled && !authorGuessInput.disabled ? (authorGuessInput.value.trim() || "None") : "None";
         let customTitle = isTitleSuggestionEnabled && !titleSuggestionInput.disabled ? (titleSuggestionInput.value.trim() || "None") : "None";
 
@@ -2656,15 +2498,12 @@
         if (hasRated && !isDeveloperModeUnlocked) {
             try {
                 storedUserData = JSON.parse(localStorage.getItem(`userdata_${activeStorySelection}`) || "{}");
-                
-                // Keep preserved values if the user is only updating suggestions
                 name = storedUserData.name || name;
                 score = storedUserData.score || score;
                 if (storedUserData.authorGuess && storedUserData.authorGuess !== "None") guess = storedUserData.authorGuess;
                 if (storedUserData.suggestedTitle && storedUserData.suggestedTitle !== "None") customTitle = storedUserData.suggestedTitle;
             } catch(e) {}
         } else {
-            // First time submit validations for primary data
             if (!name) { customAlert("Please enter your name."); return; }
             if (score < 1 || score > 10 || isNaN(score)) {
                 customAlert("Rating must be an Integer from 1 to 10");
@@ -2673,7 +2512,6 @@
             }
         }
 
-        // Advanced Constraints Check for Validation Bypasses
         const activeStoryObject = arrayedStoriesList.find(s => s.id === activeStorySelection);
         if (activeStoryObject && !isDeveloperModeUnlocked) {
             const createdDateStr = new Date(activeStoryObject.created).toDateString();
@@ -2712,7 +2550,6 @@
                 suggestedTitle: customTitle
             };
 
-            // Will merge partially inputted fields into existing entries flawlessly
             await setDoc(doc(db, "competitions", activeStorySelection), { 
                 [name]: submissionPayload 
             }, { merge: true });
@@ -2726,11 +2563,8 @@
             }
 
             customAlert(hasRated ? `Saved suggestion updates for ${name}` : `Saved submission from ${name}`);
-            
-            // Re-eval restrictions natively instead of wiping the form text
             autoFillPreviousUserInputs();
             evaluateLocalStorageRestrictions();
-            
             if(activeStorySelection === deleteStorySelect.value) loadCurrentStoryNotes();
         } catch (err) {
             customAlert("Error saving Entry");
@@ -2771,9 +2605,9 @@
                 <meta charset="UTF-8">
                 <style>
                     table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: left; padding: 10px; }
-                    td { border: 1px solid #ccc; text-align: left; vertical-align: top; padding: 10px; }
-                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: left; padding: 12px; }
+                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }
+                    td { border: 1px solid #ccc; text-align: center; vertical-align: middle; padding: 10px; }
+                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }
                 </style>
             </head>
             <body>
@@ -2805,7 +2639,7 @@
 
             tempTableBodyContent += `
                 <tr>
-                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: left; padding: 12px; border: 1px solid var(--border);">
+                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border);">
                         📖 Story: ${storyTitle}
                     </th>
                 </tr>
@@ -2849,7 +2683,7 @@
                         <tr>
                             <td>${currentDateStr}</td>
                             <td>${review.reviewer}</td>
-                            <td>${review.score}/10</td>
+                            <td>${review.score}</td>
                             <td>${review.guess}</td>
                             <td>${review.title}</td>
                         </tr>
@@ -2932,15 +2766,17 @@
     });
 
     devSeasonResetBtn.addEventListener('click', async () => {
-        if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, and clear the Subject.")) {
+        if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Profile configuration parameters and wipe season paths.")) {
             try {
                 await setDoc(doc(db, "app_state", "global_config"), { 
                     modName: "Mod",
                     isNameLocked: false,
                     month: "January",
-                    topic: ""
+                    topic: "",
+                    seasonName: "Jan00",
+                    isSeasonActive: false
                 }, { merge: true });
-                customAlert("Season reset successfully.");
+                customAlert("Season reset completed safely down to Jan00 configurations.");
             } catch(e) {
                 customAlert("Error resetting season.");
             }
