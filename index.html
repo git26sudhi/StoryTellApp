@@ -1056,36 +1056,28 @@
                 <label for="inputTopic">Subject</label>
                 <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" style="margin-bottom: 8px;">
                 
-                <select id="inputMonth" style="cursor: pointer; border-radius: 6px; margin-bottom: 8px;">
-                    <option value="">-- Select Month --</option>
-                    <option value="January">January</option>
-                    <option value="February">February</option>
-                    <option value="March">March</option>
-                    <option value="April">April</option>
-                    <option value="May">May</option>
-                    <option value="June">June</option>
-                    <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
-                </select>
-                
-                <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 15px;">
-                    <button type="button" id="startSeasonBtn" class="btn-mod-action" style="width: max-content;">Start Season</button>
+                <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 15px;">
+                    <select id="inputMonth" style="cursor: pointer; border-radius: 6px; margin: 0; width: max-content; padding: 10px 2ch; flex: none;">
+                        <option value="">-- Select Month --</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                    
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action" style="width: max-content; margin: 0; padding: 10px 15px;">Start Season</button>
                 </div>
             </div>
 
             <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border); padding-top: 15px;">
-                
-                <div class="form-group">
-                    <label for="newStoryInput">Add New Story</label>
-                    <input type="text" id="newStoryInput" placeholder="Story name" style="margin-bottom: 8px;">
-                    <div style="display: flex; justify-content: flex-end; width: 100%;">
-                        <button type="button" id="updateStoryBtn" class="btn-mod-action" style="width: max-content;">Add Story</button>
-                    </div>
-                </div>
 
                 <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -1600,8 +1592,6 @@
     const submitLoginBtn = document.getElementById('submitLoginBtn');
     
     // Mod Sidebar Elements
-    const newStoryInput = document.getElementById('newStoryInput');
-    const updateStoryBtn = document.getElementById('updateStoryBtn');
     const inputModName = document.getElementById('inputModName');
     const saveModNameBtn = document.getElementById('saveModNameBtn');
     const inputMonth = document.getElementById('inputMonth');
@@ -2053,7 +2043,7 @@
     function evaluateSystemFreezeState() {
         const elements = [
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
-            newStoryInput, updateStoryBtn, dashboardNewStoryInput, dashboardUpdateStoryBtn,
+            dashboardNewStoryInput, dashboardUpdateStoryBtn,
             deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, startSeasonBtn, 
             readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn, updateLockTimesBtn,
@@ -2503,7 +2493,6 @@
         }
     }
 
-    updateStoryBtn.addEventListener('click', () => handleStoryAddition(newStoryInput, updateStoryBtn));
     dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
 
     async function processVersionUpgrade(targetField) {
@@ -2585,12 +2574,12 @@
                     </thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
-                        <tr><td>Add New Story (Input) + Add Story (Button)</td><td class="one-sentence-def">Generates a fresh structural contest document route entry directly into the root storage database.</td></tr>
                         <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr>
                         <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr>
                         <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
                         <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
                         <tr><td>Start Season (Button)</td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr>
+                        <tr><td>Update Times (Button)</td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr>
                         <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout, required before starting a season.</td></tr>
                         <tr><td>Preview Entire Season (Button)</td><td class="one-sentence-def">Compiles all recorded competition submissions into a responsive, scrollable preview ledger canvas.</td></tr>
                         <tr><td>Download HTML (Button)</td><td class="one-sentence-def">Compresses live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
