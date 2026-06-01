@@ -969,11 +969,83 @@
             margin-bottom: 4px;
         }
         
-        /* Enforce left-alignment and character-padded dimensions */
-        #sidebarAboutBtn {
+        /* --- FULL SCREEN USER MANUAL OVERLAY --- */
+        .fullscreen-manual-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            z-index: 1000000;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 24px 80px 24px;
+            overflow-y: auto;
+        }
+        .manual-wrapper-box {
+            max-width: 750px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .manual-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .manual-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .manual-close-trigger {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: none;
+        }
+        .manual-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .manual-table th {
+            background-color: var(--nav-btn-hover-bg);
+            color: var(--text-color);
+            text-align: left;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+        }
+        .manual-table td {
+            padding: 12px 10px;
+            font-size: 13.5px;
+            border: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .one-word-def {
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        #sidebarAboutBtn, #sidebarManualBtn {
             width: max-content !important;
             padding: 11px 2ch !important;
-            margin: 15px 0 0 0 !important; /* Forces left layout assignment inside vertical menus */
+            margin: 15px 0 0 0 !important; 
         }
     </style>
 </head>
@@ -1048,7 +1120,7 @@
             <button type="button" id="saveGlobalMetaBtn" class="btn-mod-action" style="margin-bottom: 15px; width: 100%;">Save Config</button>
 
             <div class="form-group">
-                <label for="inputModName">Mod Name</label>
+                <label for="inputModName">Moderator Name</label>
                 <input type="text" id="inputModName" placeholder="Handle" style="margin-bottom: 8px;">
                 <button type="button" id="saveModNameBtn" class="btn-mod-action" style="width: 100%;">Save Profile</button>
             </div>
@@ -1062,7 +1134,16 @@
             </div>
         </div>
         
+        <!-- User Manual Accessor Mounted Above the System About Control -->
         <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; text-align: left;">
+            <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px; background-color: var(--admin-color); color: white;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                Manual
+            </button>
+            
             <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
                     <circle cx="12" cy="12" r="11" fill="#1d3557" />
@@ -1162,7 +1243,7 @@
             <label for="feedbackTextInput">Feedback / Suggestions *</label>
             <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required></textarea>
         </div>
-        <div class="btn-row">
+        <div class="form-group">
             <button type="button" id="submitFeedbackBtn" class="btn-accent">Submit Feedback</button>
             <button type="button" id="cancelFeedbackBtn" style="background-color: var(--input-bg); color: var(--h3-color); box-shadow:none;">Cancel / Back</button>
         </div>
@@ -1197,6 +1278,7 @@
                 </button>
             </div>
 
+            <!-- Simplified Direct Inline Add Story Pathway Field Block -->
             <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." style="flex: 1; margin: 0;">
                 <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="white-space: nowrap; margin: 0;">Add Story</button>
@@ -1261,7 +1343,7 @@
                     <select id="correctGuesses" style="flex: 1; margin: 0;"></select>
                     <button type="button" id="clearWinnersBtn" class="btn-clear-inline" title="Clear All Selections">
                         <svg viewBox="0 0 24 24">
-                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89(1.59).89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
                         </svg>
                     </button>
                 </div>
@@ -1289,6 +1371,7 @@
         <div class="plain-section dev-header">
             <h2>💻 Developer options</h2>
 
+            <!-- Version Control & Dynamic Tracking Interface Block -->
             <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
                 <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px;">📍 Platform Version Configurations</label>
                 <div class="version-grid">
@@ -1371,6 +1454,17 @@
     </div>
 </div>
 
+<!-- FULL SCREEN DYNAMIC USER MANUAL TEMPLATE CONTAINER -->
+<div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
+    <div class="manual-wrapper-box">
+        <div class="manual-header-row">
+            <h2 id="manualHeadingTarget" class="manual-title">📚 Documentation Canvas</h2>
+            <button type="button" id="manualCloseBtn" class="manual-close-trigger">✕ Close</button>
+        </div>
+        <div id="manualContentContainer"></div>
+    </div>
+</div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -1384,6 +1478,11 @@
     const themeSelect = document.getElementById('themeSelect');
     const sidebarModOptions = document.getElementById('sidebarModOptions');
     const sidebarAboutBtn = document.getElementById('sidebarAboutBtn');
+    const sidebarManualBtn = document.getElementById('sidebarManualBtn');
+    const fullscreenManualOverlay = document.getElementById('fullscreenManualOverlay');
+    const manualCloseBtn = document.getElementById('manualCloseBtn');
+    const manualHeadingTarget = document.getElementById('manualHeadingTarget');
+    const manualContentContainer = document.getElementById('manualContentContainer');
 
     let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 
@@ -1606,7 +1705,7 @@
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    // Realtime Version Control Local Cache Config Initialization
+    // Realtime Version Control Local Cache Config Properties Configuration
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
     modDailyHeading.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1828,7 +1927,7 @@
         }
     });
 
-    // Realtime Listener Sync for Cloud Version Control Target Node
+    // Realtime Sync Listener Mapping for cloud version tracking parameters
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
@@ -2181,7 +2280,7 @@
                                     <button type="button" class="btn-copy-small" title="Copy to clipboard">
                                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
                                         </svg>
                                     </button>
                                 `;
@@ -2299,7 +2398,6 @@
     async function processVersionUpgrade(targetField) {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         
-        // Throw verification modals for major and minor target variables
         if (targetField === 'major' || targetField === 'minor') {
             const check = await customConfirm(`Confirm Upgrade Alert!<br><br>Are you absolutely sure you want to increment the <b>${targetField}</b> build version metrics value?`);
             if (!check) return;
@@ -2314,17 +2412,16 @@
             changesMade: arrayUnion(validatedLogString)
         };
         
-        // Calculate counter values and execute contextual revision reset to zero if minor version shifts
         if (targetField === 'minor') {
             updatePayload.minor = currentVersionState.minor + 1;
-            updatePayload.revision = 0; // Forces tracking patch code state baseline reset
+            updatePayload.revision = 0; 
         } else {
             updatePayload[targetField] = currentVersionState[targetField] + 1;
         }
         
         try {
             await setDoc(doc(db, "app_state", "version_control"), updatePayload, { merge: true });
-            customAlert(`🚀 Application platform version target pipeline built and deployed successfully.`);
+            customAlert("🚀 Application platform version target pipeline built and deployed successfully.");
         } catch (err) {
             console.error(err);
             customAlert("Error syncing version deployment metrics to Firestore storage collections.");
@@ -2359,6 +2456,86 @@
         
         toggleMenu(false);
         customAlert(viewTemplate);
+    });
+
+    // Dedicated Fullscreen Multi-Role Manual Engine Processing Pipeline
+    sidebarManualBtn.addEventListener('click', () => {
+        toggleMenu(false);
+        manualContentContainer.innerHTML = "";
+
+        if (isModeratorAuthenticated) {
+            // Render extended technical documentation manual for authenticated moderators/developers
+            manualHeadingTarget.innerHTML = "🛠️ Moderator & Developer Manual";
+            manualContentContainer.innerHTML = `
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">High-density single-word mapping definition framework for administrative modules:</p>
+                <table class="manual-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Control Element</th>
+                            <th>One-Word Definition Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>Theme Selection Dropdown</b></td><td><span class="one-word-def">Styling</span></td></tr>
+                        <tr><td><b>Sidebar Add Story Input</b></td><td><span class="one-word-def">Indexing</span></td></tr>
+                        <tr><td><b>Guess Author Toggle Switch</b></td><td><span class="one-word-def">Visibility</span></td></tr>
+                        <tr><td><b>Title Suggestion Toggle Switch</b></td><td><span class="one-word-def">Parameters</span></td></tr>
+                        <tr><td><b>Subject Metadata Text Field</b></td><td><span class="one-word-def">Genre</span></td></tr>
+                        <tr><td><b>Month Picker Dropdown</b></td><td><span class="one-word-def">Timeline</span></td></tr>
+                        <tr><td><b>Save Config Button</b></td><td><span class="one-word-def">Commit</span></td></tr>
+                        <tr><td><b>Moderator Name Input</b></td><td><span class="one-word-def">Signature</span></td></tr>
+                        <tr><td><b>Save Profile Button</b></td><td><span class="one-word-def">Lock</span></td></tr>
+                        <tr><td><b>Preview Entire Season Button</b></td><td><span class="one-word-def">Compilation</span></td></tr>
+                        <tr><td><b>Download HTML Button</b></td><td><span class="one-word-def">Export</span></td></tr>
+                        <tr><td><b>Fast-Track Add Story Field</b></td><td><span class="one-word-def">Creation</span></td></tr>
+                        <tr><td><b>Select Story Deletion Dropdown</b></td><td><span class="one-word-def">Targeting</span></td></tr>
+                        <tr><td><b>Delete Trash Icon Button</b></td><td><span class="one-word-def">Purge</span></td></tr>
+                        <tr><td><b>Author Given Heading Field</b></td><td><span class="one-word-def">Title</span></td></tr>
+                        <tr><td><b>Author's Favorite Heading List</b></td><td><span class="one-word-def">Selection</span></td></tr>
+                        <tr><td><b>Won-Guess the Author Picker</b></td><td><span class="one-word-def">Scoring</span></td></tr>
+                        <tr><td><b>Save End of Day Notes Button</b></td><td><span class="one-word-def">Archiving</span></td></tr>
+                        <tr><td><b>Exclusive Mode Switch (Dev)</b></td><td><span class="one-word-def">Freezing</span></td></tr>
+                        <tr><td><b>Season Reset Button (Dev)</b></td><td><span class="one-word-def">Wiping</span></td></tr>
+                        <tr><td><b>User Feedback Preview Button (Dev)</b></td><td><span class="one-word-def">Metrics</span></td></tr>
+                        <tr><td><b>Major / Minor / Revision Increments</b></td><td><span class="one-word-def">Versioning</span></td></tr>
+                    </tbody>
+                </table>
+            `;
+        } else {
+            // Render simplified interface instructions restricted solely to basic user endpoints
+            manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
+            manualContentContainer.innerHTML = `
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">High-density single-word mapping definition framework for reviewer elements:</p>
+                <table class="manual-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Control Element</th>
+                            <th>One-Word Definition Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>Theme Selection Dropdown</b></td><td><span class="one-word-def">Appearance</span></td></tr>
+                        <tr><td><b>Choose Story Dropdown</b></td><td><span class="one-word-def">Target</span></td></tr>
+                        <tr><td><b>Your Name Input Field</b></td><td><span class="one-word-def">Identity</span></td></tr>
+                        <tr><td><b>Rating Value Number Field</b></td><td><span class="one-word-def">Evaluation</span></td></tr>
+                        <tr><td><b>Guess the Author Input Field</b></td><td><span class="one-word-def">Speculation</span></td></tr>
+                        <tr><td><b>Suggest a Title Input Field</b></td><td><span class="one-word-def">Creativity</span></td></tr>
+                        <tr><td><b>Submit Review Action Button</b></td><td><span class="one-word-def">Dispatch</span></td></tr>
+                        <tr><td><b>Give App Feedback Button</b></td><td><span class="one-word-def">Critique</span></td></tr>
+                        <tr><td><b>Feedback Submissions Inputs</b></td><td><span class="one-word-def">Suggestions</span></td></tr>
+                        <tr><td><b>Reviewer/Moderator Panels Navigation</b></td><td><span class="one-word-def">Routing</span></td></tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        fullscreenManualOverlay.classList.remove('hidden');
+        document.body.style.overflow = "hidden"; // Prevent background double-scrolling bugs
+    });
+
+    manualCloseBtn.addEventListener('click', () => {
+        fullscreenManualOverlay.classList.add('hidden');
+        document.body.style.overflow = "";
     });
 
     deleteStoryBtn.addEventListener('click', async () => {
