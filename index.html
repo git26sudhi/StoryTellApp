@@ -493,7 +493,6 @@
         }
 
         .admin-header h2 { color: var(--admin-color); }
-        .dev-header h2 { color: var(--dev-color); }
 
         .form-group {
             margin-bottom: 18px;
@@ -552,7 +551,6 @@
         button:disabled { background-color: rgba(128, 128, 128, 0.3); color: rgba(128, 128, 128, 0.8); cursor: not-allowed; box-shadow: none; transform: none;}
 
         .btn-mod-action { background-color: var(--admin-color); color: var(--btn-admin-text); }
-        .btn-dev-action { background-color: var(--dev-color); color: white;}
         .btn-accent { background-color: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
         
         .btn-icon-only {
@@ -1010,13 +1008,12 @@
             margin-left: 8px;
         }
 
-        /* --- Developer Box Glassy Gold Enhancements --- */
-        .glassy-gold-box {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(218, 165, 32, 0.05) 100%) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(255, 215, 0, 0.4) !important;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 215, 0, 0.1) !important;
+        /* --- Developer Box Custom Styling --- */
+        .dev-dark-gold-box {
+            background-color: #121212 !important;
+            border: 1px solid #D4A017 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
         }
         
         .dev-lion-logo {
@@ -1024,9 +1021,27 @@
             height: 55px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #FFD700;
-            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+            border: 2px solid #D4A017;
+            box-shadow: 0 4px 10px rgba(212, 160, 23, 0.4);
             display: block;
+        }
+        
+        .dev-btn-gold {
+            background-color: #FFD700 !important;
+            color: #000000 !important;
+            border: none;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        .dev-btn-gold:hover {
+            filter: brightness(1.1);
+        }
+        .dev-btn-gold:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
@@ -1388,38 +1403,38 @@
     </div>
 
     <div id="devInterface" class="hidden">
-        <div class="plain-section dev-header glassy-gold-box">
-            <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255, 215, 0, 0.4); padding-bottom: 12px; margin-bottom: 15px;">
+        <div class="plain-section dev-header dev-dark-gold-box">
+            <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #D4A017; padding-bottom: 12px; margin-bottom: 15px;">
                 <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
-                <h2 style="border: none; margin: 0; padding: 0; color: #FFD700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">💻 Developer options</h2>
+                <h2 style="border: none; margin: 0; padding: 0; color: #D4A017; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Developer options</h2>
             </div>
 
-            <div class="form-group" style="background: var(--switch-bg); padding: 16px; border: var(--switch-border); border-radius: 8px; margin-bottom: 20px;">
-                <label style="color: var(--dev-color); font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <div class="form-group" style="background: #1a1a1a; padding: 16px; border: 1px solid #D4A017; border-radius: 8px; margin-bottom: 20px;">
+                <label style="color: #D4A017; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 20px; line-height: 1;">📐</span>
                     Version Configuration
                 </label>
                 <div class="version-grid">
-                    <div class="version-box">
-                        <div id="devMajorText" class="version-num">4</div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
+                        <div id="devMajorText" class="version-num" style="color: #FFFFFF;">4</div>
                     </div>
-                    <div class="version-box">
-                        <div id="devMinorText" class="version-num">1</div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
+                        <div id="devMinorText" class="version-num" style="color: #FFFFFF;">1</div>
                     </div>
-                    <div class="version-box">
-                        <div id="devRevisionText" class="version-num">7</div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
+                        <div id="devRevisionText" class="version-num" style="color: #FFFFFF;">7</div>
                     </div>
                 </div>
                 <div class="btn-row" style="margin-top: 5px; gap: 10px; width: 100%;">
-                    <button type="button" id="btnUpdateMajor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Major</button>
-                    <button type="button" id="btnUpdateMinor" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Minor</button>
-                    <button type="button" id="btnUpdateRevision" class="btn-dev-action" style="flex: 1; padding: 8px 0;">Revision</button>
+                    <button type="button" id="btnUpdateMajor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Major</button>
+                    <button type="button" id="btnUpdateMinor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Minor</button>
+                    <button type="button" id="btnUpdateRevision" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Revision</button>
                 </div>
             </div>
 
-            <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px;">
+            <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px; background: #1a1a1a; border: 1px solid #D4A017;">
                 <div>
-                    <strong id="exclusiveModeText" style="color: white; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
+                    <strong id="exclusiveModeText" style="color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
                         <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
                             <defs>
                                 <linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -1451,13 +1466,13 @@
             </div>
 
             <div class="btn-row" style="margin-top: 20px; align-items: center; gap: 10px;">
-                <button type="button" id="devSeasonResetBtn" class="btn-dev-action" style="width: max-content; padding: 10px 15px;">Season Reset</button>
-                <button type="button" id="devLoadFeedbackBtn" class="btn-dev-action" style="width: max-content; padding: 10px 15px;">User feedback preview</button>
-                <button type="button" id="devDownloadFeedbackBtn" class="btn-download hidden" style="background-color: var(--input-bg); box-shadow:none; width: max-content; padding: 10px 15px;">Download Feedback Table</button>
+                <button type="button" id="devSeasonResetBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">Season Reset</button>
+                <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">User feedback preview</button>
+                <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden" style="width: max-content; padding: 10px 15px;">Download Feedback Table</button>
             </div>
             
-            <div id="devFeedbackContainer" class="webview-container hidden" style="border-color: var(--border);">
-                <div class="webview-header" style="border-bottom: 2px solid var(--border);">
+            <div id="devFeedbackContainer" class="webview-container hidden" style="background: #1a1a1a; border-color: #D4A017;">
+                <div class="webview-header" style="border-bottom: 2px solid #D4A017; color: #D4A017;">
                     <span>Compiled Platform Feedback</span>
                 </div>
                 <div class="webview-scroll-frame">
@@ -1876,28 +1891,28 @@
                 cachedMaxCols = maxCols;
                 devDownloadFeedbackBtn.classList.remove('hidden');
 
-                let theadHtml = `<tr><th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Reviewer Name</b></th>`;
+                let theadHtml = `<tr><th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Reviewer Name</b></th>`;
                 for(let i = 1; i <= maxCols; i++) {
-                    theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
+                    theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
                 }
-                theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>My Comments</b></th>`;
-                theadHtml += `<th style="background-color: var(--dev-color); color: white; text-align: center;"><b>Status</b></th>`;
+                theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>My Comments</b></th>`;
+                theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Status</b></th>`;
                 theadHtml += `</tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
                 let tbodyHtml = "";
                 Object.keys(data).forEach(user => {
-                    tbodyHtml += `<tr><td><strong>${sanitizeText(user)}</strong></td>`;
+                    tbodyHtml += `<tr><td><strong style="color:#FFFFFF;">${sanitizeText(user)}</strong></td>`;
                     const userFeedbacks = data[user] || [];
                     for(let i = 0; i < maxCols; i++) {
-                        tbodyHtml += `<td>${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `<span style="color:#aaa;">-</span>`}</td>`;
+                        tbodyHtml += `<td><span style="color:#FFFFFF;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `<span style="color:#aaa;">-</span>`}</span></td>`;
                     }
                     tbodyHtml += `
                         <td>
-                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid var(--border); border-radius: 4px; width: 180px; box-sizing: border-box; background: var(--input-bg); color: var(--input-text);">
+                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid #D4A017; border-radius: 4px; width: 180px; box-sizing: border-box; background: #2a2a2a; color: #FFFFFF;">
                         </td>
                         <td>
-                            <select style="padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--input-bg); color: var(--input-text); width: 100%; box-sizing: border-box;">
+                            <select style="padding: 6px; border: 1px solid #D4A017; border-radius: 4px; background: #2a2a2a; color: #FFFFFF; width: 100%; box-sizing: border-box;">
                                 <option>Pending</option>
                                 <option>In Review</option>
                                 <option>Implemented</option>
@@ -1924,9 +1939,9 @@
     devDownloadFeedbackBtn.addEventListener('click', () => {
         if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
 
-        let theadHtml = `<tr><th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
+        let theadHtml = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
         for(let i = 1; i <= cachedMaxCols; i++) {
-            theadHtml += `<th style="background-color: #7b2cbf; color: white; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
+            theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
         }
         theadHtml += `</tr>`;
 
@@ -2156,7 +2171,7 @@
             }
         } else {
             pausedBanner.classList.add('hidden');
-            if (exclusiveModeText) exclusiveModeText.style.color = "#ffffff";
+            if (exclusiveModeText) exclusiveModeText.style.color = "#FFFFFF";
             elements.forEach(el => el.disabled = false);
             evaluateSetupFlow();
             evaluateLocalStorageRestrictions();
@@ -2473,7 +2488,7 @@
                         let title = "None";
                         let guess = "None";
 
-                        if (typeof data[key = reviewerKey] === 'object' && data[reviewerKey] !== null) {
+                        if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
                             score = sanitizeText(data[reviewerKey].score ?? "N/A");
                             title = sanitizeText(data[reviewerKey].suggestedTitle || "None");
                             guess = sanitizeText(data[reviewerKey].authorGuess || "None");
