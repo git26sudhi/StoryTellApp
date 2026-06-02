@@ -1009,69 +1009,6 @@
             color: var(--input-text) !important;
             margin-left: 8px;
         }
-
-        /* =========================================
-           DEVELOPER MODE OVERRIDES
-           ========================================= */
-        body.dev-mode-active {
-            background-image: url('file_000000008540720787a56fa392676423') !important;
-            background-repeat: no-repeat !important;
-            background-position: center center !important;
-            background-attachment: fixed !important;
-            background-size: cover !important;
-        }
-
-        /* Make cards and banners 70% transparent (30% solid color) so background shows through */
-        body.dev-mode-active .plain-section,
-        body.dev-mode-active .brand-purple-banner,
-        body.dev-mode-active .system-navigation-footer-bar,
-        body.dev-mode-active .side-menu {
-            background-color: color-mix(in srgb, var(--bg-color) 30%, transparent) !important;
-            backdrop-filter: blur(6px) !important; /* Adds glass effect to make text readable */
-            border-color: color-mix(in srgb, var(--border) 30%, transparent) !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
-        }
-
-        /* Keep the banner's distinct color but 70% transparent */
-        body.dev-mode-active .brand-purple-banner {
-            background-color: color-mix(in srgb, var(--purple-banner) 30%, transparent) !important;
-        }
-
-        body.dev-mode-active .system-navigation-footer-bar {
-            background-color: color-mix(in srgb, var(--nav-bg) 30%, transparent) !important;
-        }
-
-        /* Make fields 70% transparent (30% solid) while keeping text 100% solid */
-        body.dev-mode-active input,
-        body.dev-mode-active select,
-        body.dev-mode-active textarea {
-            background-color: color-mix(in srgb, var(--input-bg) 30%, transparent) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Make buttons 70% transparent (30% solid) while keeping text 100% solid */
-        body.dev-mode-active button {
-            background-color: color-mix(in srgb, var(--primary) 30%, transparent) !important;
-        }
-        body.dev-mode-active button.btn-mod-action {
-            background-color: color-mix(in srgb, var(--admin-color) 30%, transparent) !important;
-        }
-        body.dev-mode-active button.btn-dev-action {
-            background-color: color-mix(in srgb, var(--dev-color) 30%, transparent) !important;
-        }
-        body.dev-mode-active button.btn-accent {
-            background-color: color-mix(in srgb, var(--accent) 30%, transparent) !important;
-        }
-        body.dev-mode-active button.btn-clear-inline,
-        body.dev-mode-active button.nav-split-trigger-btn {
-            background-color: color-mix(in srgb, var(--switch-bg) 30%, transparent) !important;
-        }
-        body.dev-mode-active button.nav-split-trigger-btn.active-panel-indicator {
-            background-color: color-mix(in srgb, var(--nav-active-bg) 40%, transparent) !important;
-        }
-        body.dev-mode-active button#logoutBtn {
-            background: color-mix(in srgb, #4169E1 30%, transparent) !important;
-        }
     </style>
 </head>
 <body>
@@ -2415,7 +2352,6 @@
                 isDeveloperModeUnlocked = true;
                 try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
                 customAlert("Authentication Successful (Dev)");
-                document.body.classList.add('dev-mode-active');
             } else {
                 isDeveloperModeUnlocked = false;
                 try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
@@ -3021,7 +2957,6 @@
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = true;
                 sidebarModOptions.classList.remove('hidden');
-                document.body.classList.add('dev-mode-active');
                 navBtnModerator.click();
             } else if (savedAuth === 'moderator') {
                 isModeratorAuthenticated = true;
@@ -3050,8 +2985,6 @@
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
             sidebarModOptions.classList.add('hidden'); 
-            
-            document.body.classList.remove('dev-mode-active');
             
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
