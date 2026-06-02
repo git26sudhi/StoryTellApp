@@ -1009,6 +1009,46 @@
             color: var(--input-text) !important;
             margin-left: 8px;
         }
+
+        /* =========================================
+           DEVELOPER MODE OVERRIDES
+           ========================================= */
+        body.dev-mode-active {
+            background: url('file_000000008540720787a56fa392676423') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+
+        /* Make fields 45% transparent while keeping text 100% solid */
+        body.dev-mode-active input,
+        body.dev-mode-active select,
+        body.dev-mode-active textarea {
+            background-color: color-mix(in srgb, var(--input-bg) 55%, transparent) !important;
+        }
+
+        /* Make buttons 45% transparent while keeping text 100% solid */
+        body.dev-mode-active button {
+            background-color: color-mix(in srgb, var(--primary) 55%, transparent) !important;
+        }
+        body.dev-mode-active button.btn-mod-action {
+            background-color: color-mix(in srgb, var(--admin-color) 55%, transparent) !important;
+        }
+        body.dev-mode-active button.btn-dev-action {
+            background-color: color-mix(in srgb, var(--dev-color) 55%, transparent) !important;
+        }
+        body.dev-mode-active button.btn-accent {
+            background-color: color-mix(in srgb, var(--accent) 55%, transparent) !important;
+        }
+        body.dev-mode-active button.btn-clear-inline,
+        body.dev-mode-active button.nav-split-trigger-btn {
+            background-color: color-mix(in srgb, var(--switch-bg) 55%, transparent) !important;
+        }
+        body.dev-mode-active button.nav-split-trigger-btn.active-panel-indicator {
+            background-color: color-mix(in srgb, var(--nav-active-bg) 55%, transparent) !important;
+        }
+        body.dev-mode-active button#logoutBtn {
+            /* Overrides the inline gradient on the logout button */
+            background: color-mix(in srgb, #4169E1 55%, transparent) !important;
+        }
     </style>
 </head>
 <body>
@@ -2352,6 +2392,7 @@
                 isDeveloperModeUnlocked = true;
                 try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
                 customAlert("Authentication Successful (Dev)");
+                document.body.classList.add('dev-mode-active');
             } else {
                 isDeveloperModeUnlocked = false;
                 try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
@@ -2957,6 +2998,7 @@
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = true;
                 sidebarModOptions.classList.remove('hidden');
+                document.body.classList.add('dev-mode-active');
                 navBtnModerator.click();
             } else if (savedAuth === 'moderator') {
                 isModeratorAuthenticated = true;
@@ -2985,6 +3027,8 @@
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
             sidebarModOptions.classList.add('hidden'); 
+            
+            document.body.classList.remove('dev-mode-active');
             
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
