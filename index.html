@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>കഥാസാഗരം</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+
+<div id="menuOverlay" class="menu-overlay"></div>
+<div id="sideMenu" class="side-menu">
+    <div class="side-menu-header">
+        <div style="font-weight: bold; font-size: 16px;">
+            <span style="color: silver;">Season: </span>
+            <span id="sidebarSeasonDisplay" style="color: #D4AF37; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">---</span>
+        </div>
+        <button id="menuCloseBtn" class="side-menu-close">✕</button>
+    </div>
+    <div class="side-menu-content" style="display: flex; flex-direction: column;">
+        <div class="form-group">
+            <label style="color: var(--text-color); margin-bottom: 8px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 16px;">🖌️</span> Theme
+            </label>
+            <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
+                <option value="light">Classic Light</option>
+                <option value="cyan">Deep Cyan</option>
+                <option value="purple">Matte Purple</option>
+                <option value="emerald">Forest Green</option>
+                <option value="mono">Black & Gray</option>
+            </select>
+        </div>
+
+        <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 20px;">
+            
+            <div class="form-group" id="modNameSetupGroup">
+                <label for="inputModName">Moderator Name</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="inputModName" placeholder="Handle" style="margin: 0; flex: 1;">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action" style="padding: 10px 15px; display: flex; align-items: center; justify-content: center; width: auto;" title="Save Profile">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 16v-9"></path>
+                            <path d="M8 11l4-4 4 4"></path>
+                            <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group" id="seasonSetupGroup" style="margin-top: 15px;">
+                <label for="inputTopic">Subject</label>
+                <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" style="margin-bottom: 8px;">
+                
+                <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 15px;">
+                    <select id="inputMonth" style="cursor: pointer; border-radius: 6px; margin: 0; width: max-content; padding: 10px 2ch; flex: none;">
+                        <option value="">-- Select Month --</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                    
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action" style="width: max-content; margin: 0; padding: 10px 15px;">Start Season</button>
+                </div>
+            </div>
+
+            <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border); padding-top: 15px;">
+
+                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleAuthorGuessBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
+
+                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
+                        <label class="switch" style="transform: scale(0.8); margin: -5px;">
+                            <input type="checkbox" id="toggleTitleSuggestionBtn">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                        <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
+                        <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 15px;">
+                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action" style="width: max-content; padding: 6px 12px; font-size: 13px;">Update</button>
+                </div>
+
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="color: var(--text-color);">System Data</label>
+                    <div style="display: flex; flex-direction: row; gap: 2ch; margin-top: 5px; width: 100%;">
+                        <button id="previewBtn" class="btn-preview" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center;">Preview</button>
+                        <button id="downloadBtn" class="btn-download" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--admin-color); color: var(--btn-admin-text);">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; display: flex; flex-direction: row; justify-content: flex-end; gap: 10px;">
+            <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: var(--admin-color); color: white; width: max-content; padding: 11px 15px;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                Manual
+            </button>
+            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: max-content; padding: 11px 15px;">
+                <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
+                    <circle cx="12" cy="12" r="11" fill="#1d3557" />
+                    <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
+                    <path d="M11 10h2v7h-2z" fill="#ffffff" />
+                    <path d="M10 17h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                About
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="brand-purple-banner">
+    <div class="banner-content-lock">
+        <div class="logo-group">
+            <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
+            <div id="topicDisplay" class="banner-topic">*****</div>
+        </div>
+        <div id="monthDisplay" class="month-sub">*****</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="metadata-opposite-row">
+        <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            Menu
+        </button>
+        <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
+    </div>
+
+    <div id="pausedBanner" class="status-alert hidden">
+        <div class="status-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--danger)">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </div>
+        <div class="status-content">
+            <h4>System Maintenance Active</h4>
+            <p>Form submissions, scoring, and mod tools are temporarily paused by administration.</p>
+        </div>
+    </div>
+
+    <div id="userInterface">
+        <div class="plain-section">
+            <h2>Select Story</h2>
+            <div class="form-group">
+                <label for="storyDropdown">Choose a story from the list (Most recent on top):</label>
+                <select id="storyDropdown"></select>
+            </div>
+        </div>
+
+        <div class="plain-section">
+            <h2>Review</h2>
+            <form id="ratingForm">
+                <div class="form-group">
+                    <label for="friendName">Your Name *</label>
+                    <input type="text" id="friendName" placeholder="Enter your name precisely">
+                </div>
+                <div class="form-group">
+                    <label for="ratingValue">Rating (1 to 10) *</label>
+                    <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9">
+                </div>
+                <div class="form-group hidden" id="userAuthorGuessGroup">
+                    <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
+                    <input type="text" id="authorGuess" placeholder="Who do you think wrote this?">
+                </div>
+                <div class="form-group hidden" id="userTitleSuggestionGroup">
+                    <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
+                    <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
+                </div>
+                <button type="submit" id="submitRatingBtn">Submit Review</button>
+            </form>
+        </div>
+
+        <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border); padding-top: 20px;">
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Have suggestions to improve this web app?</p>
+            <button type="button" id="goToFeedbackBtn" class="btn-accent" style="width: auto;">Give App Feedback</button>
+        </div>
+    </div>
+
+    <div id="feedbackInterface" class="plain-section hidden">
+        <h2>📝 App Feedback</h2>
+        <p style="font-size: 14px; color: var(--text-muted);">Your feedback goes directly to the developer to help improve the platform.</p>
+        <div class="form-group">
+            <label for="feedbackNameInput">Your Name *</label>
+            <input type="text" id="feedbackNameInput" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="feedbackTextInput">Feedback / Suggestions *</label>
+            <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required></textarea>
+        </div>
+        <div class="form-group">
+            <button type="button" id="submitFeedbackBtn" class="btn-accent">Submit Feedback</button>
+            <button type="button" id="cancelFeedbackBtn" style="background-color: var(--input-bg); color: var(--h3-color); box-shadow:none;">Cancel / Back</button>
+        </div>
+    </div>
+
+    <div id="loginInterface" class="plain-section hidden">
+        <h2>🔒 Moderator / Developer Authentication</h2>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Enter your credentials below to access the control panels.</p>
+        <div class="form-group">
+            <label for="localEmailInput">Email Address</label>
+            <input type="text" id="localEmailInput" placeholder="mod@admin.com">
+        </div>
+        <div class="form-group">
+            <label for="localPassInput">Enter Password</label>
+            <input type="password" id="localPassInput" placeholder="••••••••">
+        </div>
+        <button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
+    </div>
+
+    <div id="modInterface" class="hidden">
+        <div class="plain-section admin-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
+                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <defs>
+                            <linearGradient id="modDashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFA500"/>
+                                <stop offset="50%" stop-color="#FFFF00"/>
+                                <stop offset="100%" stop-color="#0000FF"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="12" cy="12" r="11" fill="none" stroke="url(#modDashGrad)" stroke-width="2"/>
+                        <rect x="6" y="6" width="5" height="7" fill="url(#modDashGrad)" />
+                        <rect x="13" y="6" width="5" height="4" fill="url(#modDashGrad)" />
+                        <rect x="6" y="15" width="5" height="4" fill="url(#modDashGrad)" />
+                        <rect x="13" y="12" width="5" height="7" fill="url(#modDashGrad)" />
+                    </svg>
+                    Moderator Dashboard
+                </h2>
+                
+                <button type="button" id="logoutBtn" style="background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 6px 12px; font-size: 13px; margin: 0; display: flex; align-items: center; gap: 6px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                <h3 style="margin: 0; font-size: 16px; color: var(--admin-color);">Add New Story</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." style="flex: 1; margin: 0;">
+                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="padding: 10px 15px; margin: 0; display: flex; align-items: center; justify-content: center;" title="Upload Story">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
+                            <polyline points="16 11 12 7 8 11"></polyline>
+                            <line x1="12" y1="7" x2="12" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
+                <label for="deleteStorySelect" style="font-size: 16px; color: var(--admin-color); margin: 0; font-weight: bold;">📖 Select Story</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="deleteStorySelect" style="flex: 1; margin: 0; padding: 10px; font-size: 15px; border: 2px solid var(--admin-color);"></select>
+                    <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
+                        <svg viewBox="0 0 24 24"><path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="webview-scroll-frame" style="margin-bottom: 25px; border: 1px solid var(--border); border-radius: 6px;">
+                <table class="webview-table" style="margin: 0;">
+                    <thead>
+                        <tr><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>
+                    </thead>
+                    <tbody id="dailyReviewsTableBody">
+                        <tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="plain-section admin-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
+                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">📅 Daily Updates</h2>
+                <div id="currentDateDisplay" style="background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
+            </div>
+
+            <div class="form-group">
+                <label for="authorGivenHeadingInput">Author given Heading</label>
+                <input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading">
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 10px;">
+                <div style="flex: 1.5;">
+                    <label for="readerSuggestions">Title</label>
+                    <select id="readerSuggestions"></select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="headingSuggesterInput">Reviewer</label>
+                    <select id="headingSuggesterInput"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="correctGuesses">Guess the Author</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="correctGuesses" style="flex: 1; margin: 0;"></select>
+                    <button type="button" id="clearWinnersBtn" class="btn-clear-inline" title="Clear All Selections">
+                        <svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>
+                    </button>
+                </div>
+                <div id="winnersChipsContainer" class="winners-tags-container"></div>
+            </div>
+            <button type="button" id="saveNotesBtn" class="btn-mod-action" style="width: max-content; padding: 10px 40px;">Save</button>
+        </div>
+    </div>
+
+    <div id="devInterface" class="hidden">
+        <div class="plain-section dev-header dev-dark-gold-box">
+            <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #D4A017; padding-bottom: 12px; margin-bottom: 15px;">
+                <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
+                <h2 style="border: none; margin: 0; padding: 0; color: #D4A017; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Developer options</h2>
+            </div>
+
+            <div class="form-group" style="background: #1a1a1a; padding: 16px; border: 1px solid #D4A017; border-radius: 8px; margin-bottom: 20px;">
+                <label style="color: #D4A017; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px; line-height: 1;">📐</span> Version Configuration
+                </label>
+                <div class="version-grid">
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devMajorText" class="version-num" style="color: #FFFFFF;">4</div></div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devMinorText" class="version-num" style="color: #FFFFFF;">1</div></div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devRevisionText" class="version-num" style="color: #FFFFFF;">7</div></div>
+                </div>
+                <div class="btn-row" style="margin-top: 5px; gap: 10px; width: 100%;">
+                    <button type="button" id="btnUpdateMajor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Major</button>
+                    <button type="button" id="btnUpdateMinor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Minor</button>
+                    <button type="button" id="btnUpdateRevision" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Revision</button>
+                </div>
+            </div>
+
+            <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px; background: #1a1a1a; border: 1px solid #D4A017;">
+                <div>
+                    <strong id="exclusiveModeText" style="color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
+                        <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
+                            <defs>
+                                <linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#80Aaff" />
+                                    <stop offset="30%" stop-color="#4169E1" />
+                                    <stop offset="70%" stop-color="#223b82" />
+                                    <stop offset="100%" stop-color="#0d1b42" />
+                                </linearGradient>
+                                <linearGradient id="glossyQueenStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffffff" />
+                                    <stop offset="100%" stop-color="#4169E1" />
+                                </linearGradient>
+                            </defs>
+                            <g fill="url(#glossyQueen)" stroke="url(#glossyQueenStroke)" stroke-width="1.2" stroke-linejoin="round">
+                                <path d="M4 19h16v2H4z" />
+                                <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
+                                <circle cx="12" cy="4" r="1.5" />
+                                <circle cx="7" cy="8" r="1.5" />
+                                <circle cx="17" cy="8" r="1.5" />
+                            </g>
+                        </svg>
+                        Exclusive Mode
+                    </strong>
+                </div>
+                <label class="switch" style="transform: scale(0.9); margin-right: -4px;">
+                    <input type="checkbox" id="devPauseToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="btn-row" style="margin-top: 20px; align-items: center; gap: 10px;">
+                <button type="button" id="devSeasonResetBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">Season Reset</button>
+                <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">User feedback preview</button>
+                <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden" style="width: max-content; padding: 10px 15px;">Download Feedback Table</button>
+            </div>
+            
+            <div id="devFeedbackContainer" class="webview-container hidden" style="background: #1a1a1a; border-color: #D4A017;">
+                <div class="webview-header" style="border-bottom: 2px solid #D4A017; color: #D4A017;">
+                    <span>Compiled Platform Feedback</span>
+                </div>
+                <div class="webview-scroll-frame">
+                    <table class="webview-table" style="white-space: nowrap;">
+                        <thead id="feedbackTableHead"></thead>
+                        <tbody id="feedbackTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="system-navigation-footer-bar">
+    <button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">Reviewer</button>
+    <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
+</div>
+
+<div id="customModalOverlay" class="hidden">
+    <div class="custom-modal-box">
+        <p id="customModalMessage"></p>
+        <input type="text" id="customModalInput" class="hidden">
+        <div class="custom-modal-btn-row">
+            <button id="customModalCancel" class="hidden">Cancel</button>
+            <button id="customModalOk">OK</button>
+        </div>
+    </div>
+</div>
+
+<div id="downloadSeasonModal" class="hidden">
+    <div class="custom-modal-box">
+        <h3 style="margin-top: 0;">Select Season to Download</h3>
+        <select id="downloadSeasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: 1px solid var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
+            <option value="All">All Seasons</option>
+        </select>
+        <div class="custom-modal-btn-row">
+            <button id="cancelDownloadBtn">Cancel</button>
+            <button id="confirmDownloadBtn" style="background: var(--primary); color: white;">Download</button>
+        </div>
+    </div>
+</div>
+
+<div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
+    <div class="manual-wrapper-box" style="max-width: 900px;">
+        <div class="manual-header-row" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <h2 class="manual-title" style="border: none; margin: 0; padding: 0;">Season Preview</h2>
+                <select id="previewSeasonSelect" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-color); font-size: 14px;">
+                    <option value="All">All Seasons</option>
+                </select>
+                <span id="previewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Loading...</span>
+            </div>
+            <button type="button" id="previewCloseBtn" class="manual-close-trigger">✕ Close</button>
+        </div>
+        <div class="webview-container" style="margin-top: 0;">
+            <div class="webview-scroll-frame" style="max-height: 70vh;">
+                <table class="webview-table">
+                    <tbody id="previewTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
+    <div class="manual-wrapper-box">
+        <div class="manual-header-row">
+            <h2 id="manualHeadingTarget" class="manual-title">📚 Documentation Canvas</h2>
+            <button type="button" id="manualCloseBtn" class="manual-close-trigger">✕ Close</button>
+        </div>
+        <div id="manualContentContainer"></div>
+    </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
