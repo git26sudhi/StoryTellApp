@@ -1,0 +1,20 @@
+export const AppState = {
+    currentModName: "Mod",
+    isNameLockedByMod: false,
+    isSeasonStarted: false,
+    arrayedStoriesList: [],
+    isSystemPaused: false,
+    isDeveloperModeUnlocked: false,
+    isModeratorAuthenticated: false,
+    accumulatedWinnersStateArray: [],
+    activeStorySnapshotDataCache: null,
+    isAuthorGuessEnabled: false,
+    isTitleSuggestionEnabled: false,
+    cachedAuthorGuessLockTime: "23:59",
+    cachedTitleSuggestionLockTime: "23:59",
+    globalSeasonCache: "Jan00",
+    headingToReviewerMap: {},
+    cachedFeedbackData: null,
+    cachedMaxCols: 0,
+    currentVersionState: { major: 4, minor: 1, revision: 7, changesMade: [] }
+};
