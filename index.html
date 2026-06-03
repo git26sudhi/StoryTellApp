@@ -1829,6 +1829,68 @@
         } catch (e) {}
     });
 
+    // --- REVIEW SUBMISSION HANDLER ---
+    ratingForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); 
+
+        if (isSystemPaused && !isDeveloperModeUnlocked) {
+            customAlert("System Maintenance Active. Submissions are temporarily paused.");
+            return;
+        }
+
+        const targetStory = storyDropdown.value;
+        if (!targetStory) {
+            customAlert("Please select a story from the dropdown first.");
+            return;
+        }
+
+        const friendName = friendNameInput.value.trim();
+        const rating = parseInt(ratingValueInput.value, 10);
+        const authorGuess = authorGuessInput.value.trim() || "None";
+        const titleSuggestion = titleSuggestionInput.value.trim() || "None";
+
+        if (!friendName) {
+            customAlert("Please enter your name.");
+            return;
+        }
+
+        if (isNaN(rating) || rating < 1 || rating > 10) {
+            customAlert("Please enter a valid rating between 1 and 10.");
+            return;
+        }
+
+        submitRatingBtn.disabled = true;
+        submitRatingBtn.textContent = "Submitting...";
+
+        try {
+            await setDoc(doc(db, "competitions", targetStory), {
+                [friendName]: {
+                    score: rating,
+                    authorGuess: authorGuess,
+                    suggestedTitle: titleSuggestion
+                }
+            }, { merge: true });
+
+            localStorage.setItem(`rated_${targetStory}`, "true");
+            localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({
+                name: friendName,
+                score: rating,
+                authorGuess: authorGuess,
+                suggestedTitle: titleSuggestion
+            }));
+
+            customAlert("Review submitted successfully! Thank you.");
+            
+            evaluateLocalStorageRestrictions(); 
+
+        } catch (error) {
+            console.error("Error submitting review:", error);
+            customAlert("An error occurred while submitting your review. Please check your connection.");
+            submitRatingBtn.disabled = false;
+            submitRatingBtn.textContent = "Submit Review";
+        }
+    });
+
     goToFeedbackBtn.addEventListener('click', () => {
         feedbackNameInput.value = "";
         feedbackTextInput.value = "";
