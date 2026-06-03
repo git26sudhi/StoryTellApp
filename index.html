@@ -7,22 +7,25 @@
     <style>
         :root {
             /* =========================================
-               THEME 1: CLASSIC LIGHT (Purple & White)
+               THEME 1: CLASSIC LIGHT (Base Variables)
                ========================================= */
             --bg-color: #ffffff;
             --bg-gradient: none;
             --text-color: #333333;
             --text-muted: #666666;
+            
+            /* Core Palette */
             --primary: #4a7c59;
             --primary-hover: #3b6346;
             --accent: #68b0ab;
-            --border: #dddddd;
             --admin-color: #2b4c7e;
             --admin-hover: #1d3557;
             --dev-color: #7b2cbf;
             --danger: #c93b3b;
             --purple-banner: #4a154b;
+            --border-color: #dddddd; /* Base border mapped for dark themes */
             
+            /* Component Defaults */
             --card-bg: transparent;
             --card-shadow: none;
             --card-border: none;
@@ -53,45 +56,48 @@
             --nav-btn-hover-bg: #dee2e6;
             --nav-btn-hover-text: #212529;
             --nav-active-bg: #ffffff;
-            --nav-active-color: var(--purple-banner);
-            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E");
             
             --switch-bg: #f7f1fe;
-            --switch-border: 1px solid #e1d0f7;
             --slider-bg: #ccc;
             
             --webview-bg: #ffffff;
-            --webview-border: 2px solid var(--admin-color);
             --webview-th-text: white;
             --webview-td-text: #333;
             --webview-row-alt: #f9f9f9;
             
             --modal-overlay: rgba(80, 80, 80, 0.7);
             --modal-bg: #e6e6e6;
-            --modal-border: 2px solid #a3a3a3;
             --modal-text: #4a4a4a;
             --modal-input-bg: #f2f2f2;
             --modal-btn-cancel-bg: #cfcfcf;
             --modal-btn-cancel-text: #444;
-            --modal-btn-cancel-border: 1px solid #b0b0b0;
-            --modal-btn-ok-bg: #7a7a7a;
-            --modal-btn-ok-text: #fff;
-            --modal-btn-ok-border: 1px solid #5c5c5c;
-            
-            --winner-bg: #e8f0fe;
-            --winner-text: #1a73e8;
-            --winner-border: 1px solid #c2e7ff;
             
             --status-bg: rgba(255, 241, 241, 0.7);
             --status-icon-bg: #ffeaea;
             --status-text: #5f2020;
             --status-shadow: none;
+
+            /* Cascading Mapped Variables (These update automatically in all themes) */
+            --border: 1px solid var(--border-color);
+            --card-border: 1px solid var(--border-color);
+            --nav-active-color: var(--primary);
+            --switch-border: 1px solid var(--border-color);
+            --webview-border: 2px solid var(--admin-color);
+            --modal-border: 1px solid var(--primary);
+            --modal-btn-cancel-border: 1px solid var(--border-color);
+            --modal-btn-ok-bg: var(--primary);
+            --modal-btn-ok-text: #fff;
+            --modal-btn-ok-border: none;
+            --winner-bg: rgba(43, 76, 126, 0.1);
+            --winner-text: var(--admin-color);
+            --winner-border: 1px solid var(--admin-color);
+            --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E");
         }
 
         /* =========================================
            BASE VARIABLES FOR ALL MATTE/SATURATED THEMES
            ========================================= */
-        [data-theme="cyan"], [data-theme="purple"], [data-theme="emerald"], [data-theme="mono"] {
+        [data-theme]:not([data-theme="light"]) {
             --text-color: #ffffff;
             --text-muted: #CBD5E1;
             --danger: #DC2626;
@@ -100,8 +106,6 @@
             --card-bg: rgba(0, 0, 0, 0.4);
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             --card-backdrop: blur(10px);
-            --card-padding: 20px;
-            --card-radius: 8px;
             
             --h3-color: #ffffff;
             
@@ -110,12 +114,10 @@
             --input-placeholder: rgba(255, 255, 255, 0.5);
             
             --btn-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-            --btn-text-shadow: none;
             --btn-active-transform: translateY(1px);
             
             --banner-backdrop: blur(12px);
             --banner-border: 1px solid rgba(255, 255, 255, 0.05);
-            --banner-title-shadow: none;
             
             --nav-bg: rgba(0, 0, 0, 0.85);
             --nav-border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -143,10 +145,9 @@
             --status-bg: rgba(220, 38, 38, 0.15);
             --status-icon-bg: rgba(220, 38, 38, 0.25);
             --status-text: #FECACA;
-            --status-shadow: none;
         }
 
-        /* 1. Deep Cyan (Matte & Saturated) */
+        /* 1. Deep Cyan */
         [data-theme="cyan"] {
             --bg-color: #001122;
             --bg-gradient: linear-gradient(135deg, #000B18 0%, #004D66 100%);
@@ -155,26 +156,10 @@
             --accent: #0284C7;
             --admin-color: #059669;
             --admin-hover: #047857;
-            --dev-color: #0284C7;
-            --border: rgba(2, 132, 199, 0.3);
-            --card-border: 1px solid rgba(2, 132, 199, 0.2);
-            --winner-bg: rgba(5, 150, 105, 0.2);
-            --winner-text: #10B981;
-            --winner-border: 1px solid #059669;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #0284C7;
-            --switch-border: 1px solid rgba(2, 132, 199, 0.3);
-            --webview-border: 2px solid #059669;
-            --modal-border: 1px solid #0284C7;
-            --modal-btn-cancel-border: 1px solid rgba(2, 132, 199, 0.3);
-            --modal-btn-ok-bg: #0284C7;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
+            --border-color: rgba(2, 132, 199, 0.3);
         }
 
-        /* 2. Matte Purple (Saturated) */
+        /* 2. Matte Purple */
         [data-theme="purple"] {
             --bg-color: #12001F;
             --bg-gradient: linear-gradient(135deg, #12001F 0%, #3B0066 100%);
@@ -183,26 +168,10 @@
             --accent: #7C3AED;
             --admin-color: #059669;
             --admin-hover: #047857;
-            --dev-color: #7C3AED;
-            --border: rgba(124, 58, 237, 0.3);
-            --card-border: 1px solid rgba(124, 58, 237, 0.2);
-            --winner-bg: rgba(5, 150, 105, 0.2);
-            --winner-text: #10B981;
-            --winner-border: 1px solid #059669;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #7C3AED;
-            --switch-border: 1px solid rgba(124, 58, 237, 0.3);
-            --webview-border: 2px solid #7C3AED;
-            --modal-border: 1px solid #7C3AED;
-            --modal-btn-cancel-border: 1px solid rgba(124, 58, 237, 0.3);
-            --modal-btn-ok-bg: #7C3AED;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
+            --border-color: rgba(124, 58, 237, 0.3);
         }
 
-        /* 3. Forest Green (Matte & Saturated) */
+        /* 3. Forest Green */
         [data-theme="emerald"] {
             --bg-color: #001A0F;
             --bg-gradient: linear-gradient(135deg, #001A0F 0%, #004D2E 100%);
@@ -211,26 +180,10 @@
             --accent: #059669;
             --admin-color: #0284C7;
             --admin-hover: #0369A1;
-            --dev-color: #059669;
-            --border: rgba(5, 150, 105, 0.3);
-            --card-border: 1px solid rgba(5, 150, 105, 0.2);
-            --winner-bg: rgba(2, 132, 199, 0.2);
-            --winner-text: #38BDF8;
-            --winner-border: 1px solid #0284C7;
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #059669;
-            --switch-border: 1px solid rgba(5, 150, 105, 0.3);
-            --webview-border: 2px solid #059669;
-            --modal-border: 1px solid #059669;
-            --modal-btn-cancel-border: 1px solid rgba(5, 150, 105, 0.3);
-            --modal-btn-ok-bg: #059669;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: none;
+            --border-color: rgba(5, 150, 105, 0.3);
         }
 
-        /* 4. Black & Gray (Solid & Minimal) */
+        /* 4. Black & Gray */
         [data-theme="mono"] {
             --bg-color: #000000;
             --bg-gradient: none;
@@ -239,34 +192,13 @@
             --accent: #555555;
             --admin-color: #666666;
             --admin-hover: #4D4D4D;
-            --dev-color: #555555;
-            --border: #333333;
-            
+            --border-color: #333333;
             --card-bg: #1A1A1A;
-            --card-border: 1px solid #333333;
-            --card-backdrop: none;
-            --card-shadow: none;
-            
+            --webview-bg: #0A0A0A;
+            --modal-bg: #1A1A1A;
             --input-bg: #0A0A0A;
-            --input-border: 1px solid #333333;
-            
             --winner-bg: #333333;
             --winner-text: #FFFFFF;
-            --winner-border: 1px solid #555555;
-            
-            --btn-text-color: #ffffff;
-            --btn-admin-text: #ffffff;
-            --btn-accent-text: #ffffff;
-            --nav-active-color: #ffffff;
-            --switch-border: 1px solid #444444;
-            --webview-border: 2px solid #444444;
-            --webview-bg: #0A0A0A;
-            --modal-border: 1px solid #444444;
-            --modal-btn-cancel-border: 1px solid #444444;
-            --modal-btn-ok-bg: #555555;
-            --modal-btn-ok-text: #ffffff;
-            --modal-btn-ok-border: 1px solid #555555;
-            --modal-bg: #1A1A1A;
         }
 
         /* --- GLOBAL STYLES --- */
@@ -516,7 +448,7 @@
         input[type="text"], input[type="password"], input[type="number"], textarea, select {
             width: 100%;
             padding: 10px;
-            border: 1px solid var(--border);
+            border: var(--border);
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
@@ -579,7 +511,7 @@
             border-radius: 6px;
             background-color: var(--switch-bg);
             color: var(--nav-btn-text);
-            border: 1px solid var(--border);
+            border: var(--border);
             transition: all 0.2s;
             box-shadow: none;
         }
@@ -769,13 +701,13 @@
             background-color: var(--admin-color);
             color: var(--webview-th-text);
             padding: 10px;
-            border: 1px solid var(--border);
+            border: var(--border);
             text-align: center;
             font-weight: bold;
         }
         .webview-table td {
             padding: 10px;
-            border: 1px solid var(--border);
+            border: var(--border);
             color: var(--webview-td-text);
             vertical-align: middle;
             text-align: center;
@@ -841,7 +773,7 @@
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid var(--border);
+            border: var(--border);
             border-radius: 6px;
             background: var(--modal-input-bg);
             font-size: 15px;
@@ -897,7 +829,7 @@
         }
         .version-box {
             background: var(--input-bg);
-            border: 1px solid var(--border);
+            border: var(--border);
             padding: 8px;
             border-radius: 6px;
             text-align: center;
@@ -976,12 +908,12 @@
             text-align: left;
             padding: 10px;
             font-size: 14px;
-            border: 1px solid var(--border);
+            border: var(--border);
         }
         .manual-table td {
             padding: 12px 10px;
             font-size: 13.5px;
-            border: 1px solid var(--border);
+            border: var(--border);
             vertical-align: top;
         }
         .one-sentence-def {
@@ -1002,7 +934,7 @@
             padding: 4px !important;
             font-size: 13px !important;
             border-radius: 4px !important;
-            border: 1px solid var(--border) !important;
+            border: var(--border) !important;
             background: var(--input-bg) !important;
             color: var(--input-text) !important;
             margin-left: 8px;
@@ -1070,7 +1002,7 @@
             </select>
         </div>
 
-        <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 20px;">
+        <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
             
             <div class="form-group" id="modNameSetupGroup">
                 <label for="inputModName">Moderator Name</label>
@@ -1111,7 +1043,7 @@
                 </div>
             </div>
 
-            <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border); padding-top: 15px;">
+            <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border-color); padding-top: 15px;">
 
                 <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -1162,7 +1094,7 @@
             </div>
         </div>
         
-        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border); padding-top: 15px; display: flex; flex-direction: row; justify-content: flex-end; gap: 10px;">
+        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border-color); padding-top: 15px; display: flex; flex-direction: row; justify-content: flex-end; gap: 10px;">
             <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: var(--admin-color); color: white; width: max-content; padding: 11px 15px;">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -1253,7 +1185,7 @@
             </form>
         </div>
 
-        <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border); padding-top: 20px;">
+        <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border-color); padding-top: 20px;">
             <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Have suggestions to improve this web app?</p>
             <button type="button" id="goToFeedbackBtn" class="btn-accent" style="width: auto;">Give App Feedback</button>
         </div>
@@ -1292,7 +1224,7 @@
 
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
                 <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0; display: flex; align-items: center; gap: 8px;">
                     <svg viewBox="0 0 24 24" width="24" height="24">
                         <defs>
@@ -1335,7 +1267,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border); padding-top: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
                 <label for="deleteStorySelect" style="font-size: 16px; color: var(--admin-color); margin: 0; font-weight: bold;">📖 Select Story</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <select id="deleteStorySelect" style="flex: 1; margin: 0; padding: 10px; font-size: 15px; border: 2px solid var(--admin-color);"></select>
@@ -1347,7 +1279,7 @@
                 </div>
             </div>
             
-            <div class="webview-scroll-frame" style="margin-bottom: 25px; border: 1px solid var(--border); border-radius: 6px;">
+            <div class="webview-scroll-frame" style="margin-bottom: 25px; border: var(--border); border-radius: 6px;">
                 <table class="webview-table" style="margin: 0;">
                     <thead>
                         <tr>
@@ -1365,9 +1297,9 @@
         </div>
         
         <div class="plain-section admin-header">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
                 <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">📅 Daily Updates</h2>
-                <div id="currentDateDisplay" style="background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
+                <div id="currentDateDisplay" style="background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: var(--border); font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
             </div>
 
             <div class="form-group">
@@ -1507,7 +1439,7 @@
 <div id="downloadSeasonModal" class="hidden">
     <div class="custom-modal-box">
         <h3 style="margin-top: 0;">Select Season to Download</h3>
-        <select id="downloadSeasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: 1px solid var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
+        <select id="downloadSeasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
             <option value="All">All Seasons</option>
         </select>
         <div class="custom-modal-btn-row">
@@ -1522,7 +1454,7 @@
         <div class="manual-header-row" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 20px;">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <h2 class="manual-title" style="border: none; margin: 0; padding: 0;">Season Preview</h2>
-                <select id="previewSeasonSelect" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-color); font-size: 14px;">
+                <select id="previewSeasonSelect" style="padding: 6px; border-radius: 4px; border: var(--border); background: var(--input-bg); color: var(--text-color); font-size: 14px;">
                     <option value="All">All Seasons</option>
                 </select>
                 <span id="previewLoadingBadge" style="color: var(--admin-color); font-size: 12px; display: none;">⏳ Loading...</span>
@@ -1551,7 +1483,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     // --- THEME SWITCHER / SIDEBAR LOGIC ---
@@ -1607,13 +1539,11 @@
         setTimeout(() => toggleMenu(false), 150); 
     });
 
-    // --------------------------------------
-
+    // --- OPTIMIZATION 1: High-Performance Memory-Safe Text Sanitization ---
+    const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
     function sanitizeText(str) {
         if (str === null || str === undefined) return "";
-        const temp = document.createElement('div');
-        temp.textContent = String(str);
-        return temp.innerHTML;
+        return String(str).replace(/[&<>"'`=/]/g, function (s) { return entityMap[s]; });
     }
 
     function showCustomModal(type, message, defaultVal = "") {
@@ -2341,6 +2271,7 @@
         if ([...seasonsSet, "All", globalSeasonCache].includes(dVal)) dSelect.value = dVal;
     }
 
+    // --- OPTIMIZATION 2: DOM Reflow Minimization in Dropdown Builders ---
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
         let uniqueSeasons = new Set();
@@ -2352,23 +2283,15 @@
         });
 
         updateSeasonDropdowns(uniqueSeasons);
-
         arrayedStoriesList.sort((a, b) => b.created - a.created);
 
-        storyDropdown.innerHTML = "";
-        deleteStorySelect.innerHTML = "";
-
+        let storyOptionsHtml = "";
         arrayedStoriesList.forEach(storyObj => {
-            const optionUser = document.createElement('option');
-            optionUser.value = storyObj.id;
-            optionUser.textContent = storyObj.id; 
-            storyDropdown.appendChild(optionUser);
-
-            const optionMod = document.createElement('option');
-            optionMod.value = storyObj.id;
-            optionMod.textContent = storyObj.id;
-            deleteStorySelect.appendChild(optionMod);
+            storyOptionsHtml += `<option value="${storyObj.id}">${storyObj.id}</option>`;
         });
+
+        storyDropdown.innerHTML = storyOptionsHtml;
+        deleteStorySelect.innerHTML = storyOptionsHtml;
 
         if(arrayedStoriesList.length > 0) {
             if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
@@ -2478,14 +2401,11 @@
         }
     });
 
+    // --- OPTIMIZATION 3: Array Mapping for UI Chips ---
     function renderAccumulatedWinnersChips() {
-        winnersChipsContainer.innerHTML = '';
-        accumulatedWinnersStateArray.forEach(name => {
-            const chip = document.createElement('div');
-            chip.className = 'winner-chip';
-            chip.textContent = name;
-            winnersChipsContainer.appendChild(chip);
-        });
+        winnersChipsContainer.innerHTML = accumulatedWinnersStateArray.map(name => 
+            `<div class="winner-chip">${sanitizeText(name)}</div>`
+        ).join('');
         correctGuesses.value = "";
     }
 
@@ -2505,6 +2425,7 @@
         renderAccumulatedWinnersChips();
     });
 
+    // --- OPTIMIZATION 4: DOM Reflow Minimization in Live Review Table ---
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) {
@@ -2519,9 +2440,9 @@
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
 
-            readerSuggestions.innerHTML = '<option value="">-- Title --</option>';
-            headingSuggesterInput.innerHTML = '<option value="">-- Name --</option>';
-            correctGuesses.innerHTML = '<option value="">-- Select Winner --</option>'; 
+            let readerOptionsHtml = '<option value="">-- Title --</option>';
+            let suggesterOptionsHtml = '<option value="">-- Name --</option>';
+            let winnerOptionsHtml = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
             headingToReviewerMap = {};
@@ -2561,23 +2482,13 @@
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
                                 hasSuggestions = true;
                                 headingToReviewerMap[currentSuggestedTitle] = reviewerKey;
-
-                                const headingOpt = document.createElement('option');
-                                headingOpt.value = currentSuggestedTitle;
-                                headingOpt.textContent = currentSuggestedTitle; 
-                                readerSuggestions.appendChild(headingOpt);
                                 
-                                const personOpt = document.createElement('option');
-                                personOpt.value = reviewerKey;
-                                personOpt.textContent = reviewerKey; 
-                                headingSuggesterInput.appendChild(personOpt);
+                                readerOptionsHtml += `<option value="${currentSuggestedTitle}">${currentSuggestedTitle}</option>`;
+                                suggesterOptionsHtml += `<option value="${reviewerKey}">${reviewerKey}</option>`;
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-                                const winnerOpt = document.createElement('option');
-                                winnerOpt.value = reviewerKey;
-                                winnerOpt.textContent = reviewerKey; 
-                                correctGuesses.appendChild(winnerOpt);
+                                winnerOptionsHtml += `<option value="${reviewerKey}">${reviewerKey}</option>`;
                             }
                         } else {
                             score = sanitizeText(data[reviewerKey]);
@@ -2603,6 +2514,10 @@
                     }
                 });
 
+                readerSuggestions.innerHTML = readerOptionsHtml;
+                headingSuggesterInput.innerHTML = suggesterOptionsHtml;
+                correctGuesses.innerHTML = winnerOptionsHtml;
+
                 if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
                 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 
@@ -2617,6 +2532,9 @@
                 activeStorySnapshotDataCache = null;
                 renderAccumulatedWinnersChips();
                 authorGivenHeadingInput.value = "";
+                readerSuggestions.innerHTML = readerOptionsHtml;
+                headingSuggesterInput.innerHTML = suggesterOptionsHtml;
+                correctGuesses.innerHTML = winnerOptionsHtml;
                 dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
             }
         } catch(err) {
@@ -2676,7 +2594,6 @@
         if (!title) { customAlert("Enter a valid story title."); return; }
         try {
             actionButton.disabled = true;
-            // Now silently associates newly added stories with the currently running season block 
             await setDoc(doc(db, "competitions", title), { created: Date.now(), season: globalSeasonCache }, { merge: true });
             dashboardNewStoryInput.value = '';
             actionButton.disabled = false;
@@ -2741,7 +2658,7 @@
             <div style="text-align: left;">
                 <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Build Stamp</span>
                 <div style="font-size: 26px; font-weight: 900; margin-bottom: 15px; color: var(--primary);">v${currentVersionState.major}.${currentVersionState.minor} r${currentVersionState.revision}</div>
-                <hr style="border:0; border-top: 1px dashed var(--border); margin: 10px 0;">
+                <hr style="border:0; border-top: 1px dashed var(--border-color); margin: 10px 0;">
                 <label style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: var(--h3-color);">What's new</label>
                 <ul class="about-list">${bulletsHtml}</ul>
             </div>
@@ -2857,7 +2774,6 @@
             const data = doc.data();
             const storedSeason = data.season || "Legacy";
             
-            // Standardize matching algorithm bypasses unneeded parsing
             if (seasonFilter === "All" || seasonFilter === storedSeason) {
                 stories.push({ id: doc.id, data: data });
             }
@@ -2889,7 +2805,7 @@
 
             tempTableBodyContent += `
                 <tr>
-                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border);">
+                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">
                         📖 Story: ${storyTitle}
                     </th>
                 </tr>
