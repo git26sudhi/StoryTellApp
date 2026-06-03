@@ -23,7 +23,7 @@
             --dev-color: #7b2cbf;
             --danger: #c93b3b;
             --purple-banner: #4a154b;
-            --border-color: #dddddd; /* Base border mapped for dark themes */
+            --border-color: #dddddd;
             
             /* Component Defaults */
             --card-bg: transparent;
@@ -34,7 +34,6 @@
             --card-radius: 8px;
             
             --h3-color: #444;
-            
             --input-bg: #fafafa;
             --input-text: #333333;
             --input-placeholder: #777;
@@ -77,7 +76,7 @@
             --status-text: #5f2020;
             --status-shadow: none;
 
-            /* Cascading Mapped Variables (These update automatically in all themes) */
+            /* Cascading Mapped Variables */
             --border: 1px solid var(--border-color);
             --card-border: 1px solid var(--border-color);
             --nav-active-color: var(--primary);
@@ -108,7 +107,6 @@
             --card-backdrop: blur(10px);
             
             --h3-color: #ffffff;
-            
             --input-bg: rgba(0, 0, 0, 0.5);
             --input-text: #ffffff;
             --input-placeholder: rgba(255, 255, 255, 0.5);
@@ -201,7 +199,21 @@
             --winner-text: #FFFFFF;
         }
 
-        /* --- GLOBAL STYLES --- */
+        /* --- GLOBAL UTILITY CLASSES --- */
+        .flex-row { display: flex; align-items: center; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .flex-col { display: flex; flex-direction: column; }
+        .gap-6 { gap: 6px; }
+        .gap-8 { gap: 8px; }
+        .gap-10 { gap: 10px; }
+        .gap-15 { gap: 15px; }
+        .w-max { width: max-content; }
+        .w-full { width: 100%; }
+        .m-0 { margin: 0; }
+        .text-center { text-align: center; }
+
+        /* --- BASE STYLES --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-gradient, var(--bg-color));
@@ -214,786 +226,277 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
 
         .brand-purple-banner {
             background-color: var(--purple-banner);
             color: #ffffff;
             padding: 4px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             box-sizing: border-box;
             margin-bottom: 8px;
             width: 100vw;
             position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+            left: 50%; right: 50%;
+            margin-left: -50vw; margin-right: -50vw;
             backdrop-filter: var(--banner-backdrop);
             border-bottom: var(--banner-border);
             transition: all 0.3s ease;
         }
 
-        .banner-content-lock {
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 4px;
-            box-sizing: border-box;
-        }
-
-        .logo-group {
-            display: flex;
-            align-items: center;
-            gap: 15px; 
-        }
-
-        .banner-logo {
-            height: 80px; 
-            width: 80px;  
-            object-fit: cover;
-            border-radius: 50%;
-            display: block;
-            margin: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5); 
-        }
-
-        .banner-topic {
-            font-size: 20px;
-            font-weight: 600;
-            color: #ffffff;
-            margin: 0;
-            text-align: left;
-            line-height: 1.2;
-            text-shadow: var(--banner-title-shadow);
-        }
-
+        .banner-content-lock { max-width: 800px; width: 100%; margin: 0 auto; padding: 0 4px; box-sizing: border-box; }
+        .banner-logo { height: 80px; width: 80px; object-fit: cover; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+        .banner-topic { font-size: 20px; font-weight: 600; color: #ffffff; margin: 0; text-align: left; line-height: 1.2; text-shadow: var(--banner-title-shadow); }
+        
         .banner-content-lock .month-sub {
-            font-size: 15px; 
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0 1mm 0 0;
-            letter-spacing: -0.1px;
-            line-height: 1;
-            text-shadow: var(--banner-title-shadow);
+            font-size: 15px; font-weight: 700; color: #ffffff; margin: 0 1mm 0 0;
+            letter-spacing: -0.1px; line-height: 1; text-shadow: var(--banner-title-shadow);
         }
 
-        .metadata-opposite-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-            margin-bottom: 30px;
-            padding: 0 4px;
-            width: 100%;
-        }
-
-        .mod-tag {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin: 0;
-            text-align: right;
-        }
+        .metadata-opposite-row { margin-top: 12px; margin-bottom: 30px; padding: 0 4px; width: 100%; }
+        .mod-tag { display: block; font-size: 14px; font-weight: 600; color: var(--text-muted); margin: 0; text-align: right; }
 
         /* --- SIDEBAR MENU STYLES --- */
         .menu-overlay {
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh;
-            background: var(--modal-overlay);
-            z-index: 999998;
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(2px);
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--modal-overlay); z-index: 999998; opacity: 0; 
+            pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(2px);
         }
-        .menu-overlay.visible {
-            opacity: 1; 
-            pointer-events: auto;
-        }
+        .menu-overlay.visible { opacity: 1; pointer-events: auto; }
 
         .side-menu {
-            position: fixed; 
-            top: 0; left: -300px; 
-            width: 280px; height: 100vh;
-            background: var(--modal-bg); 
-            color: var(--modal-text);
-            z-index: 999999; 
-            box-shadow: 2px 0 15px rgba(0,0,0,0.5);
-            transition: left 0.3s ease; 
-            display: flex; 
-            flex-direction: column;
-            border-right: var(--modal-border);
+            position: fixed; top: 0; left: -300px; width: 280px; height: 100vh;
+            background: var(--modal-bg); color: var(--modal-text);
+            z-index: 999999; box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+            transition: left 0.3s ease; border-right: var(--modal-border);
         }
-        .side-menu.open {
-            left: 0;
-        }
+        .side-menu.open { left: 0; }
 
-        .side-menu-header {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            padding: 20px; 
-            padding-bottom: 5px;
-            border-bottom: none;
-        }
-        
+        .side-menu-header { padding: 20px; padding-bottom: 5px; }
         .side-menu-close {
-            background: transparent;
-            border: none;
-            color: var(--modal-text);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
-            box-shadow: none;
-            transition: color 0.2s;
+            background: transparent; border: none; color: var(--modal-text); font-size: 24px;
+            cursor: pointer; padding: 0; line-height: 1; box-shadow: none; transition: color 0.2s;
         }
-        .side-menu-close:hover {
-            color: var(--danger);
-        }
-
-        .side-menu-content {
-            padding: 20px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        
+        .side-menu-close:hover { color: var(--danger); }
+        .side-menu-content { padding: 20px; flex-grow: 1; overflow-y: auto; }
         .side-menu-content label { font-size: 13px; }
         .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
         .side-menu-content button { padding: 8px 12px; font-size: 13px; }
 
         /* --- PREMIUM MAINTENANCE BANNER --- */
         .status-alert {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            background: var(--status-bg);
-            backdrop-filter: blur(8px);
-            padding: 20px;
-            border-radius: 20px;
-            border-left: 6px solid var(--danger);
-            margin-bottom: 25px;
+            background: var(--status-bg); backdrop-filter: blur(8px); padding: 20px;
+            border-radius: 20px; border-left: 6px solid var(--danger); margin-bottom: 25px;
             box-shadow: var(--status-shadow);
         }
-        .status-icon-box {
-            background: var(--status-icon-bg);
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-        }
+        .status-icon-box { background: var(--status-icon-bg); padding: 10px; border-radius: 50%; }
         .status-content h4 { margin: 0; color: var(--danger); font-size: 16px; font-weight: 700; }
         .status-content p { margin: 4px 0 0 0; color: var(--status-text); font-size: 14px; font-weight: 500; }
         .hidden { display: none !important; }
 
         .plain-section {
-            background: var(--card-bg);
-            padding: var(--card-padding);
-            margin-bottom: 35px;
-            border-radius: var(--card-radius);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: var(--card-backdrop);
-            border: var(--card-border);
-            transition: all 0.3s ease;
+            background: var(--card-bg); padding: var(--card-padding); margin-bottom: 35px;
+            border-radius: var(--card-radius); box-shadow: var(--card-shadow);
+            backdrop-filter: var(--card-backdrop); border: var(--card-border); transition: all 0.3s ease;
         }
 
-        h2 {
-            margin-top: 0;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            color: var(--primary);
-            font-size: 20px;
-        }
-
-        h3 {
-            margin: 20px 0 10px 0;
-            color: var(--h3-color);
-            font-size: 16px;
-            font-weight: 600;
-        }
-
+        h2 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; color: var(--primary); font-size: 20px; }
+        h3 { margin: 20px 0 10px 0; color: var(--h3-color); font-size: 16px; font-weight: 600; }
         .admin-header h2 { color: var(--admin-color); }
+        .form-group { margin-bottom: 18px; }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--h3-color);
-        }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: var(--h3-color); }
 
         input[type="text"], input[type="password"], input[type="number"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: var(--border);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            background-color: var(--input-bg);
-            color: var(--input-text);
+            width: 100%; padding: 10px; border: var(--border); border-radius: 6px;
+            box-sizing: border-box; font-size: 16px; background-color: var(--input-bg); color: var(--input-text);
         }
-        
-        input::placeholder, textarea::placeholder {
-            color: var(--input-placeholder);
-        }
+        input::placeholder, textarea::placeholder { color: var(--input-placeholder); }
 
         button {
-            background-color: var(--primary);
-            color: var(--btn-text-color);
-            border: none;
-            padding: 11px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
-            transition: all 0.2s;
-            box-shadow: var(--btn-shadow);
+            background-color: var(--primary); color: var(--btn-text-color); border: none;
+            padding: 11px 20px; border-radius: 8px; cursor: pointer; font-size: 15px;
+            font-weight: bold; transition: all 0.2s; box-shadow: var(--btn-shadow);
             text-shadow: var(--btn-text-shadow);
         }
-
-        button:active {
-            transform: var(--btn-active-transform);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
-        }
-
+        button:active { transform: var(--btn-active-transform); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); }
         button:hover { filter: brightness(1.1); }
         button:disabled { background-color: rgba(128, 128, 128, 0.3); color: rgba(128, 128, 128, 0.8); cursor: not-allowed; box-shadow: none; transform: none;}
 
         .btn-mod-action { background-color: var(--admin-color); color: var(--btn-admin-text); }
         .btn-accent { background-color: var(--accent); color: var(--btn-accent-text); text-shadow: none; }
         
-        .btn-icon-only {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            padding: 0;
-            border-radius: 50%;
-            line-height: 1;
-        }
-        .btn-icon-only svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
+        .btn-icon-only { width: 42px; height: 42px; padding: 0; border-radius: 50%; line-height: 1; }
+        .btn-icon-only svg { width: 20px; height: 20px; fill: currentColor; }
 
         .btn-clear-inline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            padding: 0;
-            border-radius: 6px;
-            background-color: var(--switch-bg);
-            color: var(--nav-btn-text);
-            border: var(--border);
-            transition: all 0.2s;
-            box-shadow: none;
+            width: 42px; height: 42px; padding: 0; border-radius: 6px;
+            background-color: var(--switch-bg); color: var(--nav-btn-text);
+            border: var(--border); transition: all 0.2s; box-shadow: none;
         }
-        .btn-clear-inline:hover {
-            background-color: var(--nav-btn-hover-bg);
-            color: var(--nav-btn-hover-text);
-            transform: none;
-        }
-        .btn-clear-inline svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
+        .btn-clear-inline:hover { background-color: var(--nav-btn-hover-bg); color: var(--nav-btn-hover-text); transform: none; }
+        .btn-clear-inline svg { width: 18px; height: 18px; fill: currentColor; }
 
-        .export-btn-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
         .btn-preview { background-color: var(--admin-color); flex: 1; font-size: 15px; color: var(--btn-admin-text); }
         .btn-download { background-color: var(--primary); flex: 1; font-size: 15px; }
 
-        .winners-tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-            min-height: 24px;
-        }
+        .winners-tags-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 24px; }
         .winner-chip {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--winner-bg); 
-            color: var(--winner-text);
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 600;
-            border: var(--winner-border);
+            background-color: var(--winner-bg); color: var(--winner-text); padding: 4px 10px;
+            border-radius: 16px; font-size: 13px; font-weight: 600; border: var(--winner-border);
         }
 
         .system-navigation-footer-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100vw;
-            height: 52px;
-            background-color: var(--nav-bg);
-            display: flex;
-            box-sizing: border-box;
-            border-top: var(--nav-border-top);
-            z-index: 99998; /* Below modal/menu */
-            backdrop-filter: var(--card-backdrop);
+            position: fixed; bottom: 0; left: 0; width: 100vw; height: 52px; background-color: var(--nav-bg);
+            box-sizing: border-box; border-top: var(--nav-border-top); z-index: 99998; backdrop-filter: var(--card-backdrop);
         }
 
         .nav-split-trigger-btn {
-            flex: 1;
-            height: 100%;
-            background: transparent;
-            color: var(--nav-btn-text);
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: none;
-            text-shadow: none;
+            flex: 1; height: 100%; background: transparent; color: var(--nav-btn-text);
+            border: none; border-radius: 0; padding: 0; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s ease-in-out; text-transform: uppercase;
+            letter-spacing: 0.5px; box-shadow: none; text-shadow: none;
         }
+        .nav-split-trigger-btn:first-child { border-right: 20px solid transparent; border-image: var(--nav-divider-img) 0 100% 0 0 vertical repeat; margin-right: -20px; padding-right: 10px; }
+        .nav-split-trigger-btn:hover { background-color: var(--nav-btn-hover-bg); color: var(--nav-btn-hover-text); transform: none; box-shadow: none; }
+        .nav-split-trigger-btn.active-panel-indicator { background-color: var(--nav-active-bg); color: var(--nav-active-color); box-shadow: inset 0 4px 0 0 var(--nav-active-color); }
 
-        .nav-split-trigger-btn:first-child {
-            border-right: 20px solid transparent;
-            border-image: var(--nav-divider-img) 0 100% 0 0 vertical repeat;
-            margin-right: -20px;
-            padding-right: 10px;
-        }
+        .switch-container { background: var(--switch-bg); border-radius: 8px; border: var(--switch-border); }
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--slider-bg); transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        .switch-container.danger-toggle input:checked + .slider { background-color: var(--danger); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
-        .nav-split-trigger-btn:hover {
-            background-color: var(--nav-btn-hover-bg);
-            color: var(--nav-btn-hover-text);
-            transform: none;
-            box-shadow: none;
-        }
-
-        .nav-split-trigger-btn.active-panel-indicator {
-            background-color: var(--nav-active-bg);
-            color: var(--nav-active-color);
-            box-shadow: inset 0 4px 0 0 var(--nav-active-color);
-        }
-        
-        .nav-split-trigger-btn.active-panel-indicator:hover {
-            box-shadow: inset 0 4px 0 0 var(--nav-active-color);
-        }
-
-        .divider {
-            border: 0;
-            border-top: 2px dashed rgba(128,128,128,0.2);
-            margin: 40px 0;
-        }
-
-        .switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--switch-bg);
-            border-radius: 8px;
-            border: var(--switch-border);
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 28px;
-        }
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--slider-bg);
-            transition: .4s;
-            border-radius: 28px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--primary);
-        }
-        
-        .switch-container.danger-toggle input:checked + .slider {
-            background-color: var(--danger);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .webview-container {
-            margin-top: 25px;
-            background: var(--webview-bg);
-            padding: 15px;
-            border: var(--webview-border);
-            border-radius: 6px;
-        }
-        .webview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--admin-color);
-            border-bottom: 2px solid var(--admin-color);
-            padding-bottom: 6px;
-            margin-bottom: 12px;
-        }
-        .webview-scroll-frame {
-            width: 100%;
-            overflow-x: auto;
-            max-height: 600px; 
-            overflow-y: auto;
-        }
-        .webview-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        .webview-table th {
-            background-color: var(--admin-color);
-            color: var(--webview-th-text);
-            padding: 10px;
-            border: var(--border);
-            text-align: center;
-            font-weight: bold;
-        }
-        .webview-table td {
-            padding: 10px;
-            border: var(--border);
-            color: var(--webview-td-text);
-            vertical-align: middle;
-            text-align: center;
-        }
-        .webview-table tr:nth-child(even) {
-            background-color: var(--webview-row-alt);
-        }
+        .webview-container { margin-top: 25px; background: var(--webview-bg); padding: 15px; border: var(--webview-border); border-radius: 6px; }
+        .webview-header { font-size: 14px; font-weight: bold; color: var(--admin-color); border-bottom: 2px solid var(--admin-color); padding-bottom: 6px; margin-bottom: 12px; }
+        .webview-scroll-frame { width: 100%; overflow-x: auto; max-height: 600px; overflow-y: auto; }
+        .webview-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .webview-table th { background-color: var(--admin-color); color: var(--webview-th-text); padding: 10px; border: var(--border); font-weight: bold; }
+        .webview-table td { padding: 10px; border: var(--border); color: var(--webview-td-text); vertical-align: middle; }
+        .webview-table tr:nth-child(even) { background-color: var(--webview-row-alt); }
 
         .btn-copy-small {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 0;
-            height: 26px;
-            width: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--btn-shadow);
-            transition: all 0.2s;
+            background-color: var(--primary); color: white; border: none; border-radius: 4px; padding: 0;
+            height: 26px; width: 26px; cursor: pointer; box-shadow: var(--btn-shadow); transition: all 0.2s;
         }
-        .btn-copy-small:hover {
-            filter: brightness(1.1);
-        }
-        .btn-copy-small:active {
-            transform: translateY(1px);
-        }
+        .btn-copy-small:hover { filter: brightness(1.1); }
+        .btn-copy-small:active { transform: translateY(1px); }
 
         /* --- Custom Modal Styles --- */
         #customModalOverlay, #downloadSeasonModal {
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh;
-            background: var(--modal-overlay);
-            backdrop-filter: blur(4px);
-            z-index: 999999;
-            display: flex; 
-            align-items: center; justify-content: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--modal-overlay); backdrop-filter: blur(4px); z-index: 999999;
         }
         .custom-modal-box {
-            background: var(--modal-bg); 
-            border: var(--modal-border); 
-            border-radius: 12px;
-            padding: 25px 2ch;
-            width: fit-content;
-            min-width: min(90%, 250px);
-            max-width: 90%;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            color: var(--modal-text);
-            font-family: inherit;
+            background: var(--modal-bg); border: var(--modal-border); border-radius: 12px;
+            padding: 25px 2ch; width: fit-content; min-width: min(90%, 250px); max-width: 90%;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); color: var(--modal-text); font-family: inherit;
         }
-        #customModalMessage {
-            margin: 0 0 20px 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--modal-text);
-            line-height: 1.5;
-        }
+        #customModalMessage { margin: 0 0 20px 0; font-size: 16px; font-weight: 600; line-height: 1.5; }
         #customModalInput {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: var(--border);
-            border-radius: 6px;
-            background: var(--modal-input-bg);
-            font-size: 15px;
-            color: var(--modal-text);
-            box-sizing: border-box;
+            padding: 12px; margin-bottom: 20px; border: var(--border); border-radius: 6px;
+            background: var(--modal-input-bg); font-size: 15px; color: var(--modal-text); box-sizing: border-box;
         }
-        #customModalInput:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        .custom-modal-btn-row {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        .custom-modal-btn-row button {
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
-            box-shadow: none;
-            text-shadow: none;
-        }
-        #customModalCancel, #cancelDownloadBtn {
-            background: var(--modal-btn-cancel-bg); 
-            color: var(--modal-btn-cancel-text);
-            border: var(--modal-btn-cancel-border);
-        }
-        #customModalCancel:hover, #cancelDownloadBtn:hover {
-            filter: brightness(0.9);
-        }
+        #customModalInput:focus { outline: none; border-color: var(--primary); }
+        .custom-modal-btn-row button { padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; transition: all 0.2s ease; flex: 1; box-shadow: none; text-shadow: none; }
+        #customModalCancel, #cancelDownloadBtn { background: var(--modal-btn-cancel-bg); color: var(--modal-btn-cancel-text); border: var(--modal-btn-cancel-border); }
+        #customModalCancel:hover, #cancelDownloadBtn:hover { filter: brightness(0.9); }
+        #customModalOk, #confirmDownloadBtn { background: var(--modal-btn-ok-bg); color: var(--modal-btn-ok-text); border: var(--modal-btn-ok-border); flex: none !important; width: max-content !important; padding: 10px 2ch !important; }
+        #customModalOk:hover, #confirmDownloadBtn:hover { filter: brightness(1.1); }
         
-        #customModalOk, #confirmDownloadBtn {
-            background: var(--modal-btn-ok-bg); 
-            color: var(--modal-btn-ok-text);
-            border: var(--modal-btn-ok-border);
-            flex: none !important;
-            width: max-content !important;
-            padding: 10px 2ch !important;
-        }
-        #customModalOk:hover, #confirmDownloadBtn:hover {
-            filter: brightness(1.1);
-        }
-        
-        .version-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .version-box {
-            background: var(--input-bg);
-            border: var(--border);
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-        }
-        .version-num {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .about-list {
-            text-align: left;
-            margin: 10px 0 0 0;
-            padding-left: 20px;
-            max-height: 120px;
-            overflow-y: auto;
-        }
-        .about-list li {
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
+        .version-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+        .version-box { background: var(--input-bg); border: var(--border); padding: 8px; border-radius: 6px; }
+        .version-num { font-size: 20px; font-weight: bold; color: var(--text-color); }
+        .about-list { text-align: left; margin: 10px 0 0 0; padding-left: 20px; max-height: 120px; overflow-y: auto; }
+        .about-list li { font-size: 13px; margin-bottom: 4px; }
         
         /* --- FULL SCREEN USER MANUAL OVERLAY --- */
         .fullscreen-manual-view {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            z-index: 1000000;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            padding: 30px 24px 80px 24px;
-            overflow-y: auto;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--bg-color); color: var(--text-color); z-index: 1000000;
+            box-sizing: border-box; padding: 30px 24px 80px 24px; overflow-y: auto;
         }
-        .manual-wrapper-box {
-            max-width: 750px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        .manual-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-        }
-        .manual-title {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        .manual-close-trigger {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: none;
-        }
-        .manual-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        .manual-table th {
-            background-color: var(--nav-btn-hover-bg);
-            color: var(--text-color);
-            text-align: left;
-            padding: 10px;
-            font-size: 14px;
-            border: var(--border);
-        }
-        .manual-table td {
-            padding: 12px 10px;
-            font-size: 13.5px;
-            border: var(--border);
-            vertical-align: top;
-        }
-        .one-sentence-def {
-            font-size: 13px;
-            line-height: 1.4;
-            color: var(--text-color);
-        }
-        .manual-condition-text {
-            font-size: 12px;
-            color: var(--danger);
-            font-style: italic;
-            margin-top: 4px;
-            display: block;
-        }
+        .manual-wrapper-box { max-width: 750px; width: 100%; margin: 0 auto; }
+        .manual-title { margin: 0; font-size: 24px; font-weight: 800; color: var(--primary); }
+        .manual-close-trigger { background-color: var(--danger); color: white; border: none; padding: 8px 16px; font-size: 14px; font-weight: bold; border-radius: 6px; box-shadow: none; }
+        .manual-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .manual-table th { background-color: var(--nav-btn-hover-bg); color: var(--text-color); text-align: left; padding: 10px; font-size: 14px; border: var(--border); }
+        .manual-table td { padding: 12px 10px; font-size: 13.5px; border: var(--border); vertical-align: top; }
+        .one-sentence-def { font-size: 13px; line-height: 1.4; color: var(--text-color); }
+        .manual-condition-text { font-size: 12px; color: var(--danger); font-style: italic; margin-top: 4px; display: block; }
         
         .time-lock-input {
-            width: 75px !important;
-            padding: 4px !important;
-            font-size: 13px !important;
-            border-radius: 4px !important;
-            border: var(--border) !important;
-            background: var(--input-bg) !important;
-            color: var(--input-text) !important;
-            margin-left: 8px;
+            width: 75px !important; padding: 4px !important; font-size: 13px !important;
+            border-radius: 4px !important; border: var(--border) !important;
+            background: var(--input-bg) !important; color: var(--input-text) !important; margin-left: 8px;
         }
 
         /* --- Developer Box Custom Styling --- */
-        .dev-dark-gold-box {
-            background-color: #121212 !important;
-            border: 1px solid #D4A017 !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
-        }
-        
-        .dev-lion-logo {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #D4A017;
-            box-shadow: 0 4px 10px rgba(212, 160, 23, 0.4);
-            display: block;
-        }
-        
-        .dev-btn-gold {
-            background-color: #FFD700 !important;
-            color: #000000 !important;
-            border: none;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-        }
-        .dev-btn-gold:hover {
-            filter: brightness(1.1);
-        }
-        .dev-btn-gold:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
-        }
+        .dev-dark-gold-box { background-color: #121212 !important; border: 1px solid #D4A017 !important; color: #FFFFFF !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important; }
+        .dev-lion-logo { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #D4A017; box-shadow: 0 4px 10px rgba(212, 160, 23, 0.4); }
+        .dev-btn-gold { background-color: #FFD700 !important; color: #000000 !important; border: none; font-weight: bold; border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); }
+        .dev-btn-gold:hover { filter: brightness(1.1); }
+        .dev-btn-gold:active { transform: translateY(1px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); }
     </style>
 </head>
 <body>
 
+<svg width="0" height="0" class="hidden" style="position: absolute;">
+    <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+    </symbol>
+    <symbol id="icon-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 16v-9"></path><path d="M8 11l4-4 4 4"></path><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line>
+    </symbol>
+    <symbol id="icon-manual" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+    </symbol>
+    <symbol id="icon-about" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="11" fill="#1d3557" />
+        <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
+        <path d="M11 10h2v7h-2z" fill="#ffffff" />
+        <path d="M10 17h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </symbol>
+    <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
+    </symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path><polyline points="16 11 12 7 8 11"></polyline><line x1="12" y1="7" x2="12" y2="18"></line>
+    </symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24">
+        <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
+    </symbol>
+    <symbol id="icon-clear" viewBox="0 0 24 24">
+        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+    </symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </symbol>
+</svg>
+
 <div id="menuOverlay" class="menu-overlay"></div>
-<div id="sideMenu" class="side-menu">
-    <div class="side-menu-header">
+<div id="sideMenu" class="side-menu flex-col">
+    <div class="side-menu-header flex-between">
         <div style="font-weight: bold; font-size: 16px;">
             <span style="color: silver;">Season: </span>
             <span id="sidebarSeasonDisplay" style="color: #D4AF37; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">---</span>
         </div>
         <button id="menuCloseBtn" class="side-menu-close">✕</button>
     </div>
-    <div class="side-menu-content" style="display: flex; flex-direction: column;">
+    <div class="side-menu-content flex-col">
         <div class="form-group">
-            <label style="color: var(--text-color); margin-bottom: 8px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+            <label class="flex-row gap-6" style="color: var(--text-color); margin-bottom: 8px; font-weight: bold;">
                 <span style="font-size: 16px;">🖌️</span> Theme
             </label>
-            <select id="themeSelect" style="cursor: pointer; padding: 12px; border-radius: 8px;">
+            <select id="themeSelect" class="w-full" style="cursor: pointer; padding: 12px; border-radius: 8px;">
                 <option value="light">Classic Light</option>
                 <option value="cyan">Deep Cyan</option>
                 <option value="purple">Matte Purple</option>
@@ -1003,17 +506,12 @@
         </div>
 
         <div id="sidebarModOptions" class="hidden" style="margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
-            
             <div class="form-group" id="modNameSetupGroup">
                 <label for="inputModName">Moderator Name</label>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="text" id="inputModName" placeholder="Handle" style="margin: 0; flex: 1;">
-                    <button type="button" id="saveModNameBtn" class="btn-mod-action" style="padding: 10px 15px; display: flex; align-items: center; justify-content: center; width: auto;" title="Save Profile">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 16v-9"></path>
-                            <path d="M8 11l4-4 4 4"></path>
-                            <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
-                        </svg>
+                <div class="flex-row gap-8">
+                    <input type="text" id="inputModName" placeholder="Handle" class="m-0" style="flex: 1;">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action flex-center w-max" style="padding: 10px 15px;" title="Save Profile">
+                        <svg width="20" height="20"><use href="#icon-save"></use></svg>
                     </button>
                 </div>
             </div>
@@ -1022,8 +520,8 @@
                 <label for="inputTopic">Subject</label>
                 <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" style="margin-bottom: 8px;">
                 
-                <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 15px;">
-                    <select id="inputMonth" style="cursor: pointer; border-radius: 6px; margin: 0; width: max-content; padding: 10px 2ch; flex: none;">
+                <div class="flex-row gap-8" style="justify-content: flex-end; margin-bottom: 15px;">
+                    <select id="inputMonth" class="m-0 w-max" style="cursor: pointer; border-radius: 6px; padding: 10px 2ch; flex: none;">
                         <option value="">-- Select Month --</option>
                         <option value="January">January</option>
                         <option value="February">February</option>
@@ -1038,87 +536,67 @@
                         <option value="November">November</option>
                         <option value="December">December</option>
                     </select>
-                    
-                    <button type="button" id="startSeasonBtn" class="btn-mod-action" style="width: max-content; margin: 0; padding: 10px 15px;">Start Season</button>
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action m-0 w-max" style="padding: 10px 15px;">Start Season</button>
                 </div>
             </div>
 
             <div id="advancedModOptions" class="hidden" style="border-top: 1px dashed var(--border-color); padding-top: 15px;">
-
-                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div class="switch-container flex-row" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div class="flex-between w-full">
                         <div><strong style="font-size: 13px; color: var(--text-color);">Guess Author</strong></div>
                         <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                            <input type="checkbox" id="toggleAuthorGuessBtn">
-                            <span class="slider"></span>
+                            <input type="checkbox" id="toggleAuthorGuessBtn"><span class="slider"></span>
                         </label>
                     </div>
-                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                    <div class="flex-row w-full" style="margin-top: 4px; justify-content: flex-end;">
                         <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
                         <input type="text" id="authorGuessLockTime" class="time-lock-input" placeholder="23:59">
                     </div>
                 </div>
 
-                <div class="switch-container" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div class="switch-container flex-row" style="padding: 10px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                    <div class="flex-between w-full">
                         <div><strong style="font-size: 13px; color: var(--text-color);">Title Suggestion</strong></div>
                         <label class="switch" style="transform: scale(0.8); margin: -5px;">
-                            <input type="checkbox" id="toggleTitleSuggestionBtn">
-                            <span class="slider"></span>
+                            <input type="checkbox" id="toggleTitleSuggestionBtn"><span class="slider"></span>
                         </label>
                     </div>
-                    <div style="display: flex; align-items: center; width: 100%; margin-top: 4px; justify-content: flex-end;">
+                    <div class="flex-row w-full" style="margin-top: 4px; justify-content: flex-end;">
                         <span style="font-size: 11px; opacity: 0.8;">Lock Time:</span>
                         <input type="text" id="titleSuggestionLockTime" class="time-lock-input" placeholder="23:59">
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 15px;">
-                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action" style="width: max-content; padding: 6px 12px; font-size: 13px;">Update</button>
+                <div class="flex-row w-full" style="justify-content: flex-end; margin-top: -5px; margin-bottom: 15px;">
+                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max" style="padding: 6px 12px; font-size: 13px;">Update</button>
                 </div>
 
                 <div class="form-group" style="margin-top: 25px;">
                     <label style="color: var(--text-color);">System Data</label>
-                    <div style="display: flex; flex-direction: row; gap: 2ch; margin-top: 5px; width: 100%;">
-                        <button id="previewBtn" class="btn-preview" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center;">Preview</button>
-                        <button id="downloadBtn" class="btn-download" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--admin-color); color: var(--btn-admin-text);">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            Download
+                    <div class="flex-row w-full" style="gap: 2ch; margin-top: 5px;">
+                        <button id="previewBtn" class="btn-preview flex-center" style="padding: 10px;">Preview</button>
+                        <button id="downloadBtn" class="btn-download flex-center gap-6" style="padding: 10px; background-color: var(--admin-color); color: var(--btn-admin-text);">
+                            <svg width="14" height="14"><use href="#icon-download"></use></svg> Download
                         </button>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="form-group" style="margin-top: auto; border-top: 1px dashed var(--border-color); padding-top: 15px; display: flex; flex-direction: row; justify-content: flex-end; gap: 10px;">
-            <button type="button" id="sidebarManualBtn" class="btn-accent" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: var(--admin-color); color: white; width: max-content; padding: 11px 15px;">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                </svg>
-                Manual
+        <div class="form-group flex-row" style="margin-top: auto; border-top: 1px dashed var(--border-color); padding-top: 15px; justify-content: flex-end; gap: 10px;">
+            <button type="button" id="sidebarManualBtn" class="btn-accent flex-center gap-8 w-max" style="background-color: var(--admin-color); padding: 11px 15px;">
+                <svg width="16" height="16"><use href="#icon-manual"></use></svg> Manual
             </button>
-            
-            <button type="button" id="sidebarAboutBtn" class="btn-accent" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: max-content; padding: 11px 15px;">
-                <svg viewBox="0 0 24 24" width="16" height="16" style="display: block;">
-                    <circle cx="12" cy="12" r="11" fill="#1d3557" />
-                    <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
-                    <path d="M11 10h2v7h-2z" fill="#ffffff" />
-                    <path d="M10 17h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
-                </svg>
-                About
+            <button type="button" id="sidebarAboutBtn" class="btn-accent flex-center gap-8 w-max" style="padding: 11px 15px;">
+                <svg width="16" height="16"><use href="#icon-about"></use></svg> About
             </button>
         </div>
     </div>
 </div>
 
-<div class="brand-purple-banner">
-    <div class="banner-content-lock">
-        <div class="logo-group">
+<div class="brand-purple-banner flex-between">
+    <div class="banner-content-lock flex-between">
+        <div class="logo-group flex-row gap-15">
             <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
             <div id="topicDisplay" class="banner-topic">*****</div>
         </div>
@@ -1127,25 +605,16 @@
 </div>
 
 <div class="container">
-    <div class="metadata-opposite-row">
-        <button type="button" id="menuOpenBtn" class="btn-clear-inline" style="width: auto; padding: 0 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-            Menu
+    <div class="metadata-opposite-row flex-between">
+        <button type="button" id="menuOpenBtn" class="btn-clear-inline flex-center gap-8 w-max" style="padding: 0 16px; font-weight: bold;">
+            <svg width="18" height="18"><use href="#icon-menu"></use></svg> Menu
         </button>
         <div id="headerModNameDisplay" class="mod-tag">Moderator: Mod</div>
     </div>
 
     <div id="pausedBanner" class="status-alert hidden">
         <div class="status-icon-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--danger)">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                <line x1="12" y1="9" x2="12" y2="13"></line>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
+            <svg width="24" height="24" style="stroke: var(--danger)"><use href="#icon-alert"></use></svg>
         </div>
         <div class="status-content">
             <h4>System Maintenance Active</h4>
@@ -1185,9 +654,9 @@
             </form>
         </div>
 
-        <div class="plain-section" style="margin-top: 30px; text-align: center; border-top: 1px dashed var(--border-color); padding-top: 20px;">
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Have suggestions to improve this web app?</p>
-            <button type="button" id="goToFeedbackBtn" class="btn-accent" style="width: auto;">Give App Feedback</button>
+        <div class="plain-section text-center" style="margin-top: 30px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
+            <p class="m-0" style="font-size: 14px; color: var(--text-muted);">Have suggestions to improve this web app?</p>
+            <button type="button" id="goToFeedbackBtn" class="btn-accent w-max" style="margin-top: 10px;">Give App Feedback</button>
         </div>
     </div>
 
@@ -1210,8 +679,8 @@
 
     <div id="loginInterface" class="plain-section hidden">
         <h2>🔒 Moderator / Developer Authentication</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Enter your credentials below to access the control panels.</p>
-        <div class="form-group">
+        <p class="m-0" style="font-size: 14px; color: var(--text-muted);">Enter your credentials below to access the control panels.</p>
+        <div class="form-group" style="margin-top: 15px;">
             <label for="localEmailInput">Email Address</label>
             <input type="text" id="localEmailInput" placeholder="mod@admin.com">
         </div>
@@ -1224,81 +693,52 @@
 
     <div id="modInterface" class="hidden">
         <div class="plain-section admin-header">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
-                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+            <div class="flex-between" style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
+                <h2 class="flex-row gap-8 m-0 p-0" style="border: none;">
                     <svg viewBox="0 0 24 24" width="24" height="24">
-                        <defs>
-                            <linearGradient id="modDashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FFA500"/>
-                                <stop offset="50%" stop-color="#FFFF00"/>
-                                <stop offset="100%" stop-color="#0000FF"/>
-                            </linearGradient>
-                        </defs>
+                        <defs><linearGradient id="modDashGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFA500"/><stop offset="50%" stop-color="#FFFF00"/><stop offset="100%" stop-color="#0000FF"/></linearGradient></defs>
                         <circle cx="12" cy="12" r="11" fill="none" stroke="url(#modDashGrad)" stroke-width="2"/>
-                        <rect x="6" y="6" width="5" height="7" fill="url(#modDashGrad)" />
-                        <rect x="13" y="6" width="5" height="4" fill="url(#modDashGrad)" />
-                        <rect x="6" y="15" width="5" height="4" fill="url(#modDashGrad)" />
-                        <rect x="13" y="12" width="5" height="7" fill="url(#modDashGrad)" />
-                    </svg>
-                    Moderator Dashboard
+                        <rect x="6" y="6" width="5" height="7" fill="url(#modDashGrad)" /><rect x="13" y="6" width="5" height="4" fill="url(#modDashGrad)" /><rect x="6" y="15" width="5" height="4" fill="url(#modDashGrad)" /><rect x="13" y="12" width="5" height="7" fill="url(#modDashGrad)" />
+                    </svg> Moderator Dashboard
                 </h2>
-                
-                <button type="button" id="logoutBtn" style="background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 6px 12px; font-size: 13px; margin: 0; display: flex; align-items: center; gap: 6px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    Logout
+                <button type="button" id="logoutBtn" class="flex-center gap-6 m-0" style="background: linear-gradient(135deg, #00FFFF, #4169E1); padding: 6px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <svg width="14" height="14"><use href="#icon-logout"></use></svg> Logout
                 </button>
             </div>
 
-            <div class="form-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                <h3 style="margin: 0; font-size: 16px; color: var(--admin-color);">Add New Story</h3>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." style="flex: 1; margin: 0;">
-                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action" style="padding: 10px 15px; margin: 0; display: flex; align-items: center; justify-content: center;" title="Upload Story">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
-                            <polyline points="16 11 12 7 8 11"></polyline>
-                            <line x1="12" y1="7" x2="12" y2="18"></line>
-                        </svg>
+            <div class="form-group flex-col gap-8" style="margin-bottom: 20px;">
+                <h3 class="m-0" style="font-size: 16px; color: var(--admin-color);">Add New Story</h3>
+                <div class="flex-row gap-10">
+                    <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="m-0" style="flex: 1;">
+                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action flex-center m-0" style="padding: 10px 15px;" title="Upload Story">
+                        <svg width="20" height="20"><use href="#icon-upload"></use></svg>
                     </button>
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
-                <label for="deleteStorySelect" style="font-size: 16px; color: var(--admin-color); margin: 0; font-weight: bold;">📖 Select Story</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <select id="deleteStorySelect" style="flex: 1; margin: 0; padding: 10px; font-size: 15px; border: 2px solid var(--admin-color);"></select>
-                    <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only" title="Delete Selected Story">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
-                        </svg>
+            <div class="flex-col gap-10" style="margin-bottom: 15px; margin-top: 25px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
+                <label for="deleteStorySelect" class="m-0" style="font-size: 16px; color: var(--admin-color); font-weight: bold;">📖 Select Story</label>
+                <div class="flex-row gap-10">
+                    <select id="deleteStorySelect" class="m-0" style="flex: 1; padding: 10px; font-size: 15px; border: 2px solid var(--admin-color);"></select>
+                    <button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only flex-center" title="Delete Selected Story">
+                        <svg width="20" height="20"><use href="#icon-trash"></use></svg>
                     </button>
                 </div>
             </div>
             
             <div class="webview-scroll-frame" style="margin-bottom: 25px; border: var(--border); border-radius: 6px;">
-                <table class="webview-table" style="margin: 0;">
-                    <thead>
-                        <tr>
-                            <th><b>Reviewer</b></th>
-                            <th><b>Rating</b></th>
-                            <th><b>Author Guess</b></th>
-                            <th><b>Suggested Title</b></th>
-                        </tr>
-                    </thead>
+                <table class="webview-table m-0">
+                    <thead><tr><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr></thead>
                     <tbody id="dailyReviewsTableBody">
-                        <tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
+                        <tr><td colspan="4" class="text-center" style="font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
         
         <div class="plain-section admin-header">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
-                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">📅 Daily Updates</h2>
+            <div class="flex-between" style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
+                <h2 class="m-0 p-0" style="border-bottom: none;">📅 Daily Updates</h2>
                 <div id="currentDateDisplay" style="background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: var(--border); font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
             </div>
 
@@ -1307,112 +747,71 @@
                 <input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading">
             </div>
 
-            <div class="form-group" style="display: flex; gap: 10px;">
-                <div style="flex: 1.5;">
-                    <label for="readerSuggestions">Title</label>
-                    <select id="readerSuggestions"></select>
-                </div>
-                <div style="flex: 1;">
-                    <label for="headingSuggesterInput">Reviewer</label>
-                    <select id="headingSuggesterInput"></select>
-                </div>
+            <div class="form-group flex-row gap-10">
+                <div style="flex: 1.5;"><label for="readerSuggestions">Title</label><select id="readerSuggestions"></select></div>
+                <div style="flex: 1;"><label for="headingSuggesterInput">Reviewer</label><select id="headingSuggesterInput"></select></div>
             </div>
 
             <div class="form-group">
                 <label for="correctGuesses">Guess the Author</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <select id="correctGuesses" style="flex: 1; margin: 0;"></select>
-                    <button type="button" id="clearWinnersBtn" class="btn-clear-inline" title="Clear All Selections">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
-                        </svg>
+                <div class="flex-row gap-10">
+                    <select id="correctGuesses" class="m-0" style="flex: 1;"></select>
+                    <button type="button" id="clearWinnersBtn" class="btn-clear-inline flex-center" title="Clear All Selections">
+                        <svg width="20" height="20"><use href="#icon-clear"></use></svg>
                     </button>
                 </div>
                 <div id="winnersChipsContainer" class="winners-tags-container"></div>
             </div>
-            <button type="button" id="saveNotesBtn" class="btn-mod-action" style="width: max-content; padding: 10px 40px;">Save</button>
+            <button type="button" id="saveNotesBtn" class="btn-mod-action w-max" style="padding: 10px 40px;">Save</button>
         </div>
     </div>
 
     <div id="devInterface" class="hidden">
         <div class="plain-section dev-header dev-dark-gold-box">
-            <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #D4A017; padding-bottom: 12px; margin-bottom: 15px;">
+            <div class="flex-row gap-15" style="border-bottom: 1px solid #D4A017; padding-bottom: 12px; margin-bottom: 15px;">
                 <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
-                <h2 style="border: none; margin: 0; padding: 0; color: #D4A017; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Developer options</h2>
+                <h2 class="m-0 p-0" style="border: none; color: #D4A017; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Developer options</h2>
             </div>
 
             <div class="form-group" style="background: #1a1a1a; padding: 16px; border: 1px solid #D4A017; border-radius: 8px; margin-bottom: 20px;">
-                <label style="color: #D4A017; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 20px; line-height: 1;">📐</span>
-                    Version Configuration
+                <label class="flex-row gap-8" style="color: #D4A017; font-size: 14px; margin-bottom: 8px;">
+                    <span style="font-size: 20px; line-height: 1;">📐</span> Version Configuration
                 </label>
                 <div class="version-grid">
-                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devMajorText" class="version-num" style="color: #FFFFFF;">4</div>
-                    </div>
-                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devMinorText" class="version-num" style="color: #FFFFFF;">1</div>
-                    </div>
-                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devRevisionText" class="version-num" style="color: #FFFFFF;">7</div>
-                    </div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devMajorText" class="version-num" style="color: #FFFFFF;">4</div></div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devMinorText" class="version-num" style="color: #FFFFFF;">1</div></div>
+                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;"><div id="devRevisionText" class="version-num" style="color: #FFFFFF;">7</div></div>
                 </div>
-                <div class="btn-row" style="margin-top: 5px; gap: 10px; width: 100%;">
+                <div class="btn-row w-full" style="margin-top: 5px; gap: 10px;">
                     <button type="button" id="btnUpdateMajor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Major</button>
                     <button type="button" id="btnUpdateMinor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Minor</button>
                     <button type="button" id="btnUpdateRevision" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Revision</button>
                 </div>
             </div>
 
-            <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px; background: #1a1a1a; border: 1px solid #D4A017;">
-                <div>
-                    <strong id="exclusiveModeText" style="color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
-                        <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
-                            <defs>
-                                <linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#80Aaff" />
-                                    <stop offset="30%" stop-color="#4169E1" />
-                                    <stop offset="70%" stop-color="#223b82" />
-                                    <stop offset="100%" stop-color="#0d1b42" />
-                                </linearGradient>
-                                <linearGradient id="glossyQueenStroke" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffffff" />
-                                    <stop offset="100%" stop-color="#4169E1" />
-                                </linearGradient>
-                            </defs>
-                            <g fill="url(#glossyQueen)" stroke="url(#glossyQueenStroke)" stroke-width="1.2" stroke-linejoin="round">
-                                <path d="M4 19h16v2H4z" />
-                                <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
-                                <circle cx="12" cy="4" r="1.5" />
-                                <circle cx="7" cy="8" r="1.5" />
-                                <circle cx="17" cy="8" r="1.5" />
-                            </g>
-                        </svg>
-                        Exclusive Mode
-                    </strong>
-                </div>
-                <label class="switch" style="transform: scale(0.9); margin-right: -4px;">
-                    <input type="checkbox" id="devPauseToggle">
-                    <span class="slider"></span>
-                </label>
+            <div class="switch-container danger-toggle flex-row gap-15 w-max" style="padding: 8px 15px; margin-bottom: 20px; background: #1a1a1a; border: 1px solid #D4A017;">
+                <strong id="exclusiveModeText" class="flex-row gap-8" style="color: #FFFFFF; font-size: 14px; transition: color 0.3s;">
+                    <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
+                        <defs><linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#80Aaff" /><stop offset="30%" stop-color="#4169E1" /><stop offset="70%" stop-color="#223b82" /><stop offset="100%" stop-color="#0d1b42" /></linearGradient><linearGradient id="glossyQueenStroke" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#4169E1" /></linearGradient></defs>
+                        <g fill="url(#glossyQueen)" stroke="url(#glossyQueenStroke)" stroke-width="1.2" stroke-linejoin="round">
+                            <path d="M4 19h16v2H4z" /><path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" /><circle cx="12" cy="4" r="1.5" /><circle cx="7" cy="8" r="1.5" /><circle cx="17" cy="8" r="1.5" />
+                        </g>
+                    </svg> Exclusive Mode
+                </strong>
+                <label class="switch m-0" style="transform: scale(0.9);"><input type="checkbox" id="devPauseToggle"><span class="slider"></span></label>
             </div>
 
-            <div class="btn-row" style="margin-top: 20px; align-items: center; gap: 10px;">
-                <button type="button" id="devSeasonResetBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">Season Reset</button>
-                <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold" style="width: max-content; padding: 10px 15px;">User feedback preview</button>
-                <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden" style="width: max-content; padding: 10px 15px;">Download Feedback Table</button>
+            <div class="btn-row flex-row gap-10" style="margin-top: 20px;">
+                <button type="button" id="devSeasonResetBtn" class="dev-btn-gold w-max" style="padding: 10px 15px;">Season Reset</button>
+                <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold w-max" style="padding: 10px 15px;">User feedback preview</button>
+                <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden w-max" style="padding: 10px 15px;">Download Feedback Table</button>
             </div>
             
             <div id="devFeedbackContainer" class="webview-container hidden" style="background: #1a1a1a; border-color: #D4A017;">
-                <div class="webview-header" style="border-bottom: 2px solid #D4A017; color: #D4A017;">
-                    <span>Compiled Platform Feedback</span>
-                </div>
+                <div class="webview-header" style="border-bottom: 2px solid #D4A017; color: #D4A017;"><span>Compiled Platform Feedback</span></div>
                 <div class="webview-scroll-frame">
                     <table class="webview-table" style="white-space: nowrap;">
-                        <thead id="feedbackTableHead">
-                            </thead>
-                        <tbody id="feedbackTableBody">
-                            </tbody>
+                        <thead id="feedbackTableHead"></thead><tbody id="feedbackTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -1425,10 +824,10 @@
     <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
 </div>
 
-<div id="customModalOverlay" class="hidden">
+<div id="customModalOverlay" class="hidden flex-center">
     <div class="custom-modal-box">
         <p id="customModalMessage"></p>
-        <input type="text" id="customModalInput" class="hidden">
+        <input type="text" id="customModalInput" class="hidden w-full">
         <div class="custom-modal-btn-row">
             <button id="customModalCancel" class="hidden">Cancel</button>
             <button id="customModalOk">OK</button>
@@ -1436,10 +835,10 @@
     </div>
 </div>
 
-<div id="downloadSeasonModal" class="hidden">
+<div id="downloadSeasonModal" class="hidden flex-center">
     <div class="custom-modal-box">
-        <h3 style="margin-top: 0;">Select Season to Download</h3>
-        <select id="downloadSeasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
+        <h3 class="m-0">Select Season to Download</h3>
+        <select id="downloadSeasonSelect" class="w-full" style="padding: 10px; margin-bottom: 20px; margin-top: 15px; border-radius: 6px; border: var(--border); background: var(--modal-input-bg); color: var(--modal-text);">
             <option value="All">All Seasons</option>
         </select>
         <div class="custom-modal-btn-row">
@@ -1451,9 +850,9 @@
 
 <div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
     <div class="manual-wrapper-box" style="max-width: 900px;">
-        <div class="manual-header-row" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <h2 class="manual-title" style="border: none; margin: 0; padding: 0;">Season Preview</h2>
+        <div class="manual-header-row flex-between">
+            <div class="flex-row gap-15">
+                <h2 class="manual-title p-0 m-0" style="border: none;">Season Preview</h2>
                 <select id="previewSeasonSelect" style="padding: 6px; border-radius: 4px; border: var(--border); background: var(--input-bg); color: var(--text-color); font-size: 14px;">
                     <option value="All">All Seasons</option>
                 </select>
@@ -1461,11 +860,9 @@
             </div>
             <button type="button" id="previewCloseBtn" class="manual-close-trigger">✕ Close</button>
         </div>
-        <div class="webview-container" style="margin-top: 0;">
+        <div class="webview-container m-0">
             <div class="webview-scroll-frame" style="max-height: 70vh;">
-                <table class="webview-table">
-                    <tbody id="previewTableBody"></tbody>
-                </table>
+                <table class="webview-table"><tbody id="previewTableBody"></tbody></table>
             </div>
         </div>
     </div>
@@ -1473,7 +870,7 @@
 
 <div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
     <div class="manual-wrapper-box">
-        <div class="manual-header-row">
+        <div class="manual-header-row flex-between">
             <h2 id="manualHeadingTarget" class="manual-title">📚 Documentation Canvas</h2>
             <button type="button" id="manualCloseBtn" class="manual-close-trigger">✕ Close</button>
         </div>
@@ -1486,22 +883,25 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // --- THEME SWITCHER / SIDEBAR LOGIC ---
-    const menuOpenBtn = document.getElementById('menuOpenBtn');
-    const menuCloseBtn = document.getElementById('menuCloseBtn');
-    const sideMenu = document.getElementById('sideMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const themeSelect = document.getElementById('themeSelect');
-    const sidebarModOptions = document.getElementById('sidebarModOptions');
-    const advancedModOptions = document.getElementById('advancedModOptions');
-    const sidebarAboutBtn = document.getElementById('sidebarAboutBtn');
-    const sidebarManualBtn = document.getElementById('sidebarManualBtn');
+    // --- DOM SELECTOR ALIAS ---
+    const $ = id => document.getElementById(id);
+
+    // --- ELEMENT REFERENCES ---
+    const menuOpenBtn = $('menuOpenBtn');
+    const menuCloseBtn = $('menuCloseBtn');
+    const sideMenu = $('sideMenu');
+    const menuOverlay = $('menuOverlay');
+    const themeSelect = $('themeSelect');
+    const sidebarModOptions = $('sidebarModOptions');
+    const advancedModOptions = $('advancedModOptions');
+    const sidebarAboutBtn = $('sidebarAboutBtn');
+    const sidebarManualBtn = $('sidebarManualBtn');
     
-    const fullscreenManualOverlay = document.getElementById('fullscreenManualOverlay');
-    const manualCloseBtn = document.getElementById('manualCloseBtn');
-    const manualHeadingTarget = document.getElementById('manualHeadingTarget');
-    const manualContentContainer = document.getElementById('manualContentContainer');
-    const sidebarSeasonDisplay = document.getElementById('sidebarSeasonDisplay');
+    const fullscreenManualOverlay = $('fullscreenManualOverlay');
+    const manualCloseBtn = $('manualCloseBtn');
+    const manualHeadingTarget = $('manualHeadingTarget');
+    const manualContentContainer = $('manualContentContainer');
+    const sidebarSeasonDisplay = $('sidebarSeasonDisplay');
 
     let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 
@@ -1511,10 +911,7 @@
         } else {
             document.documentElement.setAttribute('data-theme', currentTheme);
         }
-        
-        if(themeSelect) {
-            themeSelect.value = currentTheme;
-        }
+        if(themeSelect) themeSelect.value = currentTheme;
     }
     applyTheme();
 
@@ -1539,7 +936,6 @@
         setTimeout(() => toggleMenu(false), 150); 
     });
 
-    // --- OPTIMIZATION 1: High-Performance Memory-Safe Text Sanitization ---
     const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
     function sanitizeText(str) {
         if (str === null || str === undefined) return "";
@@ -1548,11 +944,11 @@
 
     function showCustomModal(type, message, defaultVal = "") {
         return new Promise((resolve) => {
-            const overlay = document.getElementById('customModalOverlay');
-            const msgEl = document.getElementById('customModalMessage');
-            const inputEl = document.getElementById('customModalInput');
-            const btnCancel = document.getElementById('customModalCancel');
-            const btnOk = document.getElementById('customModalOk');
+            const overlay = $('customModalOverlay');
+            const msgEl = $('customModalMessage');
+            const inputEl = $('customModalInput');
+            const btnCancel = $('customModalCancel');
+            const btnOk = $('customModalOk');
 
             msgEl.innerHTML = message;
             inputEl.value = defaultVal;
@@ -1610,95 +1006,89 @@
     const db = getFirestore(app);
     const auth = getAuth(app); 
 
-    const userInterface = document.getElementById('userInterface');
-    const feedbackInterface = document.getElementById('feedbackInterface');
-    const modInterface = document.getElementById('modInterface');
-    const devInterface = document.getElementById('devInterface');
-    const loginInterface = document.getElementById('loginInterface');
-    const pausedBanner = document.getElementById('pausedBanner');
+    const userInterface = $('userInterface');
+    const feedbackInterface = $('feedbackInterface');
+    const modInterface = $('modInterface');
+    const devInterface = $('devInterface');
+    const loginInterface = $('loginInterface');
+    const pausedBanner = $('pausedBanner');
 
-    const topicDisplay = document.getElementById('topicDisplay');
-    const monthDisplay = document.getElementById('monthDisplay');
-    const headerModNameDisplay = document.getElementById('headerModNameDisplay');
-    const storyDropdown = document.getElementById('storyDropdown');
-    const deleteStorySelect = document.getElementById('deleteStorySelect');
+    const topicDisplay = $('topicDisplay');
+    const monthDisplay = $('monthDisplay');
+    const headerModNameDisplay = $('headerModNameDisplay');
+    const storyDropdown = $('storyDropdown');
+    const deleteStorySelect = $('deleteStorySelect');
 
-    const localEmailInput = document.getElementById('localEmailInput');
-    const localPassInput = document.getElementById('localPassInput');
-    const submitLoginBtn = document.getElementById('submitLoginBtn');
+    const localEmailInput = $('localEmailInput');
+    const localPassInput = $('localPassInput');
+    const submitLoginBtn = $('submitLoginBtn');
     
-    // Mod Sidebar Elements
-    const inputModName = document.getElementById('inputModName');
-    const saveModNameBtn = document.getElementById('saveModNameBtn');
-    const inputMonth = document.getElementById('inputMonth');
-    const inputTopic = document.getElementById('inputTopic');
-    const startSeasonBtn = document.getElementById('startSeasonBtn');
-    const toggleAuthorGuessBtn = document.getElementById('toggleAuthorGuessBtn');
-    const toggleTitleSuggestionBtn = document.getElementById('toggleTitleSuggestionBtn');
-    const authorGuessLockTime = document.getElementById('authorGuessLockTime');
-    const titleSuggestionLockTime = document.getElementById('titleSuggestionLockTime');
-    const updateLockTimesBtn = document.getElementById('updateLockTimesBtn');
+    const inputModName = $('inputModName');
+    const saveModNameBtn = $('saveModNameBtn');
+    const inputMonth = $('inputMonth');
+    const inputTopic = $('inputTopic');
+    const startSeasonBtn = $('startSeasonBtn');
+    const toggleAuthorGuessBtn = $('toggleAuthorGuessBtn');
+    const toggleTitleSuggestionBtn = $('toggleTitleSuggestionBtn');
+    const authorGuessLockTime = $('authorGuessLockTime');
+    const titleSuggestionLockTime = $('titleSuggestionLockTime');
+    const updateLockTimesBtn = $('updateLockTimesBtn');
     
-    // System Data Buttons
-    const previewBtn = document.getElementById('previewBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const previewBtn = $('previewBtn');
+    const downloadBtn = $('downloadBtn');
 
-    // Dashboard Fast-Track Add Stories Elements
-    const dashboardNewStoryInput = document.getElementById('dashboardNewStoryInput');
-    const dashboardUpdateStoryBtn = document.getElementById('dashboardUpdateStoryBtn');
+    const dashboardNewStoryInput = $('dashboardNewStoryInput');
+    const dashboardUpdateStoryBtn = $('dashboardUpdateStoryBtn');
 
-    // Version Controller UI Elements
-    const devMajorText = document.getElementById('devMajorText');
-    const devMinorText = document.getElementById('devMinorText');
-    const devRevisionText = document.getElementById('devRevisionText');
-    const btnUpdateMajor = document.getElementById('btnUpdateMajor');
-    const btnUpdateMinor = document.getElementById('btnUpdateMinor');
-    const btnUpdateRevision = document.getElementById('btnUpdateRevision');
+    const devMajorText = $('devMajorText');
+    const devMinorText = $('devMinorText');
+    const devRevisionText = $('devRevisionText');
+    const btnUpdateMajor = $('btnUpdateMajor');
+    const btnUpdateMinor = $('btnUpdateMinor');
+    const btnUpdateRevision = $('btnUpdateRevision');
 
-    const deleteStoryBtn = document.getElementById('deleteStoryBtn');
+    const deleteStoryBtn = $('deleteStoryBtn');
 
-    const ratingForm = document.getElementById('ratingForm');
-    const friendNameInput = document.getElementById('friendName');
-    const ratingValueInput = document.getElementById('ratingValue');
-    const authorGuessInput = document.getElementById('authorGuess');
-    const titleSuggestionInput = document.getElementById('titleSuggestion');
-    const submitRatingBtn = document.getElementById('submitRatingBtn');
+    const ratingForm = $('ratingForm');
+    const friendNameInput = $('friendName');
+    const ratingValueInput = $('ratingValue');
+    const authorGuessInput = $('authorGuess');
+    const titleSuggestionInput = $('titleSuggestion');
+    const submitRatingBtn = $('submitRatingBtn');
 
-    const userAuthorGuessGroup = document.getElementById('userAuthorGuessGroup');
-    const userTitleSuggestionGroup = document.getElementById('userTitleSuggestionGroup');
+    const userAuthorGuessGroup = $('userAuthorGuessGroup');
+    const userTitleSuggestionGroup = $('userTitleSuggestionGroup');
 
-    const authorGivenHeadingInput = document.getElementById('authorGivenHeadingInput');
-    const readerSuggestions = document.getElementById('readerSuggestions');
-    const headingSuggesterInput = document.getElementById('headingSuggesterInput');
+    const authorGivenHeadingInput = $('authorGivenHeadingInput');
+    const readerSuggestions = $('readerSuggestions');
+    const headingSuggesterInput = $('headingSuggesterInput');
 
-    const correctGuesses = document.getElementById('correctGuesses');
-    const clearWinnersBtn = document.getElementById('clearWinnersBtn');
-    const winnersChipsContainer = document.getElementById('winnersChipsContainer');
+    const correctGuesses = $('correctGuesses');
+    const clearWinnersBtn = $('clearWinnersBtn');
+    const winnersChipsContainer = $('winnersChipsContainer');
 
-    const saveNotesBtn = document.getElementById('saveNotesBtn');
+    const saveNotesBtn = $('saveNotesBtn');
+    const dailyReviewsTableBody = $('dailyReviewsTableBody');
+
+    const devSeasonResetBtn = $('devSeasonResetBtn');
+    const devPauseToggle = $('devPauseToggle');
+    const exclusiveModeText = $('exclusiveModeText');
     
-    // Live Dashboard Table Elements
-    const dailyReviewsTableBody = document.getElementById('dailyReviewsTableBody');
-
-    const devSeasonResetBtn = document.getElementById('devSeasonResetBtn');
-    const devPauseToggle = document.getElementById('devPauseToggle');
-    const exclusiveModeText = document.getElementById('exclusiveModeText');
+    const goToFeedbackBtn = $('goToFeedbackBtn');
+    const feedbackNameInput = $('feedbackNameInput');
+    const feedbackTextInput = $('feedbackTextInput');
+    const submitFeedbackBtn = $('submitFeedbackBtn');
+    const cancelFeedbackBtn = $('cancelFeedbackBtn');
     
-    const goToFeedbackBtn = document.getElementById('goToFeedbackBtn');
-    const feedbackNameInput = document.getElementById('feedbackNameInput');
-    const feedbackTextInput = document.getElementById('feedbackTextInput');
-    const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
-    const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
-    
-    const devLoadFeedbackBtn = document.getElementById('devLoadFeedbackBtn');
-    const devDownloadFeedbackBtn = document.getElementById('devDownloadFeedbackBtn');
-    const devFeedbackContainer = document.getElementById('devFeedbackContainer');
-    const feedbackTableHead = document.getElementById('feedbackTableHead');
-    const feedbackTableBody = document.getElementById('feedbackTableBody');
+    const devLoadFeedbackBtn = $('devLoadFeedbackBtn');
+    const devDownloadFeedbackBtn = $('devDownloadFeedbackBtn');
+    const devFeedbackContainer = $('devFeedbackContainer');
+    const feedbackTableHead = $('feedbackTableHead');
+    const feedbackTableBody = $('feedbackTableBody');
 
-    const navBtnReviewer = document.getElementById('navBtnReviewer');
-    const navBtnModerator = document.getElementById('navBtnModerator');
-    const logoutBtn = document.getElementById('logoutBtn');
+    const navBtnReviewer = $('navBtnReviewer');
+    const navBtnModerator = $('navBtnModerator');
+    const logoutBtn = $('logoutBtn');
 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
@@ -1727,7 +1117,7 @@
     const initDd = String(initToday.getDate()).padStart(2, '0');
     const initMm = String(initToday.getMonth() + 1).padStart(2, '0');
     const initYy = String(initToday.getFullYear()).slice(-2);
-    document.getElementById('currentDateDisplay').textContent = `${initDd}/${initMm}/${initYy}`;
+    $('currentDateDisplay').textContent = `${initDd}/${initMm}/${initYy}`;
 
     navBtnReviewer.addEventListener('click', () => {
         try {
@@ -1759,7 +1149,6 @@
         } catch (e) {}
     });
 
-    // --- REVIEW SUBMISSION HANDLER ---
     ratingForm.addEventListener('submit', async (e) => {
         e.preventDefault(); 
 
@@ -1779,42 +1168,25 @@
         const authorGuess = authorGuessInput.value.trim() || "None";
         const titleSuggestion = titleSuggestionInput.value.trim() || "None";
 
-        if (!friendName) {
-            customAlert("Please enter your name.");
-            return;
-        }
-
-        if (isNaN(rating) || rating < 1 || rating > 10) {
-            customAlert("Please enter a valid rating between 1 and 10.");
-            return;
-        }
+        if (!friendName) { customAlert("Please enter your name."); return; }
+        if (isNaN(rating) || rating < 1 || rating > 10) { customAlert("Please enter a valid rating between 1 and 10."); return; }
 
         submitRatingBtn.disabled = true;
         submitRatingBtn.textContent = "Submitting...";
 
         try {
             await setDoc(doc(db, "competitions", targetStory), {
-                [friendName]: {
-                    score: rating,
-                    authorGuess: authorGuess,
-                    suggestedTitle: titleSuggestion
-                }
+                [friendName]: { score: rating, authorGuess: authorGuess, suggestedTitle: titleSuggestion }
             }, { merge: true });
 
             localStorage.setItem(`rated_${targetStory}`, "true");
             localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({
-                name: friendName,
-                score: rating,
-                authorGuess: authorGuess,
-                suggestedTitle: titleSuggestion
+                name: friendName, score: rating, authorGuess: authorGuess, suggestedTitle: titleSuggestion
             }));
 
             customAlert("Review submitted successfully! Thank you.");
-            
             evaluateLocalStorageRestrictions(); 
-
         } catch (error) {
-            console.error("Error submitting review:", error);
             customAlert("An error occurred while submitting your review. Please check your connection.");
             submitRatingBtn.disabled = false;
             submitRatingBtn.textContent = "Submit Review";
@@ -1852,7 +1224,6 @@
             feedbackInterface.classList.add('hidden');
             userInterface.classList.remove('hidden');
         } catch(e) {
-            console.error(e);
             customAlert("Error submitting feedback. Check your connection.");
         }
         submitFeedbackBtn.disabled = false;
@@ -1869,15 +1240,10 @@
                 let maxCols = 0;
                 
                 Object.keys(data).forEach(user => {
-                    if (Array.isArray(data[user]) && data[user].length > maxCols) {
-                        maxCols = data[user].length;
-                    }
+                    if (Array.isArray(data[user]) && data[user].length > maxCols) maxCols = data[user].length;
                 });
 
-                if (maxCols === 0) {
-                    customAlert("Feedback document exists but no valid entries found.");
-                    return;
-                }
+                if (maxCols === 0) { customAlert("Feedback document exists but no valid entries found."); return; }
 
                 cachedFeedbackData = data;
                 cachedMaxCols = maxCols;
@@ -1888,8 +1254,7 @@
                     theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
                 }
                 theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>My Comments</b></th>`;
-                theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Status</b></th>`;
-                theadHtml += `</tr>`;
+                theadHtml += `<th style="background-color: #D4A017; color: #000000; text-align: center;"><b>Status</b></th></tr>`;
                 feedbackTableHead.innerHTML = theadHtml;
 
                 let tbodyHtml = "";
@@ -1900,19 +1265,12 @@
                         tbodyHtml += `<td><span style="color:#FFFFFF;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `<span style="color:#aaa;">-</span>`}</span></td>`;
                     }
                     tbodyHtml += `
-                        <td>
-                            <input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid #D4A017; border-radius: 4px; width: 180px; box-sizing: border-box; background: #2a2a2a; color: #FFFFFF;">
-                        </td>
+                        <td><input type="text" placeholder="Type notes here..." style="padding: 6px; border: 1px solid #D4A017; border-radius: 4px; width: 180px; box-sizing: border-box; background: #2a2a2a; color: #FFFFFF;"></td>
                         <td>
                             <select style="padding: 6px; border: 1px solid #D4A017; border-radius: 4px; background: #2a2a2a; color: #FFFFFF; width: 100%; box-sizing: border-box;">
-                                <option>Pending</option>
-                                <option>In Review</option>
-                                <option>Implemented</option>
-                                <option>Rejected</option>
+                                <option>Pending</option><option>In Review</option><option>Implemented</option><option>Rejected</option>
                             </select>
-                        </td>
-                    `;
-                    tbodyHtml += `</tr>`;
+                        </td></tr>`;
                 });
                 feedbackTableBody.innerHTML = tbodyHtml;
                 devFeedbackContainer.classList.remove('hidden');
@@ -1920,7 +1278,6 @@
                 customAlert("No feedback records have been found in the database yet.");
             }
         } catch(e) {
-            console.error(e);
             customAlert("Error parsing feedback metrics.");
         } finally {
             devLoadFeedbackBtn.disabled = false;
@@ -1950,26 +1307,17 @@
         const htmlString = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
             <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head>
-            <body>
-                <table>
-                    <thead>${theadHtml}</thead>
-                    <tbody>${tbodyHtml}</tbody>
-                </table>
-            </body>
-            </html>
+            <body><table><thead>${theadHtml}</thead><tbody>${tbodyHtml}</tbody></table></body></html>
         `;
 
         const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
         const downloadUrl = URL.createObjectURL(blob);
-
         const clientLink = document.createElement("a");
         clientLink.href = downloadUrl;
         clientLink.download = `Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.html`;
-
         document.body.appendChild(clientLink);
         clientLink.click();
         document.body.removeChild(clientLink);
-
         customAlert("📥 Feedback table exported successfully.");
     });
 
@@ -1977,53 +1325,34 @@
         if (isSystemPaused && !isDeveloperModeUnlocked) return; 
 
         if (!isNameLockedByMod) {
-            inputModName.disabled = false;
-            saveModNameBtn.disabled = false;
-
-            inputTopic.disabled = true;
-            inputMonth.disabled = true;
-            startSeasonBtn.disabled = true;
-            startSeasonBtn.textContent = "Start Season";
-
+            inputModName.disabled = false; saveModNameBtn.disabled = false;
+            inputTopic.disabled = true; inputMonth.disabled = true;
+            startSeasonBtn.disabled = true; startSeasonBtn.textContent = "Start Season";
             advancedModOptions.classList.add('hidden');
         } else if (isNameLockedByMod && !isSeasonStarted) {
-            inputModName.disabled = true;
-            saveModNameBtn.disabled = true;
-
-            inputTopic.disabled = false;
-            inputMonth.disabled = false;
-            startSeasonBtn.disabled = false;
-            startSeasonBtn.textContent = "Start Season";
-
+            inputModName.disabled = true; saveModNameBtn.disabled = true;
+            inputTopic.disabled = false; inputMonth.disabled = false;
+            startSeasonBtn.disabled = false; startSeasonBtn.textContent = "Start Season";
             advancedModOptions.classList.add('hidden');
         } else {
-            inputModName.disabled = true;
-            saveModNameBtn.disabled = true;
-
-            inputTopic.disabled = false;
-            inputMonth.disabled = false;
-            startSeasonBtn.disabled = true; 
-            startSeasonBtn.textContent = "Start Season"; 
-
+            inputModName.disabled = true; saveModNameBtn.disabled = true;
+            inputTopic.disabled = false; inputMonth.disabled = false;
+            startSeasonBtn.disabled = true; startSeasonBtn.textContent = "Start Season"; 
             advancedModOptions.classList.remove('hidden');
         }
     }
 
     onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
         try {
-            let data = {};
-            if (docSnap.exists()) {
-                data = docSnap.data();
-            }
+            let data = docSnap.exists() ? docSnap.data() : {};
 
             topicDisplay.textContent = data.topic || "*****";
             monthDisplay.textContent = data.month || "*****";
             inputMonth.value = data.month || "";
             inputTopic.value = data.topic || "";
 
-            const currentSeasonName = data.seasonName || "---";
-            globalSeasonCache = currentSeasonName;
-            sidebarSeasonDisplay.textContent = currentSeasonName;
+            globalSeasonCache = data.seasonName || "---";
+            sidebarSeasonDisplay.textContent = globalSeasonCache;
 
             currentModName = data.modName || "Mod";
             headerModNameDisplay.textContent = `Moderator: ${currentModName}`;
@@ -2037,12 +1366,8 @@
             cachedAuthorGuessLockTime = data.authorGuessLockTime || "23:59";
             cachedTitleSuggestionLockTime = data.titleSuggestionLockTime || "23:59";
             
-            if (document.activeElement !== authorGuessLockTime) {
-                authorGuessLockTime.value = cachedAuthorGuessLockTime;
-            }
-            if (document.activeElement !== titleSuggestionLockTime) {
-                titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
-            }
+            if (document.activeElement !== authorGuessLockTime) authorGuessLockTime.value = cachedAuthorGuessLockTime;
+            if (document.activeElement !== titleSuggestionLockTime) titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
             
             updateUserFormFieldsVisibility();
 
@@ -2054,10 +1379,7 @@
             
             evaluateSystemFreezeState();
             evaluateSetupFlow(); 
-
-        } catch(e) {
-            console.error("Error reading global config:", e);
-        }
+        } catch(e) {}
     });
     
     updateLockTimesBtn.addEventListener('click', async () => {
@@ -2068,10 +1390,7 @@
                 titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
             customAlert("Lock times updated successfully.");
-        } catch(e) { 
-            console.error("Error saving time.", e);
-            customAlert("Error saving time locks.");
-        }
+        } catch(e) { customAlert("Error saving time locks."); }
     });
 
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
@@ -2084,7 +1403,6 @@
         } else {
             currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
         }
-        
         devMajorText.textContent = currentVersionState.major;
         devMinorText.textContent = currentVersionState.minor;
         devRevisionText.textContent = currentVersionState.revision;
@@ -2109,30 +1427,21 @@
     toggleAuthorGuessBtn.addEventListener('change', async () => {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
-            await setDoc(doc(db, "app_state", "global_config"), {
-                enableAuthorGuess: toggleAuthorGuessBtn.checked
-            }, { merge: true });
+            await setDoc(doc(db, "app_state", "global_config"), { enableAuthorGuess: toggleAuthorGuessBtn.checked }, { merge: true });
         } catch(e) { customAlert("Error syncing configuration."); }
     });
 
     toggleTitleSuggestionBtn.addEventListener('change', async () => {
         if (isSystemPaused && !isDeveloperModeUnlocked) return;
         try {
-            await setDoc(doc(db, "app_state", "global_config"), {
-                enableTitleSuggestion: toggleTitleSuggestionBtn.checked
-            }, { merge: true });
+            await setDoc(doc(db, "app_state", "global_config"), { enableTitleSuggestion: toggleTitleSuggestionBtn.checked }, { merge: true });
         } catch(e) { customAlert("Error syncing configuration."); }
     });
 
     devPauseToggle.addEventListener('change', async () => {
         try {
-            await setDoc(doc(db, "app_state", "global_config"), {
-                systemPaused: devPauseToggle.checked
-            }, { merge: true });
-        } catch(e) {
-            customAlert("Error syncing Exclusive Mode configuration.");
-            devPauseToggle.checked = !devPauseToggle.checked;
-        }
+            await setDoc(doc(db, "app_state", "global_config"), { systemPaused: devPauseToggle.checked }, { merge: true });
+        } catch(e) { customAlert("Error syncing Exclusive Mode configuration."); devPauseToggle.checked = !devPauseToggle.checked; }
     });
 
     function evaluateSystemFreezeState() {
@@ -2173,85 +1482,58 @@
     function evaluateLocalStorageRestrictions() {
         try {
             if (isSystemPaused && !isDeveloperModeUnlocked) return;
-
             const targetStory = storyDropdown.value;
             if (!targetStory) return;
 
             if (isDeveloperModeUnlocked) {
-                friendNameInput.disabled = false;
-                ratingValueInput.disabled = false;
-                authorGuessInput.disabled = false;
-                titleSuggestionInput.disabled = false;
-                submitRatingBtn.disabled = false;
-                submitRatingBtn.textContent = "Submit Review (Dev Mode Bypass)";
+                friendNameInput.disabled = false; ratingValueInput.disabled = false;
+                authorGuessInput.disabled = false; titleSuggestionInput.disabled = false;
+                submitRatingBtn.disabled = false; submitRatingBtn.textContent = "Submit Review (Dev Mode Bypass)";
                 return;
             }
 
             const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
             if (!activeStoryObject) return;
 
-            const createdDateStr = new Date(activeStoryObject.created).toDateString();
-            const currentDateStr = new Date().toDateString();
-            const isPreviousDay = createdDateStr !== currentDateStr;
-            
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const timeStringFormatted = `${currentHour}:${currentMinute}`;
-
+            const isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
+            const timeStringFormatted = `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`;
             const pastAuthorGuessTime = timeStringFormatted > cachedAuthorGuessLockTime;
             const pastTitleSuggestionTime = timeStringFormatted > cachedTitleSuggestionLockTime;
-
-            const storageMarkerKey = `rated_${targetStory}`;
-            const hasRated = localStorage.getItem(storageMarkerKey) === "true";
+            const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
             
-            let alreadyGuessedAuthor = false;
-            let alreadySuggestedTitle = false;
+            let alreadyGuessedAuthor = false, alreadySuggestedTitle = false;
 
             if (hasRated) {
-                const storedUserData = localStorage.getItem(`userdata_${targetStory}`);
-                if (storedUserData) {
-                    try {
-                        const parsedData = JSON.parse(storedUserData);
-                        alreadyGuessedAuthor = parsedData.authorGuess && parsedData.authorGuess !== "None";
-                        alreadySuggestedTitle = parsedData.suggestedTitle && parsedData.suggestedTitle !== "None";
-                    } catch(e) {}
-                }
+                try {
+                    const parsedData = JSON.parse(localStorage.getItem(`userdata_${targetStory}`));
+                    alreadyGuessedAuthor = parsedData.authorGuess && parsedData.authorGuess !== "None";
+                    alreadySuggestedTitle = parsedData.suggestedTitle && parsedData.suggestedTitle !== "None";
+                } catch(e) {}
             }
 
             friendNameInput.disabled = hasRated;
             ratingValueInput.disabled = hasRated;
-
             authorGuessInput.disabled = !isAuthorGuessEnabled || alreadyGuessedAuthor || isPreviousDay || pastAuthorGuessTime;
             titleSuggestionInput.disabled = !isTitleSuggestionEnabled || alreadySuggestedTitle || isPreviousDay || pastTitleSuggestionTime;
 
             if (friendNameInput.disabled && authorGuessInput.disabled && titleSuggestionInput.disabled) {
                 submitRatingBtn.disabled = true;
-                if (isPreviousDay && hasRated) {
-                    submitRatingBtn.textContent = "Ratings locked (Already Submitted)";
-                } else if (hasRated && (pastAuthorGuessTime || pastTitleSuggestionTime)) {
-                    submitRatingBtn.textContent = "Time expired for suggestions";
-                } else if (hasRated) {
-                    submitRatingBtn.textContent = "Review Submitted";
-                }
+                if (isPreviousDay && hasRated) submitRatingBtn.textContent = "Ratings locked (Already Submitted)";
+                else if (hasRated && (pastAuthorGuessTime || pastTitleSuggestionTime)) submitRatingBtn.textContent = "Time expired for suggestions";
+                else if (hasRated) submitRatingBtn.textContent = "Review Submitted";
             } else {
                 submitRatingBtn.disabled = false;
-                if (hasRated) {
-                    submitRatingBtn.textContent = "Update Suggestions";
-                } else {
-                    submitRatingBtn.textContent = "Submit Review";
-                }
+                submitRatingBtn.textContent = hasRated ? "Update Suggestions" : "Submit Review";
             }
         } catch (e) {
-            console.error("Local storage initialization error.", e);
             submitRatingBtn.disabled = false;
             submitRatingBtn.textContent = "Submit Review";
         }
     }
 
     function updateSeasonDropdowns(seasonsSet) {
-        const pSelect = document.getElementById('previewSeasonSelect');
-        const dSelect = document.getElementById('downloadSeasonSelect');
+        const pSelect = $('previewSeasonSelect');
+        const dSelect = $('downloadSeasonSelect');
         const pVal = pSelect.value;
         const dVal = dSelect.value;
 
@@ -2259,10 +1541,7 @@
         if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSet.has(globalSeasonCache)) {
             optionsHtml += `<option value="${globalSeasonCache}">${globalSeasonCache}</option>`;
         }
-        
-        seasonsSet.forEach(s => {
-            if(s && s !== "Legacy" && s !== "All") optionsHtml += `<option value="${s}">${s}</option>`;
-        });
+        seasonsSet.forEach(s => { if(s && s !== "Legacy" && s !== "All") optionsHtml += `<option value="${s}">${s}</option>`; });
 
         pSelect.innerHTML = optionsHtml;
         dSelect.innerHTML = optionsHtml;
@@ -2271,7 +1550,6 @@
         if ([...seasonsSet, "All", globalSeasonCache].includes(dVal)) dSelect.value = dVal;
     }
 
-    // --- OPTIMIZATION 2: DOM Reflow Minimization in Dropdown Builders ---
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
         let uniqueSeasons = new Set();
@@ -2286,9 +1564,7 @@
         arrayedStoriesList.sort((a, b) => b.created - a.created);
 
         let storyOptionsHtml = "";
-        arrayedStoriesList.forEach(storyObj => {
-            storyOptionsHtml += `<option value="${storyObj.id}">${storyObj.id}</option>`;
-        });
+        arrayedStoriesList.forEach(storyObj => { storyOptionsHtml += `<option value="${storyObj.id}">${storyObj.id}</option>`; });
 
         storyDropdown.innerHTML = storyOptionsHtml;
         deleteStorySelect.innerHTML = storyOptionsHtml;
@@ -2299,7 +1575,7 @@
             loadCurrentStoryNotes();
             autoFillPreviousUserInputs();
         } else {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
         }
         evaluateLocalStorageRestrictions();
     });
@@ -2307,12 +1583,8 @@
     dailyReviewsTableBody.addEventListener('click', (e) => {
         const btn = e.target.closest('.btn-copy-row');
         if (btn && !btn.disabled) {
-            const reviewer = btn.getAttribute('data-reviewer');
-            const title = btn.getAttribute('data-title');
-            const copyStr = `${reviewer}, ${title}`;
-            navigator.clipboard.writeText(copyStr)
-                .then(() => customAlert(`📋 Copied:\n${copyStr}`))
-                .catch(() => customAlert("Clipboard write blocked by browser."));
+            const copyStr = `${btn.getAttribute('data-reviewer')}, ${btn.getAttribute('data-title')}`;
+            navigator.clipboard.writeText(copyStr).then(() => customAlert(`📋 Copied:\n${copyStr}`)).catch(() => customAlert("Clipboard write blocked by browser."));
         }
     });
 
@@ -2334,43 +1606,27 @@
         }
     }
 
-    storyDropdown.addEventListener('change', () => {
-        evaluateLocalStorageRestrictions();
-        autoFillPreviousUserInputs();
-    });
-
-    deleteStorySelect.addEventListener('change', () => {
-        loadCurrentStoryNotes();
-    });
+    storyDropdown.addEventListener('change', () => { evaluateLocalStorageRestrictions(); autoFillPreviousUserInputs(); });
+    deleteStorySelect.addEventListener('change', () => { loadCurrentStoryNotes(); });
     
     readerSuggestions.addEventListener('change', () => {
-        const selectedHeading = readerSuggestions.value;
-        if (selectedHeading && headingToReviewerMap[selectedHeading]) {
-            headingSuggesterInput.value = headingToReviewerMap[selectedHeading];
-        } else {
-            headingSuggesterInput.value = "";
-        }
+        headingSuggesterInput.value = (readerSuggestions.value && headingToReviewerMap[readerSuggestions.value]) ? headingToReviewerMap[readerSuggestions.value] : "";
     });
 
     submitLoginBtn.addEventListener('click', async () => {
         const email = localEmailInput.value.trim();
         const password = localPassInput.value.trim();
 
-        if (!email || !password) {
-            customAlert("Please enter both email and password.");
-            return;
-        }
+        if (!email || !password) { customAlert("Please enter both email and password."); return; }
 
         submitLoginBtn.disabled = true;
         submitLoginBtn.textContent = "Authenticating...";
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
             isModeratorAuthenticated = true;
             
-            if (user.email === "dev@admin.com" || user.email === "dev@kathasagaram.com") {
+            if (userCredential.user.email === "dev@admin.com" || userCredential.user.email === "dev@kathasagaram.com") {
                 isDeveloperModeUnlocked = true;
                 try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
                 customAlert("Authentication Successful (Dev)");
@@ -2388,11 +1644,8 @@
             evaluateLocalStorageRestrictions();
             evaluateSystemFreezeState();
             
-            localEmailInput.value = "";
-            localPassInput.value = "";
-
+            localEmailInput.value = ""; localPassInput.value = "";
         } catch (error) {
-            console.error(error.code, error.message);
             customAlert("Authentication failed. Please check your credentials.");
             localPassInput.value = "";
         } finally {
@@ -2401,18 +1654,14 @@
         }
     });
 
-    // --- OPTIMIZATION 3: Array Mapping for UI Chips ---
     function renderAccumulatedWinnersChips() {
-        winnersChipsContainer.innerHTML = accumulatedWinnersStateArray.map(name => 
-            `<div class="winner-chip">${sanitizeText(name)}</div>`
-        ).join('');
+        winnersChipsContainer.innerHTML = accumulatedWinnersStateArray.map(name => `<div class="winner-chip">${sanitizeText(name)}</div>`).join('');
         correctGuesses.value = "";
     }
 
     correctGuesses.addEventListener('change', () => {
         const selectedValue = correctGuesses.value;
         if (!selectedValue) return;
-
         if (!accumulatedWinnersStateArray.includes(selectedValue)) {
             accumulatedWinnersStateArray.push(selectedValue);
             renderAccumulatedWinnersChips();
@@ -2425,28 +1674,23 @@
         renderAccumulatedWinnersChips();
     });
 
-    // --- OPTIMIZATION 4: DOM Reflow Minimization in Live Review Table ---
     async function loadCurrentStoryNotes() {
         const targetSelected = deleteStorySelect.value;
         if (!targetSelected) {
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="font-style: italic; padding: 15px;">Select a story to load submissions</td></tr>`;
             return;
         }
 
-        if(storyDropdown.value !== targetSelected) {
-            storyDropdown.value = targetSelected;
-        }
+        if(storyDropdown.value !== targetSelected) storyDropdown.value = targetSelected;
 
         try {
             const docSnap = await getDoc(doc(db, "competitions", targetSelected));
-
             let readerOptionsHtml = '<option value="">-- Title --</option>';
             let suggesterOptionsHtml = '<option value="">-- Name --</option>';
             let winnerOptionsHtml = '<option value="">-- Select Winner --</option>'; 
 
             accumulatedWinnersStateArray = [];
             headingToReviewerMap = {};
-            let hasSuggestions = false;
             let dailyHtml = "";
             let reviewCount = 0;
 
@@ -2454,59 +1698,40 @@
                 const data = docSnap.data();
                 activeStorySnapshotDataCache = data;
 
-                let rawSavedHeadingMatchValue = data._suggestions || "";
-                let rawSavedSuggesterMatchValue = data._suggesterName || "";
-                let rawSavedAuthorGivenHeading = data._authorGivenHeading || "";
-
-                authorGivenHeadingInput.value = rawSavedAuthorGivenHeading !== "*****" ? rawSavedAuthorGivenHeading : "";
-
-                if (data._guesses && data._guesses !== "*****") {
-                    accumulatedWinnersStateArray = data._guesses.split(',').map(s => s.trim()).filter(s => s.length > 0);
-                }
+                authorGivenHeadingInput.value = (data._authorGivenHeading && data._authorGivenHeading !== "*****") ? data._authorGivenHeading : "";
+                if (data._guesses && data._guesses !== "*****") accumulatedWinnersStateArray = data._guesses.split(',').map(s => s.trim()).filter(s => s.length > 0);
 
                 Object.keys(data).forEach(reviewerKey => {
-                    if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses' && reviewerKey !== '_authorGivenHeading' && reviewerKey !== 'season') {
+                    if (!['created', '_suggestions', '_suggesterName', '_guesses', '_authorGivenHeading', 'season'].includes(reviewerKey)) {
                         reviewCount++;
-                        let score = "N/A";
-                        let title = "None";
-                        let guess = "None";
+                        let score = "N/A", title = "None", guess = "None";
 
                         if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
                             score = sanitizeText(data[reviewerKey].score ?? "N/A");
                             title = sanitizeText(data[reviewerKey].suggestedTitle || "None");
                             guess = sanitizeText(data[reviewerKey].authorGuess || "None");
                             
-                            const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
-                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
+                            const tStr = data[reviewerKey].suggestedTitle ?? "";
+                            const gStr = data[reviewerKey].authorGuess ?? "";
 
-                            if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
-                                hasSuggestions = true;
-                                headingToReviewerMap[currentSuggestedTitle] = reviewerKey;
-                                
-                                readerOptionsHtml += `<option value="${currentSuggestedTitle}">${currentSuggestedTitle}</option>`;
+                            if(tStr && tStr !== "None" && tStr.trim() !== "") {
+                                headingToReviewerMap[tStr] = reviewerKey;
+                                readerOptionsHtml += `<option value="${tStr}">${tStr}</option>`;
                                 suggesterOptionsHtml += `<option value="${reviewerKey}">${reviewerKey}</option>`;
                             }
-
-                            if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-                                winnerOptionsHtml += `<option value="${reviewerKey}">${reviewerKey}</option>`;
-                            }
+                            if (gStr && gStr !== "None" && gStr.trim() !== "") winnerOptionsHtml += `<option value="${reviewerKey}">${reviewerKey}</option>`;
                         } else {
                             score = sanitizeText(data[reviewerKey]);
                             title = "Legacy";
                         }
                         
                         dailyHtml += `<tr>
-                            <td>${sanitizeText(reviewerKey)}</td>
-                            <td>${score}</td>
-                            <td>${guess}</td>
+                            <td>${sanitizeText(reviewerKey)}</td><td>${score}</td><td>${guess}</td>
                             <td>
-                                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                <div class="flex-center gap-8">
                                     <span style="word-break: break-word;">${title}</span>
-                                    <button type="button" class="btn-copy-small btn-copy-row" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : 'style="flex-shrink: 0;"'}>
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
+                                    <button type="button" class="btn-copy-small btn-copy-row flex-center" data-reviewer="${sanitizeText(reviewerKey).replace(/"/g, '&quot;')}" data-title="${sanitizeText(title).replace(/"/g, '&quot;')}" title="Copy Reviewer & Title" ${(title === "None" || title === "Legacy" || !title) ? 'style="opacity:0.3; cursor:not-allowed;" disabled' : 'style="flex-shrink: 0;"'}>
+                                        <svg width="14" height="14"><use href="#icon-copy"></use></svg>
                                     </button>
                                 </div>
                             </td>
@@ -2518,14 +1743,12 @@
                 headingSuggesterInput.innerHTML = suggesterOptionsHtml;
                 correctGuesses.innerHTML = winnerOptionsHtml;
 
-                if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
-                if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
+                if(data._suggestions) readerSuggestions.value = data._suggestions;
+                if(data._suggesterName) headingSuggesterInput.value = data._suggesterName;
 
                 renderAccumulatedWinnersChips();
                 
-                if(reviewCount === 0) {
-                    dailyHtml = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
-                }
+                if(reviewCount === 0) dailyHtml = `<tr><td colspan="4" class="text-center" style="padding: 15px; font-style: italic;">No reviews submitted for this story yet.</td></tr>`;
                 dailyReviewsTableBody.innerHTML = dailyHtml;
 
             } else {
@@ -2535,11 +1758,10 @@
                 readerSuggestions.innerHTML = readerOptionsHtml;
                 headingSuggesterInput.innerHTML = suggesterOptionsHtml;
                 correctGuesses.innerHTML = winnerOptionsHtml;
-                dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
+                dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="padding: 15px; font-style: italic;">Story data is empty or missing.</td></tr>`;
             }
         } catch(err) {
-            console.error(err);
-            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
+            dailyReviewsTableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="padding: 15px; font-style: italic; color: var(--danger);">Error loading reviews.</td></tr>`;
         }
     }
 
@@ -2551,10 +1773,7 @@
 
         try {
             saveModNameBtn.disabled = true;
-            await setDoc(doc(db, "app_state", "global_config"), {
-                modName: targetName,
-                isNameLocked: true
-            }, { merge: true });
+            await setDoc(doc(db, "app_state", "global_config"), { modName: targetName, isNameLocked: true }, { merge: true });
             customAlert("Moderator name locked and compiled successfully.");
         } catch(e) {
             customAlert("Error processing profile modifications.");
@@ -2572,17 +1791,14 @@
         const yearSuffix = new Date().getFullYear().toString().slice(-2);
         const generatedSeasonName = shortMonth + yearSuffix;
 
-        const guessTime = authorGuessLockTime.value.trim() || "23:59";
-        const titleTime = titleSuggestionLockTime.value.trim() || "23:59";
-        
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
                 month: monthVal,
                 topic: inputTopic.value.trim() || "*****",
                 seasonName: generatedSeasonName,
                 seasonStarted: true,
-                authorGuessLockTime: guessTime,
-                titleSuggestionLockTime: titleTime
+                authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59",
+                titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
             customAlert(`Season Configuration Saved.\nCurrent Season: ${generatedSeasonName}`);
         } catch(e) { customAlert("Database error saving variables."); }
@@ -2618,10 +1834,7 @@
         if (changelogSummary === null) return; 
         
         const validatedLogString = changelogSummary.trim() || "General performance optimizations and maintenance update patches.";
-        
-        let updatePayload = {
-            changesMade: arrayUnion(validatedLogString)
-        };
+        let updatePayload = { changesMade: arrayUnion(validatedLogString) };
         
         if (targetField === 'minor') {
             updatePayload.minor = currentVersionState.minor + 1;
@@ -2634,7 +1847,6 @@
             await setDoc(doc(db, "app_state", "version_control"), updatePayload, { merge: true });
             customAlert("🚀 Application platform version target pipeline built and deployed successfully.");
         } catch (err) {
-            console.error(err);
             customAlert("Error syncing version deployment metrics to Firestore storage collections.");
         }
     }
@@ -2647,9 +1859,7 @@
         let bulletsHtml = "";
         if (currentVersionState.changesMade.length > 0) {
             const mirroredArray = [...currentVersionState.changesMade].reverse();
-            mirroredArray.forEach(log => {
-                bulletsHtml += `<li>${sanitizeText(log)}</li>`;
-            });
+            mirroredArray.forEach(log => { bulletsHtml += `<li>${sanitizeText(log)}</li>`; });
         } else {
             bulletsHtml = `<li>Initial base system framework architecture initialized.</li>`;
         }
@@ -2663,7 +1873,6 @@
                 <ul class="about-list">${bulletsHtml}</ul>
             </div>
         `;
-        
         toggleMenu(false);
         customAlert(viewTemplate);
     });
@@ -2677,12 +1886,7 @@
             manualContentContainer.innerHTML = `
                 <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p>
                 <table class="manual-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%; text-align: center;">Feature</th>
-                            <th style="text-align: center;">Description</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th style="width: 45%; text-align: center;">Feature</th><th style="text-align: center;">Description</th></tr></thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
                         <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr>
@@ -2714,12 +1918,7 @@
             manualContentContainer.innerHTML = `
                 <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p>
                 <table class="manual-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%; text-align: center;">Feature</th>
-                            <th style="text-align: center;">Description</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th style="width: 45%; text-align: center;">Feature</th><th style="text-align: center;">Description</th></tr></thead>
                     <tbody>
                         <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr>
                         <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr>
@@ -2747,43 +1946,29 @@
         document.body.style.overflow = "";
     });
 
-    // --- Dynamic Season Compilation Logic ---
     async function compileMasterDataMatrix(seasonFilter = "All") {
         const querySnapshot = await getDocs(collection(db, "competitions"));
         const currentDateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
         let spreadsheetStringTemplate = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head>
-                <meta charset="UTF-8">
-                <style>
-                    table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }
-                    td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }
-                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }
-                </style>
-            </head>
-            <body>
-                <table>
+            <head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; } th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; } td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; } .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head>
+            <body><table>
         `;
 
         let tempTableBodyContent = "";
-
         let stories = [];
+        
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const storedSeason = data.season || "Legacy";
-            
-            if (seasonFilter === "All" || seasonFilter === storedSeason) {
-                stories.push({ id: doc.id, data: data });
-            }
+            if (seasonFilter === "All" || seasonFilter === storedSeason) stories.push({ id: doc.id, data: data });
         });
         
         stories.sort((a, b) => (b.data.created || 0) - (a.data.created || 0));
 
         if (stories.length === 0) {
-            const emptyMsg = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilter}</td></tr>`;
-            return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, tableBodyRows: emptyMsg };
+            return { rawHtmlTemplate: spreadsheetStringTemplate + `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilter}</td></tr></table></body></html>`, tableBodyRows: `<tr><td colspan="5" class="text-center" style="padding: 20px; font-style: italic;">No records found</td></tr>` };
         }
 
         stories.forEach((story) => {
@@ -2791,99 +1976,53 @@
             const storyTitle = sanitizeText(story.id);
 
             spreadsheetStringTemplate += `
-                <tr>
-                    <th colspan="5" class="story-heading">📖 Story: ${storyTitle}</th>
-                </tr>
-                <tr>
-                    <th><b>Date</b></th>
-                    <th><b>Reviewer Name</b></th>
-                    <th><b>Rating</b></th>
-                    <th><b>Author Guess</b></th>
-                    <th><b>Suggested Title</b></th>
-                </tr>
+                <tr><th colspan="5" class="story-heading">📖 Story: ${storyTitle}</th></tr>
+                <tr><th><b>Date</b></th><th><b>Reviewer Name</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>
             `;
 
             tempTableBodyContent += `
-                <tr>
-                    <th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">
-                        📖 Story: ${storyTitle}
-                    </th>
-                </tr>
-                <tr>
-                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th>
-                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th>
-                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th>
-                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th>
-                    <th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th>
-                </tr>
+                <tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: var(--border);">📖 Story: ${storyTitle}</th></tr>
+                <tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>
             `;
 
             let reviewRows = [];
             Object.keys(data).forEach(key => {
-                if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses' && key !== '_authorGivenHeading' && key !== 'season') {
+                if (!['created', '_suggestions', '_suggesterName', '_guesses', '_authorGivenHeading', 'season'].includes(key)) {
                     if (typeof data[key] === 'object' && data[key] !== null) {
-                        reviewRows.push({
-                            reviewer: sanitizeText(key),
-                            score: sanitizeText(data[key].score ?? "N/A"),
-                            title: sanitizeText(data[key].suggestedTitle ?? "None"),
-                            guess: sanitizeText(data[key].authorGuess ?? "None")
-                        });
+                        reviewRows.push({ reviewer: sanitizeText(key), score: sanitizeText(data[key].score ?? "N/A"), title: sanitizeText(data[key].suggestedTitle ?? "None"), guess: sanitizeText(data[key].authorGuess ?? "None") });
                     } else {
-                        reviewRows.push({
-                            reviewer: sanitizeText(key),
-                            score: sanitizeText(data[key]),
-                            title: "Legacy",
-                            guess: "None"
-                        });
+                        reviewRows.push({ reviewer: sanitizeText(key), score: sanitizeText(data[key]), title: "Legacy", guess: "None" });
                     }
                 }
             });
 
             if (reviewRows.length === 0) {
-                const emptyRow = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
+                const emptyRow = `<tr><td colspan="5" class="text-center" style="font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
                 spreadsheetStringTemplate += emptyRow;
                 tempTableBodyContent += emptyRow;
             } else {
                 reviewRows.forEach(review => {
-                    const rowHtml = `
-                        <tr>
-                            <td>${currentDateStr}</td>
-                            <td>${review.reviewer}</td>
-                            <td>${review.score}</td>
-                            <td>${review.guess}</td>
-                            <td>${review.title}</td>
-                        </tr>
-                    `;
+                    const rowHtml = `<tr><td>${currentDateStr}</td><td>${review.reviewer}</td><td>${review.score}</td><td>${review.guess}</td><td>${review.title}</td></tr>`;
                     spreadsheetStringTemplate += rowHtml;
                     tempTableBodyContent += rowHtml;
                 });
             }
         });
 
-        spreadsheetStringTemplate += `
-                </table>
-            </body>
-            </html>
-        `;
-
-        return {
-            rawHtmlTemplate: spreadsheetStringTemplate,
-            tableBodyRows: tempTableBodyContent
-        };
+        spreadsheetStringTemplate += `</table></body></html>`;
+        return { rawHtmlTemplate: spreadsheetStringTemplate, tableBodyRows: tempTableBodyContent };
     }
 
     async function loadPreviewTable() {
-        const badge = document.getElementById('previewLoadingBadge');
-        const tbody = document.getElementById('previewTableBody');
+        const badge = $('previewLoadingBadge');
+        const tbody = $('previewTableBody');
         badge.style.display = "inline";
         
         try {
-            const tgtSeason = document.getElementById('previewSeasonSelect').value;
-            const matrixData = await compileMasterDataMatrix(tgtSeason);
+            const matrixData = await compileMasterDataMatrix($('previewSeasonSelect').value);
             tbody.innerHTML = matrixData.tableBodyRows;
         } catch (e) {
-            console.error(e);
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Error compiling data.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="color: red;">Error compiling data.</td></tr>`;
         } finally {
             badge.style.display = "none";
         }
@@ -2891,54 +2030,47 @@
 
     previewBtn.addEventListener('click', async () => {
         toggleMenu(false);
-        document.getElementById('fullscreenPreviewOverlay').classList.remove('hidden');
+        $('fullscreenPreviewOverlay').classList.remove('hidden');
         document.body.style.overflow = "hidden";
         await loadPreviewTable(); 
     });
 
-    document.getElementById('previewCloseBtn').addEventListener('click', () => {
-        document.getElementById('fullscreenPreviewOverlay').classList.add('hidden');
+    $('previewCloseBtn').addEventListener('click', () => {
+        $('fullscreenPreviewOverlay').classList.add('hidden');
         document.body.style.overflow = "";
     });
 
-    document.getElementById('previewSeasonSelect').addEventListener('change', loadPreviewTable);
+    $('previewSeasonSelect').addEventListener('change', loadPreviewTable);
 
-    // Dynamic Download Flow Routing Controller
-    const triggerDownloadModalFlow = () => {
+    downloadBtn.addEventListener('click', () => {
         toggleMenu(false);
-        document.getElementById('downloadSeasonModal').classList.remove('hidden');
-    };
-
-    downloadBtn.addEventListener('click', triggerDownloadModalFlow);
-
-    document.getElementById('cancelDownloadBtn').addEventListener('click', () => {
-        document.getElementById('downloadSeasonModal').classList.add('hidden');
+        $('downloadSeasonModal').classList.remove('hidden');
     });
 
-    document.getElementById('confirmDownloadBtn').addEventListener('click', async () => {
-        const btn = document.getElementById('confirmDownloadBtn');
+    $('cancelDownloadBtn').addEventListener('click', () => $('downloadSeasonModal').classList.add('hidden'));
+
+    $('confirmDownloadBtn').addEventListener('click', async () => {
+        const btn = $('confirmDownloadBtn');
         btn.disabled = true;
         btn.textContent = "Processing...";
 
         try {
-            const tgtSeason = document.getElementById('downloadSeasonSelect').value;
+            const tgtSeason = $('downloadSeasonSelect').value;
             const matrixData = await compileMasterDataMatrix(tgtSeason);
 
             const blob = new Blob([matrixData.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
             const downloadUrl = URL.createObjectURL(blob);
-
             const clientLink = document.createElement("a");
+            
             clientLink.href = downloadUrl;
             clientLink.download = `Competition_Master_Data_${tgtSeason}_${new Date().toISOString().split('T')[0]}.html`;
-
             document.body.appendChild(clientLink);
             clientLink.click();
             document.body.removeChild(clientLink);
 
-            document.getElementById('downloadSeasonModal').classList.add('hidden');
+            $('downloadSeasonModal').classList.add('hidden');
             customAlert("📊 Data payload compressed and exported securely.");
         } catch (err) {
-            console.error(err);
             customAlert("Error exporting document file streams.");
         } finally {
             btn.disabled = false;
@@ -2950,38 +2082,25 @@
         if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, clear the Subject, and set Season to Jan00.")) {
             try {
                 await setDoc(doc(db, "app_state", "global_config"), { 
-                    modName: "Mod",
-                    isNameLocked: false,
-                    month: "January",
-                    topic: "",
-                    seasonName: "Jan00",
-                    seasonStarted: false
+                    modName: "Mod", isNameLocked: false, month: "January",
+                    topic: "", seasonName: "Jan00", seasonStarted: false
                 }, { merge: true });
                 customAlert("Season reset successfully.");
-            } catch(e) {
-                customAlert("Error resetting season.");
-            }
+            } catch(e) { customAlert("Error resetting season."); }
         }
     });
 
     function checkAndRestoreSession() {
         try {
             const savedAuth = sessionStorage.getItem('authMode');
-
             if (savedAuth === 'developer') {
-                isModeratorAuthenticated = true;
-                isDeveloperModeUnlocked = true;
-                sidebarModOptions.classList.remove('hidden');
-                navBtnModerator.click();
+                isModeratorAuthenticated = true; isDeveloperModeUnlocked = true;
+                sidebarModOptions.classList.remove('hidden'); navBtnModerator.click();
             } else if (savedAuth === 'moderator') {
-                isModeratorAuthenticated = true;
-                isDeveloperModeUnlocked = false;
-                sidebarModOptions.classList.remove('hidden');
-                navBtnModerator.click(); 
+                isModeratorAuthenticated = true; isDeveloperModeUnlocked = false;
+                sidebarModOptions.classList.remove('hidden'); navBtnModerator.click(); 
             }
-        } catch (e) {
-            console.error("Session storage blocked by browser", e);
-        }
+        } catch (e) {}
     }
 
     checkAndRestoreSession();
@@ -2989,21 +2108,13 @@
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             if (!(await customConfirm("Confirm Logout!"))) return;
-
-            try {
-                await signOut(auth);
-                sessionStorage.removeItem('authMode'); 
-            } catch(e) {
-                console.error("Error signing out", e);
-            }
-
+            try { await signOut(auth); sessionStorage.removeItem('authMode'); } catch(e) {}
+            
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
             sidebarModOptions.classList.add('hidden'); 
-            
             navBtnReviewer.click(); 
             evaluateLocalStorageRestrictions();
-
             customAlert("Logout Successful");
         });
     }
