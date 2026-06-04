@@ -23,7 +23,7 @@
             --dev-color: #7b2cbf;
             --danger: #c93b3b;
             --purple-banner: #4a154b;
-            --border-color: #dddddd; /* Base border mapped for dark themes */
+            --border-color: #dddddd; 
             
             /* Component Defaults */
             --card-bg: transparent;
@@ -77,7 +77,7 @@
             --status-text: #5f2020;
             --status-shadow: none;
 
-            /* Cascading Mapped Variables (These update automatically in all themes) */
+            /* Cascading Mapped Variables */
             --border: 1px solid var(--border-color);
             --card-border: 1px solid var(--border-color);
             --nav-active-color: var(--primary);
@@ -1167,19 +1167,19 @@
             <form id="ratingForm">
                 <div class="form-group">
                     <label for="friendName">Your Name *</label>
-                    <input type="text" id="friendName" placeholder="Enter your name precisely">
+                    <input type="text" id="friendName" placeholder="********">
                 </div>
                 <div class="form-group">
                     <label for="ratingValue">Rating (1 to 10) *</label>
-                    <input type="number" id="ratingValue" min="1" max="10" placeholder="e.g. 9">
+                    <input type="text" id="ratingValue" placeholder="********">
                 </div>
                 <div class="form-group hidden" id="userAuthorGuessGroup">
                     <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
-                    <input type="text" id="authorGuess" placeholder="Who do you think wrote this?">
+                    <input type="text" id="authorGuess" placeholder="********">
                 </div>
                 <div class="form-group hidden" id="userTitleSuggestionGroup">
                     <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
-                    <input type="text" id="titleSuggestion" placeholder="Give this story a creative title...">
+                    <input type="text" id="titleSuggestion" placeholder="********">
                 </div>
                 <button type="submit" id="submitRatingBtn">Submit Review</button>
             </form>
@@ -1729,6 +1729,13 @@
     const initYy = String(initToday.getFullYear()).slice(-2);
     document.getElementById('currentDateDisplay').textContent = `${initDd}/${initMm}/${initYy}`;
 
+    // Helper event listeners to clear default asterisks placeholder state
+    [friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput].forEach(input => {
+        input.addEventListener('focus', function() {
+            if (this.value === '********') this.value = '';
+        });
+    });
+
     navBtnReviewer.addEventListener('click', () => {
         try {
             navBtnReviewer.classList.add('active-panel-indicator');
@@ -1775,18 +1782,43 @@
         }
 
         const friendName = friendNameInput.value.trim();
-        const rating = parseInt(ratingValueInput.value, 10);
-        const authorGuess = authorGuessInput.value.trim() || "None";
-        const titleSuggestion = titleSuggestionInput.value.trim() || "None";
+        let ratingRaw = ratingValueInput.value.trim();
+        let authorGuess = authorGuessInput.value.trim();
+        let titleSuggestion = titleSuggestionInput.value.trim();
+        
+        // Handle defaults if skipped or left as place holders
+        if (authorGuess === "" || authorGuess === "********") authorGuess = "None";
+        if (titleSuggestion === "" || titleSuggestion === "********") titleSuggestion = "None";
 
-        if (!friendName) {
+        if (!friendName || friendName === "********") {
             customAlert("Please enter your name.");
             return;
         }
 
-        if (isNaN(rating) || rating < 1 || rating > 10) {
-            customAlert("Please enter a valid rating between 1 and 10.");
-            return;
+        // Processing existing rating logic when a regular user is returning just to update title/author
+        if (!isDeveloperModeUnlocked && localStorage.getItem(`rated_${targetStory}`) === "true") {
+            try {
+                const storedUserData = JSON.parse(localStorage.getItem(`userdata_${targetStory}`));
+                ratingRaw = storedUserData.score; // Reuse original locked rating
+            } catch (e) {}
+        } else {
+            // Processing rating for developer bypass or first-time reviewers
+            if (isDeveloperModeUnlocked) {
+                if (ratingRaw === "" || ratingRaw === "********") {
+                    ratingRaw = "N/A"; // Allowed for Developer
+                } else {
+                    let r = parseInt(ratingRaw, 10);
+                    if (!isNaN(r)) ratingRaw = r;
+                }
+            } else {
+                // strict validation for standard users on first submission
+                const rating = parseInt(ratingRaw, 10);
+                if (isNaN(rating) || rating < 1 || rating > 10) {
+                    customAlert("Please enter a valid rating between 1 and 10.");
+                    return;
+                }
+                ratingRaw = rating; 
+            }
         }
 
         submitRatingBtn.disabled = true;
@@ -1795,22 +1827,23 @@
         try {
             await setDoc(doc(db, "competitions", targetStory), {
                 [friendName]: {
-                    score: rating,
+                    score: ratingRaw,
                     authorGuess: authorGuess,
                     suggestedTitle: titleSuggestion
                 }
             }, { merge: true });
 
-            localStorage.setItem(`rated_${targetStory}`, "true");
-            localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({
-                name: friendName,
-                score: rating,
-                authorGuess: authorGuess,
-                suggestedTitle: titleSuggestion
-            }));
+            if (!isDeveloperModeUnlocked) {
+                localStorage.setItem(`rated_${targetStory}`, "true");
+                localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({
+                    name: friendName,
+                    score: ratingRaw,
+                    authorGuess: authorGuess,
+                    suggestedTitle: titleSuggestion
+                }));
+            }
 
             customAlert("Review submitted successfully! Thank you.");
-            
             evaluateLocalStorageRestrictions(); 
 
         } catch (error) {
@@ -2177,13 +2210,14 @@
             const targetStory = storyDropdown.value;
             if (!targetStory) return;
 
+            // Strict Developer Bypass Route
             if (isDeveloperModeUnlocked) {
                 friendNameInput.disabled = false;
                 ratingValueInput.disabled = false;
                 authorGuessInput.disabled = false;
                 titleSuggestionInput.disabled = false;
                 submitRatingBtn.disabled = false;
-                submitRatingBtn.textContent = "Submit Review (Dev Mode Bypass)";
+                submitRatingBtn.textContent = "Submit Review (Dev Bypass)";
                 return;
             }
 
@@ -2204,43 +2238,34 @@
 
             const storageMarkerKey = `rated_${targetStory}`;
             const hasRated = localStorage.getItem(storageMarkerKey) === "true";
-            
-            let alreadyGuessedAuthor = false;
-            let alreadySuggestedTitle = false;
 
+            // If a standard user has already committed their single mandatory rating
             if (hasRated) {
-                const storedUserData = localStorage.getItem(`userdata_${targetStory}`);
-                if (storedUserData) {
-                    try {
-                        const parsedData = JSON.parse(storedUserData);
-                        alreadyGuessedAuthor = parsedData.authorGuess && parsedData.authorGuess !== "None";
-                        alreadySuggestedTitle = parsedData.suggestedTitle && parsedData.suggestedTitle !== "None";
-                    } catch(e) {}
-                }
-            }
-
-            friendNameInput.disabled = hasRated;
-            ratingValueInput.disabled = hasRated;
-
-            authorGuessInput.disabled = !isAuthorGuessEnabled || alreadyGuessedAuthor || isPreviousDay || pastAuthorGuessTime;
-            titleSuggestionInput.disabled = !isTitleSuggestionEnabled || alreadySuggestedTitle || isPreviousDay || pastTitleSuggestionTime;
-
-            if (friendNameInput.disabled && authorGuessInput.disabled && titleSuggestionInput.disabled) {
-                submitRatingBtn.disabled = true;
-                if (isPreviousDay && hasRated) {
-                    submitRatingBtn.textContent = "Ratings locked (Already Submitted)";
-                } else if (hasRated && (pastAuthorGuessTime || pastTitleSuggestionTime)) {
-                    submitRatingBtn.textContent = "Time expired for suggestions";
-                } else if (hasRated) {
-                    submitRatingBtn.textContent = "Review Submitted";
+                friendNameInput.disabled = true;
+                ratingValueInput.disabled = true;
+                
+                // Keep optional inputs available ONLY if conditions still permit them
+                authorGuessInput.disabled = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
+                titleSuggestionInput.disabled = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                
+                // Change UI button context based on whether update locks apply
+                if (authorGuessInput.disabled && titleSuggestionInput.disabled) {
+                    submitRatingBtn.disabled = true;
+                    submitRatingBtn.textContent = "Ratings & Options Locked";
+                } else {
+                    submitRatingBtn.disabled = false;
+                    submitRatingBtn.textContent = "Update Suggestions";
                 }
             } else {
+                // If they haven't rated, enable fields according to time locks
+                friendNameInput.disabled = false;
+                ratingValueInput.disabled = false;
+                
+                authorGuessInput.disabled = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
+                titleSuggestionInput.disabled = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                
                 submitRatingBtn.disabled = false;
-                if (hasRated) {
-                    submitRatingBtn.textContent = "Update Suggestions";
-                } else {
-                    submitRatingBtn.textContent = "Submit Review";
-                }
+                submitRatingBtn.textContent = "Submit Review";
             }
         } catch (e) {
             console.error("Local storage initialization error.", e);
@@ -2330,7 +2355,11 @@
                 titleSuggestionInput.value = parsedData.suggestedTitle !== "None" ? parsedData.suggestedTitle : "";
             } catch (e) {}
         } else {
-            ratingForm.reset();
+            // Apply the raw "********" value state to the inputs as requested
+            friendNameInput.value = "********";
+            ratingValueInput.value = "********";
+            authorGuessInput.value = "********";
+            titleSuggestionInput.value = "********";
         }
     }
 
