@@ -978,278 +978,374 @@
 
         /* =========================================
            LUXURY DARK FANTASY ADMIN OVERRIDES 🐺✨
-           (House Stark Inspired Developer Panel)
            ========================================= */
 
-        /* 1. Global Dark Background */
-        body {
-            background-color: #050505 !important;
+        /* Ensure Dev Interface is properly contained and doesn't break layout */
+        #devInterface {
+            display: block !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
 
-        /* 2. LOTR Blade on Moderator Login (Replaces Emoji via CSS) */
-        #loginInterface h2 span {
-            font-size: 0 !important; /* Hides the standard emoji */
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            /* Custom SVG Elven Blade */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='%23D4A017'%3E%3Cpath d='M12 2C12 2 14.5 7 14.5 12L16 15L16 17L13 17L13 22L11 22L11 17L8 17L8 15L9.5 12C9.5 7 12 2 12 2Z'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            /* Note: Your inline rotate(180deg) handles the upside-down requirement automatically */
-        }
-
-        /* 3. Dev Menu Main Container */
         #devInterface .dev-dark-gold-box {
-            background: linear-gradient(180deg, #0D0D0D, #090909) !important;
+            background: #0A0A0A !important;
             border: 1px solid rgba(212, 160, 23, 0.15) !important;
-            border-radius: 28px !important;
-            padding: 24px !important;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45) !important;
-            margin-top: 24px;
-        }
-
-        /* 4. Header Section */
-        #devInterface .dev-header {
-            border-bottom: 1px solid rgba(212, 160, 23, 0.15) !important;
-            padding-bottom: 24px !important;
-            margin-bottom: 32px !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 20px !important;
-        }
-        #devInterface .dev-lion-logo {
-            width: 72px !important;
-            height: 72px !important;
-            border-radius: 50% !important;
-            background-color: #121212 !important;
-            border: 2px solid #D4A017 !important;
-            box-shadow: 0 0 20px rgba(212, 160, 23, 0.25) !important;
-            object-fit: cover !important;
-        }
-        #devInterface .dev-header h2 {
-            font-size: 34px !important;
-            font-weight: 700 !important;
-            color: #D4A017 !important;
-            text-shadow: 0 4px 10px rgba(212, 160, 23, 0.2) !important;
-        }
-
-        /* 5. Section Cards */
-        #devInterface .form-group,
-        #devInterface .danger-toggle {
-            background: #111111 !important;
-            border: 1px solid rgba(255, 255, 255, 0.05) !important;
             border-radius: 24px !important;
-            padding: 20px !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
-            margin-bottom: 32px !important;
+            padding: 24px !important;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
+            margin: 20px auto !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
 
-        /* 6. Version Number Fields */
-        #devInterface .version-grid {
-            gap: 16px !important;
-            margin-bottom: 24px !important;
+        /* Override any weird inline widths causing elements to float */
+        #devInterface * {
+            box-sizing: border-box !important;
         }
+
+        /* Header adjustments */
+        #devInterface .dev-header > div:first-child {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+            align-items: center !important;
+            position: relative !important;
+            flex-wrap: wrap !important;
+        }
+        
+        #devInterface .dev-lion-logo {
+            width: 64px !important;
+            height: 64px !important;
+            border: 2px solid #D4A017 !important;
+            box-shadow: 0 0 15px rgba(212, 160, 23, 0.2) !important;
+            margin-right: 15px !important;
+        }
+
+        /* Header Text and Subtitle injection */
+        #devInterface h2 {
+            font-size: 26px !important;
+            color: #D4A017 !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+            border: none !important;
+        }
+        
+        /* Subtitle using pseudo-element on the header wrapper */
+        #devInterface .dev-header > div:first-child::after {
+            content: "◈ \A Manage application settings";
+            white-space: pre-wrap;
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: #8A8A8A;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            line-height: 1.8;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 16px;
+        }
+
+        /* Cards generic */
+        #devInterface .form-group, #devInterface .danger-toggle {
+            background: #121212 !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            border-radius: 16px !important;
+            padding: 20px !important;
+            margin-bottom: 0 !important; 
+            width: 100% !important;
+        }
+
+        /* Version Config Specifics */
+        #devInterface .form-group label {
+            color: #FFFFFF !important;
+            font-size: 16px !important;
+            margin-bottom: 16px !important;
+            border-bottom: none !important;
+        }
+
+        #devInterface .version-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
         #devInterface .version-box {
-            border-radius: 18px !important;
-            height: 90px !important;
-            background: linear-gradient(180deg, #181818, #111111) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: linear-gradient(180deg, #1A1A1A, #111111) !important;
+            border: 1px solid rgba(255,255,255,0.08) !important;
+            border-radius: 12px !important;
+            height: 70px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             position: relative !important;
-            overflow: hidden !important;
-            padding: 0 !important;
         }
-        /* Bottom Glow Injection */
+
         #devInterface .version-box::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 30%;
-            right: 30%;
-            height: 3px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
             background: #D4A017;
-            box-shadow: 0 -4px 12px rgba(212, 160, 23, 0.5);
-            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -2px 8px rgba(212, 160, 23, 0.6);
+            border-radius: 2px 2px 0 0;
         }
+
         #devInterface .version-num {
-            font-size: 48px !important;
-            font-weight: 700 !important;
+            font-size: 32px !important;
             color: #FFFFFF !important;
         }
 
-        /* 7. Major / Minor / Revision Buttons */
+        /* Major Minor Revision Buttons */
         #devInterface .btn-row:first-of-type {
-            gap: 16px !important;
+            display: flex !important;
+            gap: 12px !important;
             margin-bottom: 16px !important;
         }
+
         #btnUpdateMajor, #btnUpdateMinor, #btnUpdateRevision {
-            border-radius: 999px !important;
-            height: 56px !important;
-            background: #0F0F0F !important;
+            flex: 1 !important;
+            background: transparent !important;
             border: 1px solid rgba(212, 160, 23, 0.5) !important;
             color: #D4A017 !important;
-            font-weight: 600 !important;
-            transition: all 0.25s ease !important;
-            box-shadow: none !important;
-            font-size: 14px !important;
+            border-radius: 24px !important;
+            height: 40px !important;
+            font-size: 13px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s !important;
         }
         #btnUpdateMajor:hover, #btnUpdateMinor:hover, #btnUpdateRevision:hover {
-            background: #D4A017 !important;
-            color: #000000 !important;
-            transform: scale(1.02) !important;
+            background: rgba(212, 160, 23, 0.1) !important;
+            border-color: #D4A017 !important;
         }
 
-        /* 8. Version History Button */
+        /* Version History Button */
         #devVersionHistoryBtn {
-            border-radius: 22px !important;
-            height: 72px !important;
+            width: 100% !important;
             background: linear-gradient(135deg, #F7C948, #D4A017) !important;
             color: #000000 !important;
-            font-weight: 700 !important;
-            font-size: 16px !important;
-            box-shadow: 0 10px 25px rgba(212, 160, 23, 0.25) !important;
-            transition: all 0.25s ease !important;
+            border-radius: 12px !important;
+            height: 50px !important;
+            font-size: 15px !important;
+            font-weight: bold !important;
             border: none !important;
+            box-shadow: 0 4px 15px rgba(212, 160, 23, 0.2) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
         }
-        #devVersionHistoryBtn:hover {
-            transform: scale(1.02) translateY(-2px) !important;
-            box-shadow: 0 15px 30px rgba(212, 160, 23, 0.4) !important;
+        #devVersionHistoryBtn::before {
+            content: '📄';
+            font-size: 16px;
         }
 
-        /* 9. Exclusive Mode Card & Toggle */
+        /* Exclusive Mode Card */
         #devInterface .danger-toggle {
-            height: 120px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
-            width: auto !important; 
-            box-sizing: border-box !important;
+            position: relative !important;
+            overflow: hidden !important;
         }
+        
+        /* Wolf watermark */
+        #devInterface .danger-toggle::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            bottom: -20px;
+            width: 150px;
+            background-image: url("BG_Lion.png"); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05;
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+
         #exclusiveModeText {
             display: flex !important;
-            align-items: center !important;
-            gap: 16px !important;
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            color: #FFFFFF !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 4px !important;
+            position: relative !important;
+            z-index: 2 !important;
         }
+
         #exclusiveModeText svg {
-            width: 32px !important;
-            height: 32px !important;
-            padding: 16px !important;
-            background: #181818 !important;
-            border-radius: 18px !important;
-            box-sizing: content-box !important;
+            display: none !important; /* Hide original inline SVG */
         }
+
+        #exclusiveModeText::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: #1A1A1A;
+            border-radius: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='%23D4A017'%3E%3Cpath d='M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z'/%3E%3C/svg%3E");
+            background-size: 24px;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 4px;
+            border: 1px solid rgba(212,160,23,0.2);
+        }
+        
+        #exclusiveModeText::after {
+            content: 'Enable reviewer-only access';
+            font-size: 12px;
+            color: #8A8A8A;
+            font-weight: normal;
+        }
+
+        /* Toggle Switch */
         #devInterface .switch {
-            width: 72px !important;
-            height: 40px !important;
-            transform: none !important;
-            margin: 0 !important;
+            z-index: 2 !important;
         }
         #devInterface .slider {
             background-color: #2A2A2A !important;
-            border-radius: 999px !important;
         }
         #devInterface input:checked + .slider {
-            background-color: #D4A017 !important;
+            background-color: #333 !important;
         }
         #devInterface .slider:before {
-            height: 32px !important;
-            width: 32px !important;
-            left: 4px !important;
-            bottom: 4px !important;
             background-color: #FFFFFF !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-        }
-        #devInterface input:checked + .slider:before {
-            transform: translateX(32px) !important;
         }
 
-        /* 10. Action Buttons (Reset, Preview) */
+        /* Action Buttons Row */
         #devInterface .btn-row:last-of-type {
-            flex-direction: column !important;
-            gap: 16px !important;
-        }
-        #devSeasonResetBtn, #devLoadFeedbackBtn, #devDownloadFeedbackBtn {
-            border-radius: 22px !important;
-            height: 78px !important;
-            background: #121212 !important;
-            border: 1px solid rgba(212, 160, 23, 0.25) !important;
-            color: #D4A017 !important;
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 12px !important;
             width: 100% !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
+            margin-top: 0 !important;
+        }
+
+        #devSeasonResetBtn, #devLoadFeedbackBtn {
+            flex: 1 !important;
+            background: #121212 !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            color: #D4A017 !important;
+            border-radius: 16px !important;
+            height: 60px !important;
+            font-size: 13px !important;
             display: flex !important;
             align-items: center !important;
-            justify-content: flex-start !important;
-            padding: 0 20px !important;
-            transition: all 0.25s ease !important;
-            box-shadow: none !important;
-        }
-        #devSeasonResetBtn:hover, #devLoadFeedbackBtn:hover, #devDownloadFeedbackBtn:hover {
-            background: #1A1A1A !important;
-            transform: scale(1.02) translateY(-2px) !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            padding: 0 10px !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+            text-align: center !important;
+            line-height: 1.2 !important;
         }
 
-        /* CSS-injected Icon Containers for Action Buttons */
-        #devSeasonResetBtn::before, #devLoadFeedbackBtn::before, #devDownloadFeedbackBtn::before {
+        #devSeasonResetBtn::before, #devLoadFeedbackBtn::before {
             content: '';
             display: inline-block;
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            background-color: #181818;
-            background-position: center;
-            background-size: 24px;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
             background-repeat: no-repeat;
-            margin-right: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background-position: center;
+            flex-shrink: 0 !important;
         }
+
         #devSeasonResetBtn::before {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4A017' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8'/%3E%3Cpath d='M3 3v5h5'/%3E%3C/svg%3E");
         }
+
         #devLoadFeedbackBtn::before {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4A017' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
         }
-        #devDownloadFeedbackBtn::before {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4A017' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
+
+        #devDownloadFeedbackBtn {
+            display: none !important; 
+            width: 100% !important;
+            background: #121212 !important;
+            border: 1px solid #D4A017 !important;
+            color: #D4A017 !important;
+            border-radius: 16px !important;
+            height: 60px !important;
+            margin-top: 12px !important;
+        }
+        #devDownloadFeedbackBtn:not(.hidden) {
+            display: flex !important;
         }
 
-        /* 11. Bottom Navigation */
+        /* 2. LOTR Blade on Moderator Login */
+        #loginInterface h2 span {
+            font-size: 0 !important; 
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='%23D4A017'%3E%3Cpath d='M12 2C12 2 14.5 7 14.5 12L16 15L16 17L13 17L13 22L11 22L11 17L8 17L8 15L9.5 12C9.5 7 12 2 12 2Z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Fix the Bottom Nav alignment based on Image 2 */
         .system-navigation-footer-bar {
-            border-radius: 28px !important;
-            height: 88px !important;
-            background: #0F0F0F !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
-            width: calc(100vw - 48px) !important;
-            left: 24px !important;
-            bottom: 24px !important;
-            border: 1px solid rgba(255, 255, 255, 0.05) !important;
-            overflow: hidden;
-            padding: 8px !important;
-            box-sizing: border-box !important;
-            backdrop-filter: blur(10px) !important;
+            background: #0A0A0A !important;
+            border-top: 1px solid rgba(255,255,255,0.05) !important;
+            height: 70px !important;
+            padding: 8px 16px !important;
+            gap: 8px !important;
+            border-radius: 24px 24px 0 0 !important;
+            width: 100vw !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.5) !important;
         }
+
         .nav-split-trigger-btn {
-            border-radius: 20px !important;
-            color: #808080 !important;
-            font-weight: 600 !important;
-            transition: all 0.25s ease !important;
+            border-radius: 16px !important;
+            background: transparent !important;
+            color: #666 !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            font-size: 13px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
         }
-        .nav-split-trigger-btn.active-panel-indicator {
-            background-color: #161616 !important;
-            color: #D4A017 !important;
-            box-shadow: inset 0 -4px 0 0 #D4A017 !important;
-        }
+        
         .nav-split-trigger-btn:first-child {
-            border-right: none !important;
+            border-right: 1px solid rgba(255,255,255,0.05) !important;
             margin-right: 0 !important;
             padding-right: 0 !important;
+            border-image: none !important;
+        }
+
+        .nav-split-trigger-btn.active-panel-indicator {
+            background: #121212 !important;
+            color: #D4A017 !important;
+            border-color: rgba(212,160,23,0.3) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 -2px 0 0 #D4A017 !important;
+        }
+
+        #navBtnReviewer::before {
+            content: ''; display: inline-block; width: 18px; height: 18px;
+            background: currentColor;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E") center/contain no-repeat;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
+        #navBtnModerator::before {
+            content: ''; display: inline-block; width: 18px; height: 18px;
+            background: currentColor;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3C/svg%3E") center/contain no-repeat;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3C/svg%3E") center/contain no-repeat;
         }
     </style>
 </head>
