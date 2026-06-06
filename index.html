@@ -1072,7 +1072,7 @@
             margin-bottom: 16px !important;
         }
 
-        /* 9. Reduce box size of version values to match font size */
+        /* Reduce box size of version values to match font size */
         #devInterface .version-box {
             background: linear-gradient(180deg, #1A1A1A, #111111) !important;
             border: 1px solid rgba(255,255,255,0.08) !important;
@@ -1096,7 +1096,7 @@
             border-radius: 2px 2px 0 0;
         }
 
-        /* 8. Change version values font size to match version history font size */
+        /* Change version values font size to match version history font size */
         #devInterface .version-num {
             font-size: 15px !important; 
             color: #FFFFFF !important;
@@ -1127,10 +1127,10 @@
             border-color: #D4A017 !important;
         }
 
-        /* 1. Shrink button for Version History to size of name and reduce height */
+        /* Shrink button for Version History to size of name and reduce height + MOVE DOWN */
         #devVersionHistoryBtn {
             width: fit-content !important;
-            margin: 0 auto !important; 
+            margin: 16px auto 0 auto !important; /* Added 16px top margin to avoid overlap */
             background: linear-gradient(135deg, #F7C948, #D4A017) !important;
             color: #000000 !important;
             border-radius: 8px !important;
@@ -1159,7 +1159,7 @@
             overflow: hidden !important;
         }
         
-        /* 10. Keep lion watermark inside exclusive mode box */
+        /* Keep lion watermark inside exclusive mode box */
         #devInterface .danger-toggle::after {
             content: '';
             position: absolute;
@@ -1177,7 +1177,7 @@
             z-index: 1 !important;
         }
 
-        /* 4. Change font size of exclusive mode to match version history */
+        /* Change font size of exclusive mode to match version history */
         #exclusiveModeText {
             display: flex !important;
             flex-direction: row !important;
@@ -1190,7 +1190,7 @@
             flex: 1 !important;
         }
 
-        /* 2. Remove icons from exclusive mode and keep Queen icon */
+        /* Remove icons from exclusive mode and keep Queen icon */
         #exclusiveModeText svg {
             display: none !important; 
         }
@@ -1211,7 +1211,7 @@
             display: none !important; 
         }
 
-        /* 11. Move switch towards left so watermark is visible */
+        /* Move switch towards left so watermark is visible */
         #devInterface .switch {
             margin-right: 65px !important; 
             z-index: 2 !important;
@@ -1226,40 +1226,40 @@
             background-color: #FFFFFF !important;
         }
 
-        /* Action Buttons Row */
-        /* 5. Shrink season Reset, user feedback size to match name */
-        /* 3. Keep alignment center */
+        /* Action Buttons Row - SAME ROW */
         #devInterface .btn-row:last-of-type {
             display: flex !important;
             flex-direction: row !important;
+            flex-wrap: nowrap !important; /* Force same row */
             gap: 12px !important;
             width: 100% !important;
-            margin-top: 0 !important;
+            margin-top: 12px !important;
             justify-content: center !important; 
-            flex-wrap: wrap !important;
         }
 
+        /* Shrink size, center text */
         #devSeasonResetBtn, #devLoadFeedbackBtn, #devDownloadFeedbackBtn {
-            flex: none !important; 
-            width: fit-content !important; 
+            flex: 0 1 auto !important; 
+            width: max-content !important; 
+            max-width: 50% !important;
             background: #121212 !important;
             border: 1px solid rgba(255,255,255,0.05) !important;
             color: #D4A017 !important;
             border-radius: 8px !important;
             height: 36px !important; 
-            font-size: 13px !important;
+            font-size: 12px !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 8px !important;
-            padding: 0 16px !important;
+            text-align: center !important; /* Ensure names align to center */
+            gap: 6px !important;
+            padding: 0 12px !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
-            text-align: center !important;
-            line-height: 1.2 !important;
+            line-height: 1.1 !important;
+            white-space: normal !important;
         }
 
-        /* 3. Remove icons from user feedback, season reset... */
-        /* AND immediately inject the requested NEW SVGs via masks to inherit color seamlessly */
+        /* Add requested SVGs via masks to inherit color seamlessly */
         #devSeasonResetBtn::before, #devLoadFeedbackBtn::before, #devDownloadFeedbackBtn::before {
             content: '';
             display: inline-block;
@@ -1337,11 +1337,13 @@
             background: transparent !important;
             color: #666 !important;
             border: 1px solid rgba(255,255,255,0.05) !important;
-            font-size: 13px !important;
+            font-size: 12px !important;
             display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 8px !important;
+            flex-direction: column !important; /* Stacks icon above text */
+            align-items: center !important; /* Horizontally center */
+            justify-content: center !important; /* Vertically center */
+            text-align: center !important; /* Aligns name to center */
+            gap: 4px !important;
         }
         
         body:has(#devInterface:not(.hidden)) .nav-split-trigger-btn:first-child {
