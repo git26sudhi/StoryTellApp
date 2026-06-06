@@ -1046,7 +1046,7 @@
         /* Version Config Specifics */
         #devInterface .form-group label {
             color: #FFFFFF !important;
-            font-size: 16px !important;
+            font-size: 14px !important; /* Base size alignment for Version config */
             margin-bottom: 16px !important;
             border-bottom: none !important;
             display: flex !important;
@@ -1098,7 +1098,7 @@
 
         /* Change version values font size to match version history font size */
         #devInterface .version-num {
-            font-size: 15px !important; 
+            font-size: 14px !important; /* Matched exactly to Version Config / Version History size */
             color: #FFFFFF !important;
         }
 
@@ -1130,13 +1130,13 @@
         /* Shrink button for Version History to size of name and reduce height + MOVE DOWN */
         #devVersionHistoryBtn {
             width: fit-content !important;
-            margin: 16px auto 0 auto !important; /* Added 16px top margin to avoid overlap */
+            margin: 16px auto 0 auto !important; /* Pushed down to avoid overlap */
             background: linear-gradient(135deg, #F7C948, #D4A017) !important;
             color: #000000 !important;
             border-radius: 8px !important;
             height: 36px !important; 
             padding: 0 20px !important;
-            font-size: 15px !important;
+            font-size: 14px !important; /* Matched Version Config size */
             font-weight: bold !important;
             border: none !important;
             box-shadow: 0 4px 15px rgba(212, 160, 23, 0.2) !important;
@@ -1147,7 +1147,7 @@
         }
         
         #devVersionHistoryBtn::before {
-            display: none !important; /* Remove icon from version history to fit name purely */
+            display: none !important; 
         }
 
         /* Exclusive Mode Card */
@@ -1185,7 +1185,7 @@
             gap: 12px !important;
             position: relative !important;
             z-index: 2 !important;
-            font-size: 15px !important; 
+            font-size: 14px !important; /* Matched exactly to Version Config / Version History size */
             color: #FFFFFF !important;
             flex: 1 !important;
         }
@@ -1226,40 +1226,40 @@
             background-color: #FFFFFF !important;
         }
 
-        /* Action Buttons Row - SAME ROW */
+        /* Action Buttons Row - SAME ROW, EXACT FILL */
         #devInterface .btn-row:last-of-type {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: nowrap !important; /* Force same row */
+            flex-wrap: nowrap !important; /* STRICT force same line */
             gap: 12px !important;
             width: 100% !important;
             margin-top: 12px !important;
             justify-content: center !important; 
         }
 
-        /* Shrink size, center text */
+        /* Full entire row uniformly, shrink to name size */
         #devSeasonResetBtn, #devLoadFeedbackBtn, #devDownloadFeedbackBtn {
-            flex: 0 1 auto !important; 
-            width: max-content !important; 
-            max-width: 50% !important;
+            flex: 1 !important; /* Spreads buttons evenly across full row */
+            width: 100% !important; 
             background: #121212 !important;
             border: 1px solid rgba(255,255,255,0.05) !important;
             color: #D4A017 !important;
             border-radius: 8px !important;
-            height: 36px !important; 
-            font-size: 12px !important;
+            height: auto !important; /* Shrinks tightly around content */
+            min-height: 36px !important; /* Minimum height for touch target */
+            font-size: 14px !important; /* Matched Version Config size */
             display: inline-flex !important;
             align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important; /* Ensure names align to center */
-            gap: 6px !important;
-            padding: 0 12px !important;
+            justify-content: center !important; /* Absolutely center contents */
+            text-align: center !important; /* Absolutely center text */
+            gap: 8px !important;
+            padding: 8px 12px !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
-            line-height: 1.1 !important;
-            white-space: normal !important;
+            line-height: 1.2 !important;
+            white-space: normal !important; /* Prevents text overflow */
         }
 
-        /* Add requested SVGs via masks to inherit color seamlessly */
+        /* SVGs injected via masks to inherit golden color seamlessly */
         #devSeasonResetBtn::before, #devLoadFeedbackBtn::before, #devDownloadFeedbackBtn::before {
             content: '';
             display: inline-block;
@@ -1272,8 +1272,8 @@
 
         /* Add refresh Icon */
         #devSeasonResetBtn::before {
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3'/%3E%3C/svg%3E") center/contain no-repeat;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3'/%3E%3C/svg%3E") center/contain no-repeat;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3'/%3E%3C/svg%3E") center/contain no-repeat;
         }
 
         /* Add callout symbol */
@@ -1284,12 +1284,6 @@
 
         #devDownloadFeedbackBtn {
             display: none !important; 
-            width: 100% !important;
-            background: #121212 !important;
-            border: 1px solid #D4A017 !important;
-            color: #D4A017 !important;
-            border-radius: 16px !important;
-            height: 36px !important; 
             margin-top: 12px !important;
         }
         #devDownloadFeedbackBtn:not(.hidden) {
@@ -1312,9 +1306,7 @@
            DYNAMIC THEME SCOPING FOR DEV MODE ONLY 
            ========================================= */
 
-        /* Using :has() to detect if developer options are open.
-           If open, apply the dark fantasy layout globally and configure colored masks.
-        */
+        /* Using :has() to detect if developer options are open. */
         body:has(#devInterface:not(.hidden)) {
             background-color: #050505 !important;
         }
@@ -1337,9 +1329,9 @@
             background: transparent !important;
             color: #666 !important;
             border: 1px solid rgba(255,255,255,0.05) !important;
-            font-size: 12px !important;
+            font-size: 14px !important; /* Matched Version Config size */
             display: flex !important;
-            flex-direction: column !important; /* Stacks icon above text */
+            flex-direction: column !important; /* Stacks icon above text perfectly */
             align-items: center !important; /* Horizontally center */
             justify-content: center !important; /* Vertically center */
             text-align: center !important; /* Aligns name to center */
@@ -1353,7 +1345,7 @@
             border-image: none !important;
         }
 
-        /* The nav buttons will automatically tint their SVG masks to #D4A017 via currentColor here */
+        /* Golden Active tint */
         body:has(#devInterface:not(.hidden)) .nav-split-trigger-btn.active-panel-indicator {
             background: #121212 !important;
             color: #D4A017 !important;
