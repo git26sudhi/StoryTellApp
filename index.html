@@ -1736,6 +1736,51 @@
         });
     });
 
+    // --- POPUP ALERT FOR LOCKED FIELDS ---
+    function handleLockedSuggestionInteraction(inputEl, lockTime, featureName) {
+        if (inputEl.readOnly && !isDeveloperModeUnlocked) {
+            inputEl.blur(); // Prevent mobile soft keyboard from appearing
+            
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const timeStringFormatted = `${currentHour}:${currentMinute}`;
+            
+            const targetStory = storyDropdown.value;
+            const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
+            let isPreviousDay = false;
+            
+            if (activeStoryObject) {
+                const createdDateStr = new Date(activeStoryObject.created).toDateString();
+                const currentDateStr = new Date().toDateString();
+                isPreviousDay = createdDateStr !== currentDateStr;
+            }
+
+            // Determine the reason for the lock and show the respective popup
+            if (isPreviousDay) {
+                customAlert(`Submissions for ${featureName} are locked for previous days' stories.`);
+            } else if (timeStringFormatted > lockTime) {
+                customAlert(`The moderator has locked the ${featureName} feature at <b>${lockTime}</b>.<br><br>You can no longer submit suggestions for it today.`);
+            } else {
+                customAlert(`The ${featureName} feature is currently disabled by the moderator.`);
+            }
+        }
+    }
+
+    authorGuessInput.addEventListener('click', () => {
+        handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess");
+    });
+    authorGuessInput.addEventListener('focus', () => {
+        handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess");
+    });
+
+    titleSuggestionInput.addEventListener('click', () => {
+        handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion");
+    });
+    titleSuggestionInput.addEventListener('focus', () => {
+        handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion");
+    });
+
     navBtnReviewer.addEventListener('click', () => {
         try {
             navBtnReviewer.classList.add('active-panel-indicator');
@@ -2214,8 +2259,15 @@
             if (isDeveloperModeUnlocked) {
                 friendNameInput.disabled = false;
                 ratingValueInput.disabled = false;
-                authorGuessInput.disabled = false;
-                titleSuggestionInput.disabled = false;
+                
+                authorGuessInput.readOnly = false;
+                authorGuessInput.style.opacity = "1";
+                authorGuessInput.style.cursor = "text";
+                
+                titleSuggestionInput.readOnly = false;
+                titleSuggestionInput.style.opacity = "1";
+                titleSuggestionInput.style.cursor = "text";
+                
                 submitRatingBtn.disabled = false;
                 submitRatingBtn.textContent = "Submit Review (Dev Bypass)";
                 return;
@@ -2244,12 +2296,21 @@
                 friendNameInput.disabled = true;
                 ratingValueInput.disabled = true;
                 
-                // Keep optional inputs available ONLY if conditions still permit them
-                authorGuessInput.disabled = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
-                titleSuggestionInput.disabled = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                // Determine if fields should be locked
+                const authorGuessLocked = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
+                const titleSuggestionLocked = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                
+                // Use readOnly instead of disabled so we can capture click events for the popup
+                authorGuessInput.readOnly = authorGuessLocked;
+                authorGuessInput.style.opacity = authorGuessLocked ? "0.5" : "1";
+                authorGuessInput.style.cursor = authorGuessLocked ? "not-allowed" : "text";
+
+                titleSuggestionInput.readOnly = titleSuggestionLocked;
+                titleSuggestionInput.style.opacity = titleSuggestionLocked ? "0.5" : "1";
+                titleSuggestionInput.style.cursor = titleSuggestionLocked ? "not-allowed" : "text";
                 
                 // Change UI button context based on whether update locks apply
-                if (authorGuessInput.disabled && titleSuggestionInput.disabled) {
+                if (authorGuessLocked && titleSuggestionLocked) {
                     submitRatingBtn.disabled = true;
                     submitRatingBtn.textContent = "Ratings & Options Locked";
                 } else {
@@ -2261,8 +2322,16 @@
                 friendNameInput.disabled = false;
                 ratingValueInput.disabled = false;
                 
-                authorGuessInput.disabled = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
-                titleSuggestionInput.disabled = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                const authorGuessLocked = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
+                const titleSuggestionLocked = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
+                
+                authorGuessInput.readOnly = authorGuessLocked;
+                authorGuessInput.style.opacity = authorGuessLocked ? "0.5" : "1";
+                authorGuessInput.style.cursor = authorGuessLocked ? "not-allowed" : "text";
+
+                titleSuggestionInput.readOnly = titleSuggestionLocked;
+                titleSuggestionInput.style.opacity = titleSuggestionLocked ? "0.5" : "1";
+                titleSuggestionInput.style.cursor = titleSuggestionLocked ? "not-allowed" : "text";
                 
                 submitRatingBtn.disabled = false;
                 submitRatingBtn.textContent = "Submit Review";
