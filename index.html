@@ -914,7 +914,7 @@
             padding: 12px 10px;
             font-size: 13.5px;
             border: var(--border);
-            vertical-align: top;
+            vertical-align: middle;
         }
         .one-sentence-def {
             font-size: 13px;
@@ -1078,7 +1078,7 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 25px;">
-                    <label style="color: var(--text-color);">System Data</label>
+                    <label style="color: var(--text-color);">Season Summary</label>
                     <div style="display: flex; flex-direction: row; gap: 2ch; margin-top: 5px; width: 100%;">
                         <button id="previewBtn" class="btn-preview" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center;">Preview</button>
                         <button id="downloadBtn" class="btn-download" style="flex: 1; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--admin-color); color: var(--btn-admin-text);">
@@ -1167,19 +1167,19 @@
             <form id="ratingForm">
                 <div class="form-group">
                     <label for="friendName">Your Name *</label>
-                    <input type="text" id="friendName" placeholder="********">
+                    <input type="text" id="friendName" placeholder="Enter your Name">
                 </div>
                 <div class="form-group">
                     <label for="ratingValue">Rating (1 to 10) *</label>
-                    <input type="text" id="ratingValue" placeholder="********">
+                    <input type="text" id="ratingValue" placeholder="Rating">
                 </div>
                 <div class="form-group hidden" id="userAuthorGuessGroup">
                     <label for="authorGuess">Guess the Author <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
-                    <input type="text" id="authorGuess" placeholder="********">
+                    <input type="text" id="authorGuess" placeholder="Author suggestion">
                 </div>
                 <div class="form-group hidden" id="userTitleSuggestionGroup">
                     <label for="titleSuggestion">Suggest a Title <span style="font-weight: normal; color: var(--input-placeholder);">(Optional)</span></label>
-                    <input type="text" id="titleSuggestion" placeholder="********">
+                    <input type="text" id="titleSuggestion" placeholder="Title suggestion">
                 </div>
                 <button type="submit" id="submitRatingBtn">Submit Review</button>
             </form>
@@ -1209,7 +1209,7 @@
     </div>
 
     <div id="loginInterface" class="plain-section hidden">
-        <h2>🔒 Moderator / Developer Authentication</h2>
+        <h2><span style="display:inline-block; transform: scaleY(-1);">🗡️</span> Moderator / Developer Authentication</h2>
         <p style="font-size: 14px; color: var(--text-muted); margin-top: 0;">Enter your credentials below to access the control panels.</p>
         <div class="form-group">
             <label for="localEmailInput">Email Address</label>
@@ -1298,8 +1298,11 @@
         
         <div class="plain-section admin-header">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">
-                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">📅 Daily Updates</h2>
-                <div id="currentDateDisplay" style="background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: var(--border); font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
+                <h2 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0; margin-top: 0;">Daily Updates</h2>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; background: var(--input-bg); padding: 4px 12px; border-radius: 6px; border: var(--border);">
+                    <div id="currentDateDisplay" style="font-size: 14px; font-weight: bold; color: var(--admin-color);">--/--/--</div>
+                    <div id="currentDayDisplay" style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">---</div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -1309,7 +1312,7 @@
 
             <div class="form-group" style="display: flex; gap: 10px;">
                 <div style="flex: 1.5;">
-                    <label for="readerSuggestions">Title</label>
+                    <label for="readerSuggestions">Title Suggested</label>
                     <select id="readerSuggestions"></select>
                 </div>
                 <div style="flex: 1;">
@@ -1367,26 +1370,21 @@
             <div class="switch-container danger-toggle" style="padding: 8px 15px; width: max-content; margin-bottom: 20px; gap: 20px; background: #1a1a1a; border: 1px solid #D4A017;">
                 <div>
                     <strong id="exclusiveModeText" style="color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: color 0.3s;">
-                        <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
+                        <svg viewBox="0 0 64 64" style="width: 26px; height: 26px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));">
                             <defs>
-                                <linearGradient id="glossyQueen" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#80Aaff" />
-                                    <stop offset="30%" stop-color="#4169E1" />
-                                    <stop offset="70%" stop-color="#223b82" />
-                                    <stop offset="100%" stop-color="#0d1b42" />
+                                <linearGradient id="goldQueen" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFF8DC" />
+                                    <stop offset="25%" stop-color="#FFD700" />
+                                    <stop offset="50%" stop-color="#DAA520" />
+                                    <stop offset="75%" stop-color="#B8860B" />
+                                    <stop offset="100%" stop-color="#8B6508" />
                                 </linearGradient>
-                                <linearGradient id="glossyQueenStroke" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffffff" />
-                                    <stop offset="100%" stop-color="#4169E1" />
+                                <linearGradient id="goldQueenEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFF" />
+                                    <stop offset="100%" stop-color="#DAA520" />
                                 </linearGradient>
                             </defs>
-                            <g fill="url(#glossyQueen)" stroke="url(#glossyQueenStroke)" stroke-width="1.2" stroke-linejoin="round">
-                                <path d="M4 19h16v2H4z" />
-                                <path d="M5 19l2-10 3 3 2-6 2 6 3-3 2 10" />
-                                <circle cx="12" cy="4" r="1.5" />
-                                <circle cx="7" cy="8" r="1.5" />
-                                <circle cx="17" cy="8" r="1.5" />
-                            </g>
+                            <path fill="url(#goldQueen)" stroke="url(#goldQueenEdge)" stroke-width="1.5" d="M 32 6 C 34.2 6 36 7.8 36 10 C 36 11.6 35 13 33.6 13.6 L 39 23 L 42.6 14.8 C 41.6 14.2 41 13.2 41 12 C 41 9.8 42.8 8 45 8 C 47.2 8 49 9.8 49 12 C 49 13.5 48.2 14.8 46.8 15.5 L 43 28 L 51.6 20.3 C 51.2 19.6 51 18.8 51 18 C 51 15.8 52.8 14 55 14 C 57.2 14 59 15.8 59 18 C 59 19.9 57.7 21.5 55.8 21.9 L 46 33 L 48 48 L 16 48 L 18 33 L 8.2 21.9 C 6.3 21.5 5 19.9 5 18 C 5 15.8 6.8 14 9 14 C 11.2 14 13 15.8 13 18 C 13 18.8 12.8 19.6 12.4 20.3 L 21 28 L 17.2 15.5 C 15.8 14.8 15 13.5 15 12 C 15 9.8 16.8 8 19 8 C 21.2 8 23 9.8 23 12 C 23 13.2 22.4 14.2 21.4 14.8 L 25 23 L 30.4 13.6 C 29 13 28 11.6 28 10 C 28 7.8 29.8 6 32 6 Z M 20 50 L 44 50 L 46 54 L 46 56 L 18 56 L 18 54 Z" />
                         </svg>
                         Exclusive Mode
                     </strong>
@@ -1723,18 +1721,19 @@
 
     let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
     
+    // Date configuration for daily updates
     const initToday = new Date();
     const initDd = String(initToday.getDate()).padStart(2, '0');
-    const initMm = String(initToday.getMonth() + 1).padStart(2, '0');
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const initMmName = monthNames[initToday.getMonth()];
     const initYy = String(initToday.getFullYear()).slice(-2);
-    document.getElementById('currentDateDisplay').textContent = `${initDd}/${initMm}/${initYy}`;
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const initDayName = dayNames[initToday.getDay()];
 
-    // Helper event listeners to clear default asterisks placeholder state
-    [friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput].forEach(input => {
-        input.addEventListener('focus', function() {
-            if (this.value === '********') this.value = '';
-        });
-    });
+    const currentDateDisplay = document.getElementById('currentDateDisplay');
+    const currentDayDisplay = document.getElementById('currentDayDisplay');
+    if(currentDateDisplay) currentDateDisplay.textContent = `${initDd} ${initMmName} ${initYy}`;
+    if(currentDayDisplay) currentDayDisplay.textContent = initDayName;
 
     // --- POPUP ALERT FOR LOCKED FIELDS ---
     function handleLockedSuggestionInteraction(inputEl, lockTime, featureName) {
@@ -1757,10 +1756,8 @@
             }
 
             // Determine the reason for the lock and show the respective popup
-            if (isPreviousDay) {
-                customAlert(`Submissions for ${featureName} are locked for previous days' stories.`);
-            } else if (timeStringFormatted > lockTime) {
-                customAlert(`The moderator has locked the ${featureName} feature at <b>${lockTime}</b>.<br><br>You can no longer submit suggestions for it today.`);
+            if (isPreviousDay || timeStringFormatted > lockTime) {
+                customAlert("Submission time exceeded for the story.");
             } else {
                 customAlert(`The ${featureName} feature is currently disabled by the moderator.`);
             }
@@ -1832,10 +1829,10 @@
         let titleSuggestion = titleSuggestionInput.value.trim();
         
         // Handle defaults if skipped or left as place holders
-        if (authorGuess === "" || authorGuess === "********") authorGuess = "None";
-        if (titleSuggestion === "" || titleSuggestion === "********") titleSuggestion = "None";
+        if (authorGuess === "") authorGuess = "None";
+        if (titleSuggestion === "") titleSuggestion = "None";
 
-        if (!friendName || friendName === "********") {
+        if (!friendName) {
             customAlert("Please enter your name.");
             return;
         }
@@ -1849,7 +1846,7 @@
         } else {
             // Processing rating for developer bypass or first-time reviewers
             if (isDeveloperModeUnlocked) {
-                if (ratingRaw === "" || ratingRaw === "********") {
+                if (ratingRaw === "") {
                     ratingRaw = "N/A"; // Allowed for Developer
                 } else {
                     let r = parseInt(ratingRaw, 10);
@@ -2424,11 +2421,11 @@
                 titleSuggestionInput.value = parsedData.suggestedTitle !== "None" ? parsedData.suggestedTitle : "";
             } catch (e) {}
         } else {
-            // Apply the raw "********" value state to the inputs as requested
-            friendNameInput.value = "********";
-            ratingValueInput.value = "********";
-            authorGuessInput.value = "********";
-            titleSuggestionInput.value = "********";
+            // Apply native empty state, relying solely on new HTML placeholders
+            friendNameInput.value = "";
+            ratingValueInput.value = "";
+            authorGuessInput.value = "";
+            titleSuggestionInput.value = "";
         }
     }
 
@@ -2777,33 +2774,162 @@
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 45%; text-align: center;">Feature</th>
+                            <th style="width: 45%; text-align: center;">Control Representation</th>
                             <th style="text-align: center;">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr>
-                        <tr><td>Guess Author (Switch)</td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr>
-                        <tr><td>Title Suggestion (Switch)</td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr>
-                        <tr><td>Subject (Input)</td><td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td></tr>
-                        <tr><td>Select Month (Dropdown)</td><td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td></tr>
-                        <tr><td>Start Season (Button)</td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr>
-                        <tr><td>Update (Button)</td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr>
-                        <tr><td>Moderator Name (Input) + Save Profile (Button)</td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout, required before starting a season.</td></tr>
-                        <tr><td>Preview (Button)</td><td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td></tr>
-                        <tr><td>Download (Buttons)</td><td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr>
-                        <tr><td>Inline Add Story Name (Input) + Add Story (Button)</td><td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td></tr>
-                        <tr><td>Select Story notes & deletion (Dropdown) + Trash Icon (Button)</td><td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td></tr>
-                        <tr><td>Author given Heading (Input)</td><td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td></tr>
-                        <tr><td>Title (Dropdown)</td><td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td></tr>
-                        <tr><td>Reviewer (Dropdown)</td><td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td></tr>
-                        <tr><td>Guess the Author (Dropdown) + Clear Selections (Button)</td><td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td></tr>
-                        <tr><td>Save (Button)</td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr>
-                        <tr><td>Exclusive Mode (Switch)</td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr>
-                        <tr><td>Season Reset (Button)</td><td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td></tr>
-                        <tr><td>User feedback preview (Button)</td><td class="one-sentence-def">Loads customer feedback submittals into a clear metric visualization dashboard panel.</td></tr>
-                        <tr><td>Download Feedback Table (Button)</td><td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td></tr>
-                        <tr><td>Major / Minor / Revision (Buttons)</td><td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td></tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>🎨 Theme</option></select>
+                            </td>
+                            <td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:bold; color:var(--text-color);">Guess Author <label class="switch" style="transform: scale(0.6); margin:-10px 0;"><input type="checkbox" checked><span class="slider"></span></label></div>
+                            </td>
+                            <td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:bold; color:var(--text-color);">Title Sugg. <label class="switch" style="transform: scale(0.6); margin:-10px 0;"><input type="checkbox" checked><span class="slider"></span></label></div>
+                            </td>
+                            <td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Subject" style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Modifies the main topic classification string shown inside the high-density top title container display.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>Select Month</option></select>
+                            </td>
+                            <td class="one-sentence-def">Alters the seasonal tracking period displayed on the upper right side of the primary platform banner.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--admin-color); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Start Season</button>
+                            </td>
+                            <td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--admin-color); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Update</button>
+                            </td>
+                            <td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; align-items:center; justify-content:center; gap:4px;">
+                                    <input type="text" placeholder="Handle" style="font-size:11px; padding:3px; width:50px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                                    <button style="background:var(--admin-color); color:white; border:none; padding:3px; border-radius:4px;">💾</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout, required before starting a season.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--admin-color); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Preview</button>
+                            </td>
+                            <td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--primary); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">⬇ Download</button>
+                            </td>
+                            <td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; align-items:center; justify-content:center; gap:4px;">
+                                    <input type="text" placeholder="New story..." style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                                    <button style="background:var(--admin-color); color:white; border:none; padding:3px; border-radius:4px;">➕</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Provides a streamlined dashboard form factor to launch a story track entry instantly.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; align-items:center; justify-content:center; gap:4px;">
+                                    <select style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>Story</option></select>
+                                    <button style="background:var(--danger); color:white; border:none; padding:3px; border-radius:4px;">🗑️</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Wipes entire targeted story evaluation datasets completely out of cloud database instances.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Official heading" style="font-size:11px; padding:3px; width:80px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Records the permanent, structural heading selected by the story writer for final publication archiving.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>Title</option></select>
+                            </td>
+                            <td class="one-sentence-def">Selects the single best reader-suggested title chosen by the writer for recognition rewards.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>Name</option></select>
+                            </td>
+                            <td class="one-sentence-def">Automatically maps back to track down the reviewer who authored the favorite heading selection.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; align-items:center; justify-content:center; gap:4px;">
+                                    <select style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>Winner</option></select>
+                                    <button style="background:var(--switch-bg); border:1px solid var(--border-color); padding:3px; border-radius:4px;">❌</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Compiles chip labels to visually tag readers who successfully deduced the real story writer.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--admin-color); color:white; font-size:11px; padding:4px 16px; border:none; border-radius:4px;">Save</button>
+                            </td>
+                            <td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:inline-flex; align-items:center; gap:6px; background:#1a1a1a; padding:4px; border:1px solid #D4A017; border-radius:4px;">
+                                    <span style="color:#D4A017; font-size:12px;">♛ Exc. Mode</span>
+                                    <label class="switch" style="transform: scale(0.6); margin:-10px 0;"><input type="checkbox" checked><span class="slider"></span></label>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:#FFD700; color:black; font-weight:bold; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Season Reset</button>
+                            </td>
+                            <td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:#FFD700; color:black; font-weight:bold; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">User feedback preview</button>
+                            </td>
+                            <td class="one-sentence-def">Loads customer feedback submittals into a clear metric visualization dashboard panel.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:#FFD700; color:black; font-weight:bold; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Download Feedback Table</button>
+                            </td>
+                            <td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; justify-content:center; gap:4px;">
+                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Major</button>
+                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Minor</button>
+                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Rev</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td>
+                        </tr>
                     </tbody>
                 </table>
             `;
@@ -2814,23 +2940,87 @@
                 <table class="manual-table">
                     <thead>
                         <tr>
-                            <th style="width: 45%; text-align: center;">Feature</th>
+                            <th style="width: 45%; text-align: center;">Control Representation</th>
                             <th style="text-align: center;">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Theme (Dropdown)</td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr>
-                        <tr><td>Choose a story from the list (Dropdown)</td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr>
-                        <tr><td>Your Name (Input)</td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr>
-                        <tr><td>Rating (1 to 10) (Input)</td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td></tr>
-                        <tr><td>Guess the Author (Input)</td><td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.<span class="manual-condition-text">Condition: Submissions cannot be modified after the end of the day or after the moderator-defined deadline constraint.</span></td></tr>
-                        <tr><td>Suggest a Title (Input)</td><td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.<span class="manual-condition-text">Condition: Locked automatically once the moderator's specified hour cutoff passes.</span></td></tr>
-                        <tr><td>Submit Review (Button)</td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr>
-                        <tr><td>Give App Feedback (Button)</td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr>
-                        <tr><td>Your Name (Input) & Feedback / Suggestions (Textarea) [Feedback Interface]</td><td class="one-sentence-def">Accepts text reviews to outline application ideas or submit optimization bug logs to developers.</td></tr>
-                        <tr><td>Submit Feedback (Button) [Feedback Interface]</td><td class="one-sentence-def">Transmits your platform optimization recommendations onto administrative database structures.</td></tr>
-                        <tr><td>Cancel / Back (Button) [Feedback Interface]</td><td class="one-sentence-def">Wipes active feedback input data text changes and returns directly to the primary selector panel view.</td></tr>
-                        <tr><td>Reviewer / Moderator Panel (Buttons)</td><td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td></tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>🎨 Classic Light</option></select>
+                            </td>
+                            <td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <select style="font-size:11px; padding:3px; border-radius:4px; border:1px solid #ccc; background:#fafafa;"><option>📖 Select Story...</option></select>
+                            </td>
+                            <td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Enter your Name" style="font-size:11px; padding:3px; width:100px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Rating" style="font-size:11px; padding:3px; width:60px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Author suggestion" style="font-size:11px; padding:3px; width:110px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Allows you to speculate on who wrote the narrative text if the option is active.<span class="manual-condition-text">Condition: Submissions cannot be modified after the end of the day or after the moderator-defined deadline constraint.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Title suggestion" style="font-size:11px; padding:3px; width:100px; border-radius:4px; border:1px solid #ccc; background:#fafafa;">
+                            </td>
+                            <td class="one-sentence-def">Provides an input to submit creative headings to help author-owners choose project titles.<span class="manual-condition-text">Condition: Locked automatically once the moderator's specified hour cutoff passes.</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--primary); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Submit Review</button>
+                            </td>
+                            <td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--accent); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Give App Feedback</button>
+                            </td>
+                            <td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <input type="text" placeholder="Name" style="font-size:10px; padding:2px; width:45px; border:1px solid #ccc; border-radius:2px;"> 
+                                <textarea placeholder="..." style="font-size:10px; padding:2px; width:45px; height:12px; vertical-align:middle; border:1px solid #ccc; border-radius:2px;"></textarea>
+                            </td>
+                            <td class="one-sentence-def">Accepts text reviews to outline application ideas or submit optimization bug logs to developers.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--accent); color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Submit Feedback</button>
+                            </td>
+                            <td class="one-sentence-def">Transmits your platform optimization recommendations onto administrative database structures.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <button style="background:var(--input-bg); color:var(--h3-color); border:1px solid var(--border-color); font-size:11px; padding:4px 8px; border-radius:4px;">Cancel / Back</button>
+                            </td>
+                            <td class="one-sentence-def">Wipes active feedback input data text changes and returns directly to the primary selector panel view.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <div style="display:flex; justify-content:center;">
+                                    <button style="font-size:10px; padding:2px 4px; border:1px solid #ccc; background:#fff; color:#333;">Reviewer</button>
+                                    <button style="font-size:10px; padding:2px 4px; border:1px solid #ccc; background:#e9ecef; color:#333;">Moderator</button>
+                                </div>
+                            </td>
+                            <td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td>
+                        </tr>
                     </tbody>
                 </table>
             `;
